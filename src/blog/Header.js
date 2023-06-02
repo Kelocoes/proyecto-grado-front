@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { Link as LinkRouter } from 'react-router-dom';
 
 function Header(props) {
   const { sections, title } = props;
@@ -13,7 +14,7 @@ function Header(props) {
   return (
     <React.Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Button size="small" href="http://localhost:3000/dashboard">Dashboard</Button>
+        <Button size="small" component = {LinkRouter} to = '/dashboard' >Dashboard</Button>
         <Typography
           component="h2"
           variant="h5"
