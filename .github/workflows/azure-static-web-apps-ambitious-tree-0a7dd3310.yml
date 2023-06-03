@@ -32,4 +32,4 @@ jobs:
           output_location: "build" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          REACT_APP_API_SERVER_URL: "https://proyecto-riesgo-uv.azurewebsites.net
+          REACT_APP_API_SERVER_URL: "https://proyecto-riesgo-uv.azurewebsites.net"
