@@ -1,8 +1,9 @@
 import React from 'react'
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL
+const apiKey = process.env.REACT_APP_API_KEY_BACKEND
 
-const isEnvValid = apiServerUrl
+const isEnvValid = apiServerUrl && apiKey
 
 if (!isEnvValid) {
     throw new Error('Missing environment variables.')

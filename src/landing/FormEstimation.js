@@ -20,7 +20,7 @@ function CircularProgressWithLabel(props) {
   const valueCenter= props.value/100
 
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+    <Box sx={{ position: 'relative',  display: 'inline-flex'}}>
       <CircularProgress variant="determinate" {...props}/>
       <Box
         sx={{
@@ -83,11 +83,11 @@ export default function MainFeaturedPost() {
   };
 
   return (
-    <Card sx = {{ boxShadow: 5, marginBottom : 3, marginTop: 2}}>
-      <Grid container alignItems = "center" >
-        <Grid item xs = {7} >
-          <CardContent sx = {{marginRight : 2}}>
-            <Typography variant = "h5" color = "inherit" justifyContent= "center"  align = "center" padding = "10">
+    <Card sx = {{ boxShadow: 5, marginBottom : 3, marginTop: 2,  overflow: 'auto'}}>
+      <Grid container alignItems = "center">
+        <Grid item xs = {10} md = {7}>
+          <CardContent >
+            <Typography variant = "h5" color = "inherit" justifyContent= "center"  align = "center">
               {title}
             </Typography>
           </CardContent>
@@ -247,8 +247,10 @@ export default function MainFeaturedPost() {
             </CardContent>
           </Box>
         </Grid>
-        <Grid item xs = {1} textAlign = "center" >
-          <CircularProgressWithLabel variant="determinate" size = {300} value = {estimation.prediction * 100} style={{'color': colorLevel[estimation.severity]}} severity = {severity[estimation.severity]}/>
+        <Grid item xs = {2} md = {5} textAlign = "center" >
+          <CardContent >
+            <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{'color': colorLevel[estimation.severity]}} severity = {severity[estimation.severity]}/>
+          </CardContent>
         </Grid>
       </Grid>
     </Card>
