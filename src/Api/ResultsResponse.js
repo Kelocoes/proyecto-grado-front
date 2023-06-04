@@ -35,7 +35,7 @@ export const useExternalApi = () => {
                 "diabetes": datos["diabetes"],
                 "smoking": datos["smoking"],
                 "background": datos["background"],
-                "age" : datos["age"],
+                "age" : parseInt(datos["age"]),
                 "weight": datos["weight"],
                 "height": datos["height"],
                 "systolic": datos["systolic"],
@@ -48,7 +48,7 @@ export const useExternalApi = () => {
         }
 
         const data = await makeRequest({config})
-        
+        console.log(data)
         setEstimation(data)
     }
 

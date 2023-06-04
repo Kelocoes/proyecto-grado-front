@@ -4,7 +4,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import Box from "@mui/material/Box";
 import InputAdornment from '@mui/material/InputAdornment';
@@ -12,14 +11,49 @@ import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { useExternalApi } from '../Api/ResultsResponse';
 import { useState } from 'react';
+import Checkbox from '@mui/material/Checkbox';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
+
+function CircularProgressWithLabel(props) {
+
+  const valueCenter= props.value/100
+
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props}/>
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Stack>
+          <Typography variant="h2" component="div" color="text.secondary">
+            {`${parseFloat(valueCenter.toFixed(3))}`}
+          </Typography>
+          <Typography variant="h5" component="div" color="text.secondary">
+            {`${props.severity}`}
+          </Typography>
+        </Stack>
+      </Box>
+    </Box>
+  );
+}
 
 export default function MainFeaturedPost() {
   const {handleSubmit: getInfoPatientSubmit,  register: registro } = useForm()
   const {
     getEstimation
   } = useExternalApi()
-  const [ estimation, setEstimation] = useState({})
-
+  const [ estimation, setEstimation] = useState( {"prediction": 0, "severity": "none"} )
+  const [isActive, setIsActive] = useState(true);
 
   const title = "Ingresa tus datos aquí"
 
@@ -27,9 +61,26 @@ export default function MainFeaturedPost() {
 
   const sex = [{ value: "1", label: 'Femenino' }, { value: "0", label: 'Masculino' }]
 
+  const colorLevel = {
+    "Low": "green",
+    "Medium": "yellow",
+    "High": "red"
+  }
+
+  const severity = {
+    "none": "Ninguno",
+    "Low": "Bajo",
+    "Medium": "Leve",
+    "High": "Alto"
+  }
+
   const onSubmit = data => {
     getEstimation(data, setEstimation)
   }
+
+  const handleButtonClick = () => {
+    setIsActive(!isActive)
+  };
 
   return (
     <Card sx = {{ boxShadow: 5, marginBottom : 3, marginTop: 2}}>
@@ -45,96 +96,161 @@ export default function MainFeaturedPost() {
             justifyContent="center"
             alignItems="center"
           >
-            <CardContent sx = {{ width : "300px"}}>
+            <CardContent sx = {{ width : "500px"}}>
               <form onSubmit = {getInfoPatientSubmit(onSubmit)}>
-                <Stack>
-                  <TextField  required variant = "outlined" label= "Edad" sx = {{ my : 1 }} type = "number"
-                    {...registro('age', { valueAsNumber: true, required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Sexo" sx = {{ my : 1 }} select
-                    {...registro('sex', { required: true })}
-                    defaultValue=''
-                  >
-                    {sex.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField  required variant = "outlined" label= "Peso" sx = {{ my : 1 }}
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-                    }}
-                    {...registro('weight', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Estatura" sx = {{ my : 1 }} type = "number" 
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">cm</InputAdornment>,
-                    }}
-                    {...registro('height', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Sistólica" sx = {{ my : 1 }} type = "number" 
-                    {...registro('systolic', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Diastólica" sx = {{ my : 1 }} type = "number" 
-                    {...registro('diastolic', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Colesterol total" sx = {{ my : 1 }} type = "number" 
-                    {...registro('cholesterol', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "HDL" sx = {{ my : 1 }} type = "number" 
-                    {...registro('hdl', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "LDL" sx = {{ my : 1 }} type = "number" 
-                    {...registro('ldl', { valueAsNumber: true,  required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Trigliceridos" sx = {{ my : 1 }} type = "number" 
-                    {...registro( 'triglycerides', { valueAsNumber: true, required: true })}
-                  />
-                  <TextField  required variant = "outlined" label= "Fumas" sx = {{ my : 1 }} select
-                    {...registro('smoking', { valueAsString: true, required: true })}
-                    defaultValue=''
-                  >
-                    {yesno.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField  required variant = "outlined" label= "Diabetes" sx = {{ my : 1 }} select
-                    {...registro('diabetes', { required: true })}
-                    defaultValue=''
-                  >
-                    {yesno.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField  required variant = "outlined" label= "Antecedentes" sx = {{ my : 1 }} select
-                    {...registro('background', { required: true })}
-                    defaultValue=''
-                  >
-                    {yesno.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Stack>
+                <Grid container spacing = {2} align="center">
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Edad"  type = "number" fullWidth 
+                      {...registro('age', { valueAsNumber: true, required: true })}
+                      inputProps={{
+                        min: 0, 
+                        max: 150,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Sexo" select fullWidth 
+                      {...registro('sex', { required: true })}
+                      defaultValue=''
+                    >
+                      {sex.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Peso" type = "number" fullWidth 
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                      }}
+                      inputProps={{
+                        min: 0, 
+                        max: 100
+                      }}
+                      {...registro('weight', { valueAsNumber: true,  required: true })}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Estatura" type = "number" fullWidth 
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">cm</InputAdornment>,
+                      }}
+                      inputProps={{
+                        min: 0, 
+                        max: 300
+                      }}
+                      {...registro('height', { valueAsNumber: true,  required: true })}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Sistólica" type = "number" fullWidth 
+                      {...registro('systolic', { valueAsNumber: true, required: true })}
+                      inputProps={{
+                        min: 0, 
+                        max: 300
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Diastólica" type = "number" fullWidth 
+                      inputProps={{
+                        min: 0, 
+                        max: 300
+                      }}
+                      {...registro('diastolic', { valueAsNumber: true,  required: true })}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Colesterol total" type = "number" fullWidth 
+                      {...registro('cholesterol', { valueAsNumber: true,  required: true })}
+                      inputProps={{
+                        min: 0, 
+                        max: 500
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "HDL" type = "number" fullWidth 
+                      {...registro('hdl', { valueAsNumber: true,  required: true })}
+                      inputProps={{
+                        min: 0, 
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "LDL" type = "number" fullWidth 
+                      {...registro('ldl', { valueAsNumber: true,  required: true })}
+                      inputProps={{
+                        min: 0, 
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs = {6}>
+                    <TextField  required variant = "outlined" label= "Trigliceridos" type = "number" fullWidth 
+                      {...registro( 'triglycerides', { valueAsNumber: true, required: true })}
+                      inputProps={{
+                        min: 0, 
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs = {4}>
+                    <TextField  required variant = "outlined" label= "Fumas" select fullWidth 
+                      {...registro('smoking', { valueAsString: true, required: true })}
+                      defaultValue=''
+                    >
+                      {yesno.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs = {4}>
+                    <TextField  required variant = "outlined" label= "Diabetes" select fullWidth 
+                      {...registro('diabetes', { required: true })}
+                      defaultValue=''
+                    >
+                      {yesno.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs = {4}>
+                    <TextField  required variant = "outlined" label= "Antecedentes" select fullWidth 
+                      {...registro('background', { required: true })}
+                      defaultValue=''
+                    >
+                      {yesno.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs = {12} >
+                    <Stack direction = "row" onClick = {handleButtonClick}>
+                      <Checkbox></Checkbox>
+                      <Typography sx = {{pt : 1}}>
+                        He leído y acepto la política de privacidad.
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs = {12} >
+                    <Button disabled = {isActive} variant='contained' onClick={getInfoPatientSubmit(onSubmit)} >Generar estimación</Button>
+                  </Grid>
+                </Grid>
               </form>
             </CardContent>
           </Box>
         </Grid>
-        <Grid item xs = {2} textAlign = "center" >
-          <Typography>
-            {`Puntaje: ${estimation.prediction} Severidad: ${estimation.severity}`} 
-          </Typography>
+        <Grid item xs = {1} textAlign = "center" >
+          <CircularProgressWithLabel variant="determinate" size = {300} value = {estimation.prediction * 100} style={{'color': colorLevel[estimation.severity]}} severity = {severity[estimation.severity]}/>
         </Grid>
       </Grid>
-      <CardContent>
-        <Button variant='contained' onClick={getInfoPatientSubmit(onSubmit)} >Generar estimación</Button>
-      </CardContent>
     </Card>
   );
 }

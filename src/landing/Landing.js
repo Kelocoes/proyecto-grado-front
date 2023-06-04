@@ -16,10 +16,8 @@ export default function Landing() {
       <CssBaseline />
       <Container maxWidth="lg">
         <Header title="Riesgo cardiovascular UV"/>
-        <main>
-          <MainFeaturedPost />
-          <FormEstimation />
-        </main>
+        <MainFeaturedPost />
+        <FormEstimation />
       </Container>
       <Footer
         title="Créditos"
