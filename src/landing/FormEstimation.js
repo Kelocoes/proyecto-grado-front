@@ -232,8 +232,8 @@ export default function MainFeaturedPost() {
                     </TextField>
                   </Grid>
                   <Grid item xs = {12} >
-                    <Stack direction = "row" onClick = {handleButtonClick}>
-                      <Checkbox></Checkbox>
+                    <Stack direction = "row" >
+                      <Checkbox onClick = {handleButtonClick}></Checkbox>
                       <Typography sx = {{pt : 1}}>
                         He leído y acepto la política de privacidad.
                       </Typography>
