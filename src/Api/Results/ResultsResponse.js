@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { useEnv } from '../context/env.context'
+import { useEnv } from '../../context/env.context'
+import { DecypherData } from '../Decypher/DecypherData'
 
 export const useExternalApi = () => {
 
-    const { apiServerUrl, apiKey } = useEnv()
+    const { apiServerUrl, apiKey, aesIv, aesSecretKey } = useEnv()
 
     const makeRequest = async (options) => {
 
@@ -49,8 +50,8 @@ export const useExternalApi = () => {
             }
         }
 
-        const data = await makeRequest({config})
-        console.log(data)
+        const cypherData = await makeRequest({config})
+        const data = DecypherData(cypherData, aesIv, aesSecretKey )
         setEstimation(data)
     }
 
