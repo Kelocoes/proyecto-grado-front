@@ -3,7 +3,7 @@ import { useEnv } from '../context/env.context'
 
 export const useExternalApi = () => {
 
-    const { apiServerUrl } = useEnv()
+    const { apiServerUrl, apiKey } = useEnv()
 
     const makeRequest = async (options) => {
 
@@ -26,7 +26,9 @@ export const useExternalApi = () => {
         const config = {
             url: `${apiServerUrl}/api/results/model/generate`,
             method: 'POST',
-            headers: {},
+            headers: {
+                "Authorization": `Token ${apiKey}`
+            },
             data: {
                 "registered": false,
                 "user_id": "0",

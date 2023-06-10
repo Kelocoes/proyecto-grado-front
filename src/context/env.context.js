@@ -10,7 +10,8 @@ if (!isEnvValid) {
 }
 
 const dotenv = {
-    apiServerUrl
+    apiServerUrl,
+    apiKey
 }
 
 export const EnvContext = React.createContext(dotenv)
