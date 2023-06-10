@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import InputAdornment from '@mui/material/InputAdornment';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
-import { useExternalApi } from '../Api/ResultsResponse';
+import { useExternalApi } from '../Api/Results/ResultsResponse';
 import { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Stack from '@mui/material/Stack';

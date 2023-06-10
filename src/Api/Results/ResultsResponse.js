@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { useEnv } from '../context/env.context'
+import { useEnv } from '../../context/env.context'
+import { DecypherData } from '../Decypher/DecypherData'
 
 export const useExternalApi = () => {
 
-    const { apiServerUrl } = useEnv()
+    const { apiServerUrl, apiKey, aesIv, aesSecretKey } = useEnv()
 
     const makeRequest = async (options) => {
 
@@ -26,7 +27,9 @@ export const useExternalApi = () => {
         const config = {
             url: `${apiServerUrl}/api/results/model/generate`,
             method: 'POST',
-            headers: {},
+            headers: {
+                "Authorization": `Token ${apiKey}`
+            },
             data: {
                 "registered": false,
                 "user_id": "0",
@@ -47,8 +50,8 @@ export const useExternalApi = () => {
             }
         }
 
-        const data = await makeRequest({config})
-        console.log(data)
+        const cypherData = await makeRequest({config})
+        const data = DecypherData(cypherData, aesIv, aesSecretKey )
         setEstimation(data)
     }
 
