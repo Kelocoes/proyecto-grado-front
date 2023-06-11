@@ -1,30 +1,31 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Box from "@mui/material/Box";
-import InputAdornment from '@mui/material/InputAdornment';
-import Dialog from '@mui/material/Dialog';
-import { useForm } from 'react-hook-form';
-import Button from '@mui/material/Button';
-import { useExternalApi } from '../Api/Results/ResultsResponse';
-import { useState } from 'react';
-import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Link } from '@mui/material';
+import * as React from 'react'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import MenuItem from '@mui/material/MenuItem'
+import Box from '@mui/material/Box'
+import InputAdornment from '@mui/material/InputAdornment'
+import Dialog from '@mui/material/Dialog'
+import { useForm } from 'react-hook-form'
+import Button from '@mui/material/Button'
+import { useState } from 'react'
+import Stack from '@mui/material/Stack'
+import CircularProgress from '@mui/material/CircularProgress'
+import { Link } from '@mui/material'
+import Container from '@mui/material/Container'
+
+import { useExternalApi } from '../Api/Results/ResultsResponse'
+
 import TermsAndConditions from './TermsAndConditions'
-import GraphEstimation from './GraphEstimation';
-import Container from '@mui/material/Container';
+import GraphEstimation from './GraphEstimation'
 
-function CircularProgressWithLabel(props) {
-
-  const valueCenter= props.value/100
+function CircularProgressWithLabel (props) {
+  const valueCenter = props.value / 100
 
   return (
-    <Box sx={{ position: 'relative',  display: 'inline-flex'}}>
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
       <CircularProgress variant="determinate" {...props}/>
       <Box
         sx={{
@@ -35,7 +36,7 @@ function CircularProgressWithLabel(props) {
           position: 'absolute',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'center'
         }}
       >
         <Stack>
@@ -48,35 +49,35 @@ function CircularProgressWithLabel(props) {
         </Stack>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default function MainFeaturedPost() {
-  const {handleSubmit: getInfoPatientSubmit,  register: registro } = useForm()
+export default function MainFeaturedPost () {
+  const { handleSubmit: getInfoPatientSubmit, register: registro } = useForm()
   const { getEstimation } = useExternalApi()
-  const [ estimation, setEstimation] = useState( {"prediction": 0, "severity": "none"} )
-  const [isActive, setIsActive] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [estimation, setEstimation] = useState({ prediction: 0, severity: 'none' })
+  const [isActive, setIsActive] = useState(false)
+  const [open, setOpen] = useState(false)
   const [buttonGraph, setActiveButtonGraph] = useState(false)
   const [openGraph, setOpenGraph] = useState(false)
 
-  const title = "Ingresa tus datos aquí"
+  const title = 'Ingresa tus datos aquí'
 
-  const yesno = [{ value: "1", label: 'Sí' }, { value: "0", label: 'No' }]
+  const yesno = [{ value: '1', label: 'Sí' }, { value: '0', label: 'No' }]
 
-  const sex = [{ value: "1", label: 'Femenino' }, { value: "0", label: 'Masculino' }]
+  const sex = [{ value: '1', label: 'Femenino' }, { value: '0', label: 'Masculino' }]
 
   const colorLevel = {
-    "Low": "green",
-    "Medium": "yellow",
-    "High": "red"
+    Low: 'green',
+    Medium: 'yellow',
+    High: 'red'
   }
 
   const severity = {
-    "none": "Ninguno",
-    "Low": "Bajo",
-    "Medium": "Leve",
-    "High": "Alto"
+    none: 'Ninguno',
+    Low: 'Bajo',
+    Medium: 'Leve',
+    High: 'Alto'
   }
 
   const onSubmit = data => {
@@ -86,18 +87,18 @@ export default function MainFeaturedPost() {
   const handleButtonClick = () => {
     setIsActive(true)
     setOpen(false)
-  };
+  }
 
   const handlePrivacyClick = () => {
     setOpen(true)
-  };
+  }
 
   return (
-    <Card sx = {{ boxShadow: 5, marginBottom : 3, marginTop: 2,  overflow: 'auto'}}>
+    <Card sx = {{ boxShadow: 5, marginBottom: 3, marginTop: 2, overflow: 'auto' }}>
       <Grid container alignItems = "center">
         <Grid item xs = {10} md = {7}>
           <CardContent >
-            <Typography variant = "h5" color = "inherit" justifyContent= "center"  align = "center">
+            <Typography variant = "h5" color = "inherit" justifyContent= "center" align = "center">
               {title}
             </Typography>
           </CardContent>
@@ -106,20 +107,20 @@ export default function MainFeaturedPost() {
             justifyContent="center"
             alignItems="center"
           >
-            <CardContent sx = {{ width : "500px"}}>
+            <CardContent sx = {{ width: '500px' }}>
               <form onSubmit = {getInfoPatientSubmit(onSubmit)}>
                 <Grid container spacing = {2} align="center">
                   <Grid item xs = {6}>
-                    <TextField required variant = "outlined" label= "Edad"  type = "number" fullWidth 
+                    <TextField required variant = "outlined" label= "Edad" type = "number" fullWidth
                       {...registro('age', { valueAsNumber: true, required: true })}
                       inputProps={{
-                        min: 0, 
-                        max: 150,
+                        min: 0,
+                        max: 150
                       }}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Sexo" select fullWidth 
+                    <TextField required variant = "outlined" label= "Sexo" select fullWidth
                       {...registro('sex', { required: true })}
                       defaultValue=''
                     >
@@ -131,82 +132,82 @@ export default function MainFeaturedPost() {
                     </TextField>
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Peso" type = "number" fullWidth 
+                    <TextField required variant = "outlined" label= "Peso" type = "number" fullWidth
                       InputProps={{
-                        startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                        startAdornment: <InputAdornment position="start">kg</InputAdornment>
                       }}
                       inputProps={{
-                        min: 0, 
+                        min: 0,
                         max: 100
                       }}
-                      {...registro('weight', { valueAsNumber: true,  required: true })}
+                      {...registro('weight', { valueAsNumber: true, required: true })}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Estatura" type = "number" fullWidth 
+                    <TextField required variant = "outlined" label= "Estatura" type = "number" fullWidth
                       InputProps={{
-                        startAdornment: <InputAdornment position="start">cm</InputAdornment>,
+                        startAdornment: <InputAdornment position="start">cm</InputAdornment>
                       }}
                       inputProps={{
-                        min: 0, 
+                        min: 0,
                         max: 300
                       }}
-                      {...registro('height', { valueAsNumber: true,  required: true })}
+                      {...registro('height', { valueAsNumber: true, required: true })}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Sistólica" type = "number" fullWidth 
+                    <TextField required variant = "outlined" label= "Sistólica" type = "number" fullWidth
                       {...registro('systolic', { valueAsNumber: true, required: true })}
                       inputProps={{
-                        min: 0, 
+                        min: 0,
                         max: 300
                       }}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Diastólica" type = "number" fullWidth 
+                    <TextField required variant = "outlined" label= "Diastólica" type = "number" fullWidth
                       inputProps={{
-                        min: 0, 
+                        min: 0,
                         max: 300
                       }}
-                      {...registro('diastolic', { valueAsNumber: true,  required: true })}
+                      {...registro('diastolic', { valueAsNumber: true, required: true })}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Colesterol total" type = "number" fullWidth 
-                      {...registro('cholesterol', { valueAsNumber: true,  required: true })}
+                    <TextField required variant = "outlined" label= "Colesterol total" type = "number" fullWidth
+                      {...registro('cholesterol', { valueAsNumber: true, required: true })}
                       inputProps={{
-                        min: 0, 
+                        min: 0,
                         max: 500
                       }}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "HDL" type = "number" fullWidth 
-                      {...registro('hdl', { valueAsNumber: true,  required: true })}
+                    <TextField required variant = "outlined" label= "HDL" type = "number" fullWidth
+                      {...registro('hdl', { valueAsNumber: true, required: true })}
                       inputProps={{
-                        min: 0, 
+                        min: 0
                       }}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "LDL" type = "number" fullWidth 
-                      {...registro('ldl', { valueAsNumber: true,  required: true })}
+                    <TextField required variant = "outlined" label= "LDL" type = "number" fullWidth
+                      {...registro('ldl', { valueAsNumber: true, required: true })}
                       inputProps={{
-                        min: 0, 
+                        min: 0
                       }}
                     />
                   </Grid>
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Trigliceridos" type = "number" fullWidth 
-                      {...registro( 'triglycerides', { valueAsNumber: true, required: true })}
+                    <TextField required variant = "outlined" label= "Trigliceridos" type = "number" fullWidth
+                      {...registro('triglycerides', { valueAsNumber: true, required: true })}
                       inputProps={{
-                        min: 0, 
+                        min: 0
                       }}
                     />
                   </Grid>
                   <Grid item xs = {4}>
-                    <TextField  required variant = "outlined" label= "Fumas" select fullWidth 
+                    <TextField required variant = "outlined" label= "Fumas" select fullWidth
                       {...registro('smoking', { valueAsString: true, required: true })}
                       defaultValue=''
                     >
@@ -218,7 +219,7 @@ export default function MainFeaturedPost() {
                     </TextField>
                   </Grid>
                   <Grid item xs = {4}>
-                    <TextField  required variant = "outlined" label= "Diabetes" select fullWidth 
+                    <TextField required variant = "outlined" label= "Diabetes" select fullWidth
                       {...registro('diabetes', { required: true })}
                       defaultValue=''
                     >
@@ -230,7 +231,7 @@ export default function MainFeaturedPost() {
                     </TextField>
                   </Grid>
                   <Grid item xs = {4}>
-                    <TextField  required variant = "outlined" label= "Antecedentes" select fullWidth 
+                    <TextField required variant = "outlined" label= "Antecedentes" select fullWidth
                       {...registro('background', { required: true })}
                       defaultValue=''
                     >
@@ -244,9 +245,9 @@ export default function MainFeaturedPost() {
                 </Grid>
               </form>
               <Grid container >
-                <Grid item xs = {12} sx = {{ pb: 1}}>
+                <Grid item xs = {12} sx = {{ pb: 1 }}>
                   <Typography sx = {{ pt: 1 }}>
-                    He leído y acepto la{' '}
+                    <strong>Obligatorio:</strong> He leído y acepto la{' '}
                     <Link
                       component="button"
                       variant="inherit"
@@ -265,29 +266,29 @@ export default function MainFeaturedPost() {
             </CardContent>
           </Box>
         </Grid>
-        <Grid item xs = {2} md = {5} textAlign = "center" sx={{ pr: 5}} >
+        <Grid item xs = {2} md = {5} textAlign = "center" sx={{ pr: 5 }} >
           <CardContent >
-            <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{'color': colorLevel[estimation.severity]}} severity = {severity[estimation.severity]}/>
+            <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{ color: colorLevel[estimation.severity] }} severity = {severity[estimation.severity]}/>
           </CardContent>
-          <CardContent sx = {{ pl: { xs: 9, md: 0} }}>
-            <Button disabled = {!buttonGraph} variant='contained' onClick={() => {setOpenGraph(true)}} >Compárate!</Button>
+          <CardContent sx = {{ pl: { xs: 9, md: 0 } }}>
+            <Button disabled = {!buttonGraph} variant='contained' onClick={() => { setOpenGraph(true) }} >Compárate!</Button>
           </CardContent>
         </Grid>
       </Grid>
       <Dialog open={open}>
         <TermsAndConditions handleButtonClick = {handleButtonClick} />
       </Dialog>
-      <Dialog open={openGraph} maxWidth="xl" onClose={() => {setOpenGraph(false)}}>
-        <Container  sx = {{ width: '1000px', height: '550px', overflow: 'auto' }}>
+      <Dialog open={openGraph} maxWidth="xl" onClose={() => { setOpenGraph(false) }}>
+        <Container sx = {{ width: '1000px', height: '550px', overflow: 'auto' }}>
           <GraphEstimation estimation = {estimation.prediction} />
-          <Typography align = "justify" sx={{ fontStyle: 'italic', pt: 1}} >
-            Este gráfico representa el conjunto de prueba que hizo parte de la selección 
-            del modelo de Redes Neuronales que es utilizado en esta aplicación. Esto 
+          <Typography align = "justify" sx={{ fontStyle: 'italic', pt: 1 }} >
+            Este gráfico representa el conjunto de prueba que hizo parte de la selección
+            del modelo de Redes Neuronales que es utilizado en esta aplicación. Esto
             te permitirá compararte frente a ellos para darte una idea de cuál es tu nivel
             de riesgo.
           </Typography>
         </Container>
       </Dialog>
     </Card>
-  );
+  )
 }

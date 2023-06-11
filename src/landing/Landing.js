@@ -1,12 +1,14 @@
-import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import Header from './Header';
-import MainFeaturedPost from './MainFeaturedPost';
-import FormEstimation from '../EstimationComponent/FormEstimation';
-import Footer from './Footer';
+import * as React from 'react'
+import CssBaseline from '@mui/material/CssBaseline'
+import Container from '@mui/material/Container'
 
-export default function Landing() {
+import FormEstimation from '../EstimationComponent/FormEstimation'
+
+import Header from './Header'
+import MainFeaturedPost from './MainFeaturedPost'
+import Footer from './Footer'
+
+export default function Landing () {
   return (
 
     <Container >
@@ -20,7 +22,7 @@ export default function Landing() {
           description="Desarrollado por Kevin David Rodríguez Belalcázar"
         />
       </Container>
-      
+
     </Container>
-  );
+  )
 }

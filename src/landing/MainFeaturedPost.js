@@ -1,15 +1,15 @@
-import * as React from 'react';
+import * as React from 'react'
 // import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import imageUrl from '../assets/doctor-model.png';
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Typography from '@mui/material/Typography'
 
-export default function MainFeaturedPost(props) {
+import imageUrl from '../assets/doctor-model.png'
 
-  const title = "Estimación de riesgo cardiovascular"
+export default function MainFeaturedPost (props) {
+  const title = 'Estimación de riesgo cardiovascular'
   // eslint-disable-next-line
   const description = "Mediante el poder de las redes neuronales y la inteligencia artificial, nuestra innovadora herramienta, \
   diseñada específicamente para pacientes colombianos, te proporciona una evaluación precisa y personalizada del riesgo cardiovascular \
@@ -18,10 +18,10 @@ export default function MainFeaturedPost(props) {
   esta información para ofrecerte un puntaje objetivo y confiable de tu riesgo cardiovascular."
 
   return (
-    <Card sx = {{ boxShadow: 5, marginBottom : 3, marginTop: 2}}>
+    <Card sx = {{ boxShadow: 5, marginBottom: 3, marginTop: 2 }}>
       <Grid container alignItems = "center" >
         <Grid item xs = {10} >
-          <CardContent sx = {{marginRight : 2}}>
+          <CardContent sx = {{ marginRight: 2 }}>
             <Typography variant = "h5" color = "inherit" justifyContent= "center" padding = "10">
               {title}
             </Typography>
@@ -32,14 +32,14 @@ export default function MainFeaturedPost(props) {
         </Grid>
         <Grid item xs = {2} textAlign = "center" >
           <CardMedia
-            sx = {{ width : 1, paddingRight : 2}}
+            sx = {{ width: 1, paddingRight: 2 }}
             component ="img"
             image = {imageUrl}
             alt = "Doctor Model"
           />
         </Grid>
       </Grid>
-        
+
     </Card>
-  );
+  )
 }
