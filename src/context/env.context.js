@@ -8,22 +8,22 @@ const aesSecretKey = process.env.REACT_APP_AES_SECRET_KEY
 const isEnvValid = apiServerUrl && apiKey && aesIv && aesSecretKey
 
 if (!isEnvValid) {
-    throw new Error('Missing environment variables.')
+  throw new Error('Missing environment variables.')
 }
 
 const dotenv = {
-    apiServerUrl,
-    apiKey,
-    aesIv,
-    aesSecretKey
+  apiServerUrl,
+  apiKey,
+  aesIv,
+  aesSecretKey
 }
 
 export const EnvContext = React.createContext(dotenv)
 
 export const useEnv = () => {
-    const context = React.useContext(EnvContext)
-    if (!context) {
-        throw new Error('useEnv must be used within a EnvProvider')
-    }
-    return context
+  const context = React.useContext(EnvContext)
+  if (!context) {
+    throw new Error('useEnv must be used within a EnvProvider')
+  }
+  return context
 }

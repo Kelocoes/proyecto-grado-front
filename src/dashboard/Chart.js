@@ -1,11 +1,12 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
-import Title from './Title';
+import * as React from 'react'
+import { useTheme } from '@mui/material/styles'
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts'
+
+import Title from './Title'
 
 // Generate Sales Data
-function createData(time, amount) {
-  return { time, amount };
+function createData (time, amount) {
+  return { time, amount }
 }
 
 const data = [
@@ -17,11 +18,11 @@ const data = [
   createData('15:00', 2000),
   createData('18:00', 2400),
   createData('21:00', 2400),
-  createData('24:00', undefined),
-];
+  createData('24:00', undefined)
+]
 
-export default function Chart() {
-  const theme = useTheme();
+export default function Chart () {
+  const theme = useTheme()
 
   return (
     <React.Fragment>
@@ -33,7 +34,7 @@ export default function Chart() {
             top: 16,
             right: 16,
             bottom: 0,
-            left: 24,
+            left: 24
           }}
         >
           <XAxis
@@ -51,7 +52,7 @@ export default function Chart() {
               style={{
                 textAnchor: 'middle',
                 fill: theme.palette.text.primary,
-                ...theme.typography.body1,
+                ...theme.typography.body1
               }}
             >
               Sales ($)
@@ -67,5 +68,5 @@ export default function Chart() {
         </LineChart>
       </ResponsiveContainer>
     </React.Fragment>
-  );
+  )
 }

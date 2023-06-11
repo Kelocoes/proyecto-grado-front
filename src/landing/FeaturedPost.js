@@ -1,14 +1,14 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import * as React from 'react'
+import PropTypes from 'prop-types'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
 
-function FeaturedPost(props) {
-  const { post } = props;
+function FeaturedPost (props) {
+  const { post } = props
 
   return (
     <Grid item xs={12} md={6}>
@@ -37,7 +37,7 @@ function FeaturedPost(props) {
         </Card>
       </CardActionArea>
     </Grid>
-  );
+  )
 }
 
 FeaturedPost.propTypes = {
@@ -46,8 +46,8 @@ FeaturedPost.propTypes = {
     description: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     imageLabel: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-  }).isRequired,
-};
+    title: PropTypes.string.isRequired
+  }).isRequired
+}
 
-export default FeaturedPost;
+export default FeaturedPost
