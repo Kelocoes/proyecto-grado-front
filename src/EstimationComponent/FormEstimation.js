@@ -247,7 +247,7 @@ export default function MainFeaturedPost () {
               <Grid container >
                 <Grid item xs = {12} sx = {{ pb: 1 }}>
                   <Typography sx = {{ pt: 1 }}>
-                    He leído y acepto la{' '}
+                    <strong>Obligatorio:</strong> He leído y acepto la{' '}
                     <Link
                       component="button"
                       variant="inherit"
