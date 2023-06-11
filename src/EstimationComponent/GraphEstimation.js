@@ -20,7 +20,7 @@ export default function GraphEstimation(props) {
     let pointsBackGroundColor1 = []
     let pointsBackGroundColor2 = []
     for (let object in testset) {
-      if ( testset[object]["color"] === "green") {
+      if ( testset[object]["color"] === "#F7B634") {
         const objeto = { x: testset[object]["x"], y: testset[object]["y"] }
         jsonTransformado1.push(objeto)
         pointsBackGroundColor1.push(testset[object]["color"])
@@ -35,9 +35,9 @@ export default function GraphEstimation(props) {
     const data = {
         datasets: [
             {
-            label: 'Pacientes sanos',
-            data: jsonTransformado1,
-            backgroundColor: pointsBackGroundColor1
+              label: 'Pacientes sanos',
+              data: jsonTransformado1,
+              backgroundColor: pointsBackGroundColor1
             },
             {
               label: 'Pacientes con riesgo',
@@ -47,12 +47,14 @@ export default function GraphEstimation(props) {
             {
               label: 'Tú',
               data: [{x: 322, y: props.estimation}],
-              backgroundColor: 'rgba(0, 8, 255, 0.8)'
+              pointRadius: 5,
+              backgroundColor: '#0070FF'
             }
         ],
     };
 
     const options = {
+      responsive: true,
       scales: {
         y: {
           beginAtZero: true,
