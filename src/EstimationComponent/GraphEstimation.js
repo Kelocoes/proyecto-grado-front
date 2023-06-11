@@ -67,4 +67,4 @@ export default function GraphEstimation (props) {
   }
 
   return (<Scatter options={options} data={data} />)
-};
+}

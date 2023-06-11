@@ -5,6 +5,7 @@
     },
     "extends": [
         "plugin:react/recommended",
+        "eslint:recommended",
         "standard"
     ],
     "parserOptions": {
@@ -17,6 +18,11 @@
     "plugins": [
         "react"
     ],
+    "settings": {
+        "react": {
+          "version": "detect"
+        }
+    },
     "rules": {
         "react/prop-types": "off",
         "import/order": [
