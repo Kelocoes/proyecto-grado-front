@@ -22,7 +22,7 @@ export const useExternalApi = () => {
         }
     }
 
-    const getEstimation = async (datos, setEstimation) => {
+    const getEstimation = async (datos, setEstimation, setActiveButtonGraph) => {
 
         const config = {
             url: `${apiServerUrl}/api/results/model/generate`,
@@ -53,6 +53,7 @@ export const useExternalApi = () => {
         const cypherData = await makeRequest({config})
         const data = DecypherData(cypherData, aesIv, aesSecretKey )
         setEstimation(data)
+        setActiveButtonGraph(true)
     }
 
     return {

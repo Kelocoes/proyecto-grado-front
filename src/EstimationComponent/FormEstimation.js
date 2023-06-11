@@ -16,6 +16,8 @@ import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from '@mui/material';
 import TermsAndConditions from './TermsAndConditions'
+import GraphEstimation from './GraphEstimation';
+import Container from '@mui/material/Container';
 
 function CircularProgressWithLabel(props) {
 
@@ -55,6 +57,8 @@ export default function MainFeaturedPost() {
   const [ estimation, setEstimation] = useState( {"prediction": 0, "severity": "none"} )
   const [isActive, setIsActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const [buttonGraph, setActiveButtonGraph] = useState(false)
+  const [openGraph, setOpenGraph] = useState(false)
 
   const title = "Ingresa tus datos aquí"
 
@@ -76,7 +80,7 @@ export default function MainFeaturedPost() {
   }
 
   const onSubmit = data => {
-    getEstimation(data, setEstimation)
+    getEstimation(data, setEstimation, setActiveButtonGraph)
   }
 
   const handleButtonClick = () => {
@@ -261,14 +265,28 @@ export default function MainFeaturedPost() {
             </CardContent>
           </Box>
         </Grid>
-        <Grid item xs = {2} md = {5} textAlign = "center" >
+        <Grid item xs = {2} md = {5} textAlign = "center" sx={{ pr: 5}} >
           <CardContent >
             <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{'color': colorLevel[estimation.severity]}} severity = {severity[estimation.severity]}/>
+          </CardContent>
+          <CardContent >
+            <Button disabled = {!buttonGraph} variant='contained' onClick={() => {setOpenGraph(true)}} >Compárate!</Button>
           </CardContent>
         </Grid>
       </Grid>
       <Dialog open={open}>
         <TermsAndConditions handleButtonClick = {handleButtonClick} />
+      </Dialog>
+      <Dialog open={openGraph} maxWidth="xl" onClose={() => {setOpenGraph(false)}}>
+        <Container  sx = {{ width: '1000px', height: '550px', overflow: 'auto' }}>
+          <GraphEstimation estimation = {estimation.prediction} />
+          <Typography align = "justify" sx={{ fontStyle: 'italic', pt: 1}} posx>
+            Este gráfico representa el conjunto de prueba que hizo parte de la selección 
+            del modelo de Redes Neuronales que es utilizado en esta aplicación. Esto 
+            te permitirá compararte frente a ellos para darte una idea de cuál es tu nivel
+            de riesgo.
+          </Typography>
+        </Container>
       </Dialog>
     </Card>
   );
