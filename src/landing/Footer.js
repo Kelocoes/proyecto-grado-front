@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
@@ -18,8 +18,8 @@ function Footer(props) {
   const { description, title } = props;
 
   return (
-    <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6 }}>
-      <Container maxWidth="lg">
+    <Card sx = {{ boxShadow: 5, py: 2, overflow: 'auto'}}>
+      <Container >
         <Typography variant="h6" align="center">
           {title}
         </Typography>
@@ -33,7 +33,7 @@ function Footer(props) {
         </Typography>
         <Copyright />
       </Container>
-    </Box>
+    </Card>
   );
 }
 
