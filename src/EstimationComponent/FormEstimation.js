@@ -7,13 +7,15 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Box from "@mui/material/Box";
 import InputAdornment from '@mui/material/InputAdornment';
+import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { useExternalApi } from '../Api/Results/ResultsResponse';
 import { useState } from 'react';
-import Checkbox from '@mui/material/Checkbox';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from '@mui/material';
+import TermsAndConditions from './TermsAndConditions'
 
 function CircularProgressWithLabel(props) {
 
@@ -49,11 +51,10 @@ function CircularProgressWithLabel(props) {
 
 export default function MainFeaturedPost() {
   const {handleSubmit: getInfoPatientSubmit,  register: registro } = useForm()
-  const {
-    getEstimation
-  } = useExternalApi()
+  const { getEstimation } = useExternalApi()
   const [ estimation, setEstimation] = useState( {"prediction": 0, "severity": "none"} )
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const title = "Ingresa tus datos aquí"
 
@@ -79,7 +80,12 @@ export default function MainFeaturedPost() {
   }
 
   const handleButtonClick = () => {
-    setIsActive(!isActive)
+    setIsActive(true)
+    setOpen(false)
+  };
+
+  const handlePrivacyClick = () => {
+    setOpen(true)
   };
 
   return (
@@ -100,7 +106,7 @@ export default function MainFeaturedPost() {
               <form onSubmit = {getInfoPatientSubmit(onSubmit)}>
                 <Grid container spacing = {2} align="center">
                   <Grid item xs = {6}>
-                    <TextField  required variant = "outlined" label= "Edad"  type = "number" fullWidth 
+                    <TextField required variant = "outlined" label= "Edad"  type = "number" fullWidth 
                       {...registro('age', { valueAsNumber: true, required: true })}
                       inputProps={{
                         min: 0, 
@@ -231,19 +237,27 @@ export default function MainFeaturedPost() {
                       ))}
                     </TextField>
                   </Grid>
-                  <Grid item xs = {12} >
-                    <Stack direction = "row" >
-                      <Checkbox onClick = {handleButtonClick}></Checkbox>
-                      <Typography sx = {{pt : 1}}>
-                        He leído y acepto la política de privacidad.
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs = {12} >
-                    <Button disabled = {isActive} variant='contained' onClick={getInfoPatientSubmit(onSubmit)} >Generar estimación</Button>
-                  </Grid>
                 </Grid>
               </form>
+              <Grid container >
+                <Grid item xs = {12} sx = {{ pb: 1}}>
+                  <Typography sx = {{ pt: 1 }}>
+                    He leído y acepto la{' '}
+                    <Link
+                      component="button"
+                      variant="inherit"
+                      onClick={handlePrivacyClick}
+                      style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                    >
+                      política de privacidad
+                    </Link>
+                    .
+                  </Typography>
+                </Grid>
+                <Grid item xs = {12} align = "center">
+                  <Button disabled = {!isActive} variant='contained' onClick={getInfoPatientSubmit(onSubmit)} >Generar estimación</Button>
+                </Grid>
+              </Grid>
             </CardContent>
           </Box>
         </Grid>
@@ -253,6 +267,9 @@ export default function MainFeaturedPost() {
           </CardContent>
         </Grid>
       </Grid>
+      <Dialog open={open}>
+        <TermsAndConditions handleButtonClick = {handleButtonClick} />
+      </Dialog>
     </Card>
   );
 }
