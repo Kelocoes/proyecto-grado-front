@@ -269,8 +269,8 @@ export default function MainFeaturedPost() {
           <CardContent >
             <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{'color': colorLevel[estimation.severity]}} severity = {severity[estimation.severity]}/>
           </CardContent>
-          <CardContent >
-            <Button disabled = {!buttonGraph} variant='contained' onClick={() => {setOpenGraph(true)}} >Compárate!</Button>
+          <CardContent sx = {{ pl: { xs: 9, md: 0} }}>
+              <Button disabled = {!buttonGraph} variant='contained' onClick={() => {setOpenGraph(true)}} >Compárate!</Button>
           </CardContent>
         </Grid>
       </Grid>
@@ -280,7 +280,7 @@ export default function MainFeaturedPost() {
       <Dialog open={openGraph} maxWidth="xl" onClose={() => {setOpenGraph(false)}}>
         <Container  sx = {{ width: '1000px', height: '550px', overflow: 'auto' }}>
           <GraphEstimation estimation = {estimation.prediction} />
-          <Typography align = "justify" sx={{ fontStyle: 'italic', pt: 1}} posx>
+          <Typography align = "justify" sx={{ fontStyle: 'italic', pt: 1}} >
             Este gráfico representa el conjunto de prueba que hizo parte de la selección 
             del modelo de Redes Neuronales que es utilizado en esta aplicación. Esto 
             te permitirá compararte frente a ellos para darte una idea de cuál es tu nivel
