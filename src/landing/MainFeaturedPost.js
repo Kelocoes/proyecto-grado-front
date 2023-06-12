@@ -20,7 +20,7 @@ export default function MainFeaturedPost (props) {
   return (
     <Card sx = {{ boxShadow: 5, marginBottom: 3, marginTop: 2 }}>
       <Grid container alignItems = "center" >
-        <Grid item xs = {10} >
+        <Grid item xs = {12} md = {10} >
           <CardContent sx = {{ marginRight: 2 }}>
             <Typography variant = "h5" color = "inherit" justifyContent= "center" padding = "10">
               {title}
@@ -30,9 +30,9 @@ export default function MainFeaturedPost (props) {
             </Typography>
           </CardContent>
         </Grid>
-        <Grid item xs = {2} textAlign = "center" >
+        <Grid item xs = {12} md = {2} textAlign = "center" sx={{ display: 'flex', justifyContent: 'center' }}>
           <CardMedia
-            sx = {{ width: 1, paddingRight: 2 }}
+            sx = {{ width: { xs: '200px' }, paddingRight: 3 }}
             component ="img"
             image = {imageUrl}
             alt = "Doctor Model"
