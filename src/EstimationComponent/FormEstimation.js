@@ -13,8 +13,8 @@ import Button from '@mui/material/Button'
 import { useState } from 'react'
 import Stack from '@mui/material/Stack'
 import CircularProgress from '@mui/material/CircularProgress'
-import { Link } from '@mui/material'
 import Container from '@mui/material/Container'
+import Checkbox from '@mui/material/Checkbox'
 
 import { useExternalApi } from '../Api/Results/ResultsResponse'
 
@@ -60,6 +60,7 @@ export default function MainFeaturedPost () {
   const [open, setOpen] = useState(false)
   const [buttonGraph, setActiveButtonGraph] = useState(false)
   const [openGraph, setOpenGraph] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
 
   const title = 'Ingresa tus datos aquí'
 
@@ -90,13 +91,18 @@ export default function MainFeaturedPost () {
   }
 
   const handlePrivacyClick = () => {
-    setOpen(true)
+    if (!open && !isChecked) {
+      setOpen(true)
+    } else {
+      setIsActive(false)
+    }
+    setIsChecked(!isChecked)
   }
 
   return (
     <Card sx = {{ boxShadow: 5, marginBottom: 3, marginTop: 2, overflow: 'auto' }}>
       <Grid container alignItems = "center">
-        <Grid item xs = {10} md = {7}>
+        <Grid item xs = {12} md = {7}>
           <CardContent >
             <Typography variant = "h5" color = "inherit" justifyContent= "center" align = "center">
               {title}
@@ -188,6 +194,7 @@ export default function MainFeaturedPost () {
                       inputProps={{
                         min: 0
                       }}
+
                     />
                   </Grid>
                   <Grid item xs = {6}>
@@ -196,6 +203,7 @@ export default function MainFeaturedPost () {
                       inputProps={{
                         min: 0
                       }}
+
                     />
                   </Grid>
                   <Grid item xs = {6}>
@@ -247,16 +255,8 @@ export default function MainFeaturedPost () {
               <Grid container >
                 <Grid item xs = {12} sx = {{ pb: 1 }}>
                   <Typography sx = {{ pt: 1 }}>
-                    <strong>Obligatorio:</strong> He leído y acepto la{' '}
-                    <Link
-                      component="button"
-                      variant="inherit"
-                      onClick={handlePrivacyClick}
-                      style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-                    >
-                      política de privacidad
-                    </Link>
-                    .
+                    <Checkbox onClick={handlePrivacyClick}/>
+                    He leído y acepto la política de privacidad.
                   </Typography>
                 </Grid>
                 <Grid item xs = {12} align = "center">
@@ -266,11 +266,11 @@ export default function MainFeaturedPost () {
             </CardContent>
           </Box>
         </Grid>
-        <Grid item xs = {2} md = {5} textAlign = "center" sx={{ pr: 5 }} >
+        <Grid item xs = {12} md = {5} textAlign = "center" sx={{ pr: 5 }} >
           <CardContent >
             <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{ color: colorLevel[estimation.severity] }} severity = {severity[estimation.severity]}/>
           </CardContent>
-          <CardContent sx = {{ pl: { xs: 9, md: 0 } }}>
+          <CardContent>
             <Button disabled = {!buttonGraph} variant='contained' onClick={() => { setOpenGraph(true) }} >Compárate!</Button>
           </CardContent>
         </Grid>
