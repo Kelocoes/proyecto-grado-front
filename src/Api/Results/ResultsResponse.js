@@ -4,7 +4,7 @@ import { useEnv } from '../../context/env.context'
 import { DecypherData } from '../Decypher/DecypherData'
 
 export const useExternalApi = () => {
-  const { apiServerUrl, apiKey, aesIv, aesSecretKey } = useEnv()
+  const { apiServerUrl, aesIv, aesSecretKey } = useEnv()
 
   const makeRequest = async (options) => {
     try {
@@ -26,11 +26,9 @@ export const useExternalApi = () => {
       url: `${apiServerUrl}/api/results/model/generate`,
       method: 'POST',
       headers: {
-        Authorization: `Token ${apiKey}`
       },
       data: {
         registered: false,
-        user_id: '0',
         patient_id: '0',
         sex: datos.sex,
         diabetes: datos.diabetes,
