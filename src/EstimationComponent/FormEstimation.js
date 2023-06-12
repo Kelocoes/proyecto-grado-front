@@ -271,7 +271,7 @@ export default function MainFeaturedPost () {
             <CircularProgressWithLabel variant="determinate" size = {250} value = {estimation.prediction * 100} style={{ color: colorLevel[estimation.severity] }} severity = {severity[estimation.severity]}/>
           </CardContent>
           <CardContent>
-            <Button disabled = {!buttonGraph} variant='contained' onClick={() => { setOpenGraph(true) }} >Compárate!</Button>
+            <Button disabled = {!buttonGraph} variant='contained' onClick={() => { setOpenGraph(true) }} >¡Compárate!</Button>
           </CardContent>
         </Grid>
       </Grid>
