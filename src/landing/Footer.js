@@ -15,7 +15,7 @@ function Copyright () {
 }
 
 function Footer (props) {
-  const { description, title } = props
+  const { description, title, contact } = props
 
   return (
     <Card sx = {{ boxShadow: 5, py: 2, overflow: 'auto' }}>
@@ -30,6 +30,14 @@ function Footer (props) {
           component="p"
         >
           {description}
+        </Typography>
+        <Typography
+          variant="subtitle2"
+          align="center"
+          color="text.secondary"
+          component="p"
+        >
+          Contacto: {contact}
         </Typography>
         <Copyright />
       </Container>

@@ -20,6 +20,7 @@ export default function Landing () {
         <Footer
           title="Créditos"
           description="Desarrollado por Kevin David Rodríguez Belalcázar"
+          contact = "kevin.david.rodriguez@correounivalle.edu.co"
         />
       </Container>
 
