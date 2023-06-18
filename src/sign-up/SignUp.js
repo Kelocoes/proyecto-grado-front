@@ -1,109 +1,229 @@
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
+import MenuItem from '@mui/material/MenuItem'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useForm } from 'react-hook-form'
+import CircularProgress from '@mui/material/CircularProgress'
+import { useState, useEffect } from 'react'
+import Snackbar from '@mui/material/Snackbar'
+import MuiAlert from '@mui/material/Alert'
+import { useNavigate } from 'react-router'
 
-function Copyright (props) {
+import { useExternalApi } from '../Api/Medic/MedicResponse'
+
+function Copyright () {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Universidad del Valle, Escuela de Ingeniería de Sistemas y Computación, '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   )
 }
 
-const defaultTheme = createTheme()
+function transformarString (text) {
+  let result = text.toLowerCase()
+  result = result.charAt(0).toUpperCase() + result.slice(1)
+  result = result.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  return result
+}
+
+const Alert = React.forwardRef(function Alert (props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+})
 
 export default function SignUp () {
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password')
-    })
+  const { handleSubmit: getInfoRegister, register: registro } = useForm()
+  const [isLoading, setIsLoading] = useState(false)
+  const [response, setResponse] = useState({})
+  const [message, setMessage] = useState('')
+  const [severity, setSeverity] = useState('info')
+  const [openSnack, setOpenSnack] = useState(false)
+  const { createMedic } = useExternalApi()
+  const nav = useNavigate()
+  const tipeId = [{ value: 'CC', label: 'CC' }]
+
+  const onSubmit = async (data) => {
+    data.city = transformarString(data.city)
+    setIsLoading(true)
+    await createMedic(data, setResponse)
+  }
+
+  useEffect(() => {
+    if (JSON.stringify(response) !== '{}') {
+      console.log(response)
+      getSeverity(response.status)
+      setIsLoading(false)
+      setOpenSnack(true)
+      setMessage(response.data.detail)
+      setTimeout(() => {
+        if (response.status === 200) {
+          localStorage.setItem('token', response.data.token)
+          nav('/dashboard')
+        }
+      }, 2000)
+    }
+  }, [response])
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpenSnack(false)
+  }
+
+  const getSeverity = (statusCode) => {
+    if (statusCode === 200) {
+      setSeverity('success')
+    } else if (statusCode < 500) {
+      setSeverity('warning')
+    } else {
+      setSeverity('error')
+    }
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          marginBottom: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Registro
+        </Typography>
+        <Box sx={{ mt: 3 }}>
+          <form onSubmit = {getInfoRegister(onSubmit)}>
             <Grid container spacing={2}>
+            <Grid item xs={4} sm={3}>
+                <TextField
+                  required
+                  variant = "outlined"
+                  label= "Tipo"
+                  select
+                  fullWidth
+                  defaultValue=''
+                  {...registro('id_type', { required: true })}
+                >
+                  {tipeId.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={8} sm={9}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Identificación"
+                  autoFocus
+                  type = "number"
+                  {...registro('id', { required: true })}
+                  inputProps={{
+                    min: 0
+                  }}
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  label="Nombre"
                   autoFocus
+                  {...registro('first_name', { required: true })}
+                  inputProps={{
+                    maxLength: 50
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  label="Apellido"
                   autoComplete="family-name"
+                  {...registro('last_name', { required: true })}
+                  inputProps={{
+                    maxLength: 100
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Ciudad"
+                  {...registro('city', { required: true })}
+                  inputProps={{
+                    maxLength: 50
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Telefono"
+                  type = "number"
+                  autoComplete= "tel"
+                  {...registro('cellphone', { required: true })}
+                  inputProps={{
+                    min: 0,
+                    maxLength: 20
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
+                  label="Correo electrónico"
                   autoComplete="email"
+                  {...registro('email', { required: true })}
+                  inputProps={{
+                    maxLength: 254
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  label="Usuario"
+                  autoComplete="nickname"
+                  {...registro('username', { required: true })}
+                  inputProps={{
+                    maxLength: 150
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                <TextField
+                  required
+                  fullWidth
+                  label="Contraseña"
+                  type="password"
+                  autoComplete="new-password"
+                  {...registro('password', { required: true })}
+                  inputProps={{
+                    maxLength: 128
+                  }}
                 />
               </Grid>
             </Grid>
@@ -112,20 +232,27 @@ export default function SignUp () {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={getInfoRegister(onSubmit)}
             >
-              Sign Up
+              {isLoading && <CircularProgress color="inherit" size = {15} sx = {{ mr: 1 }} />}
+              Registrarse
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                  Ya tienes una cuenta? Ingresa
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </form>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+      </Box>
+      <Copyright />
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
+    </Container>
   )
 }
