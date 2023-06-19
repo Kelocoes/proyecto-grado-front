@@ -9,7 +9,7 @@ import {
 } from 'chart.js'
 import { Scatter } from 'react-chartjs-2'
 
-import testset from '../static/testset.json'
+import testset from '../../static/testset.json'
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
 

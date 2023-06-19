@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 
-import imageUrl from '../assets/doctor-model.png'
+import imageUrl from '../../assets/doctor-model.png'
 
 export default function MainFeaturedPost (props) {
   const title = 'Estimación de riesgo cardiovascular'
