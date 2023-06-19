@@ -11,11 +11,14 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { useForm } from 'react-hook-form'
 import CircularProgress from '@mui/material/CircularProgress'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import { useNavigate } from 'react-router'
+import Reaptcha from 'reaptcha'
+import { Link as LinkRouter } from 'react-router-dom'
 
+import { useEnv } from '../context/env.context'
 import { useExternalApi } from '../Api/Medic/MedicResponse'
 
 function Copyright () {
@@ -46,31 +49,14 @@ export default function SignUp () {
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
-  const { createMedic } = useExternalApi()
+  const [captchaToken, setCaptchaToken] = useState(null)
+  const [captchaResponse, setCaptchaResponse] = useState(null)
+  const [data, setData] = useState(null)
+  const captchaRef = useRef(null)
+  const { siteKey } = useEnv()
+  const { createMedic, getCaptchaScore } = useExternalApi()
   const nav = useNavigate()
   const tipeId = [{ value: 'CC', label: 'CC' }]
-
-  const onSubmit = async (data) => {
-    data.city = transformarString(data.city)
-    setIsLoading(true)
-    await createMedic(data, setResponse)
-  }
-
-  useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      console.log(response)
-      getSeverity(response.status)
-      setIsLoading(false)
-      setOpenSnack(true)
-      setMessage(response.data.detail)
-      setTimeout(() => {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
-          nav('/dashboard')
-        }
-      }, 2000)
-    }
-  }, [response])
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -88,6 +74,55 @@ export default function SignUp () {
       setSeverity('error')
     }
   }
+
+  const onSubmit = async (data) => {
+    if (captchaToken) {
+      // console.log(captchaToken)
+      await getCaptchaScore(captchaToken, setCaptchaResponse)
+      setData(data)
+    }
+  }
+
+  const verify = () => {
+    captchaRef.current.getResponse().then(res => {
+      setCaptchaToken(res)
+    })
+  }
+
+  useEffect(() => {
+    async function fetchData () {
+      if (captchaResponse && data) {
+        if (captchaResponse.data.detail.success) {
+          setOpenSnack(true)
+          setSeverity('success')
+          setMessage('Has pasado la prueba de captcha')
+          data.city = transformarString(data.city)
+          setIsLoading(true)
+          await createMedic(data, setResponse)
+        } else {
+          setOpenSnack(true)
+          setSeverity('warning')
+          setMessage('No has pasado la prueba del captcha')
+        }
+      }
+    }
+    fetchData()
+  }, [captchaResponse])
+
+  useEffect(() => {
+    if (JSON.stringify(response) !== '{}') {
+      getSeverity(response.status)
+      setIsLoading(false)
+      setOpenSnack(true)
+      setMessage(response.data.detail)
+      setTimeout(() => {
+        if (response.status === 200) {
+          localStorage.setItem('token', response.data.token)
+          nav('/dashboard')
+        }
+      }, 2000)
+    }
+  }, [response])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -226,6 +261,13 @@ export default function SignUp () {
                   }}
                 />
               </Grid>
+              <Grid item xs = {12} display = 'flex' justifyContent= 'center'>
+                <Reaptcha
+                  sitekey={siteKey}
+                  ref={captchaRef}
+                  onVerify={verify}
+                />
+              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -239,7 +281,7 @@ export default function SignUp () {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link component = {LinkRouter} to = {'/signin'} variant="body2">
                   Ya tienes una cuenta? Ingresa
                 </Link>
               </Grid>

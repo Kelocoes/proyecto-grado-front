@@ -8,9 +8,9 @@ export default function ProtectedRoute ({ component: Component, ...args }) {
   const { getInfoAccount } = useExternalApi()
   useEffect(() => {
     const token = localStorage.getItem('token')
-    console.log(token)
+    // console.log(token)
     getInfoAccount(token).then((res) => {
-      console.log(res)
+      // console.log(res)
       if (res.data.detail.localeCompare('Invalid token.') === 0) {
         console.log('No estoy registrado')
         nav('/signup')

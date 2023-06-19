@@ -3,8 +3,9 @@ import React from 'react'
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL
 const aesIv = process.env.REACT_APP_AES_IV
 const aesSecretKey = process.env.REACT_APP_AES_SECRET_KEY
+const siteKey = process.env.REACT_APP_SITE_KEY
 
-const isEnvValid = apiServerUrl && aesIv && aesSecretKey
+const isEnvValid = apiServerUrl && aesIv && aesSecretKey && siteKey
 
 if (!isEnvValid) {
   throw new Error('Missing environment variables.')
@@ -13,7 +14,8 @@ if (!isEnvValid) {
 const dotenv = {
   apiServerUrl,
   aesIv,
-  aesSecretKey
+  aesSecretKey,
+  siteKey
 }
 
 export const EnvContext = React.createContext(dotenv)

@@ -35,7 +35,7 @@ function Header (props) {
           </Grid>
           {!localStorage.getItem('token') &&
             <Grid item xs = {12} md = {5} sx= {{ textAlign: { xs: 'center', md: 'right' } }} >
-              <Button variant="outlined" size="small" sx = {{ mx: 1 }}>
+              <Button variant="outlined" size="small" component = {LinkRouter} to = {'/signin'} sx = {{ mx: 1 }}>
                 Iniciar Sesión
               </Button>
               <Button variant="outlined" size="small" component = {LinkRouter} to = {'/signup'} sx = {{

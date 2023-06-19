@@ -31,7 +31,23 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
+  const getCaptchaScore = async (token, setCaptchaResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/captcha/getResponse`,
+      method: 'post',
+      headers: {
+      },
+      data: {
+        token
+      }
+    }
+
+    const response = await makeRequest({ config })
+    setCaptchaResponse(response)
+  }
+
   return {
-    createMedic
+    createMedic,
+    getCaptchaScore
   }
 }
