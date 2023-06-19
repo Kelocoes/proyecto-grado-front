@@ -16,7 +16,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
 import Checkbox from '@mui/material/Checkbox'
 
-import { useExternalApi } from '../Api/Results/ResultsResponse'
+import { useExternalApi } from '../../Api/Results/ResultsResponse'
 
 import TermsAndConditions from './TermsAndConditions'
 import GraphEstimation from './GraphEstimation'
