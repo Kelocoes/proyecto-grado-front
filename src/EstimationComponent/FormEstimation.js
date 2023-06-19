@@ -10,7 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Dialog from '@mui/material/Dialog'
 import { useForm } from 'react-hook-form'
 import Button from '@mui/material/Button'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Stack from '@mui/material/Stack'
 import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
@@ -61,6 +61,7 @@ export default function MainFeaturedPost () {
   const [buttonGraph, setActiveButtonGraph] = useState(false)
   const [openGraph, setOpenGraph] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const title = 'Ingresa tus datos aquí'
 
@@ -81,8 +82,9 @@ export default function MainFeaturedPost () {
     High: 'Alto'
   }
 
-  const onSubmit = data => {
-    getEstimation(data, setEstimation, setActiveButtonGraph)
+  const onSubmit = async data => {
+    setIsLoading(true)
+    await getEstimation(data, setEstimation, setActiveButtonGraph)
   }
 
   const handleButtonClick = () => {
@@ -98,6 +100,10 @@ export default function MainFeaturedPost () {
     }
     setIsChecked(!isChecked)
   }
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [estimation])
 
   return (
     <Card sx = {{ boxShadow: 5, marginBottom: 3, marginTop: 2, overflow: 'auto' }}>
@@ -260,7 +266,10 @@ export default function MainFeaturedPost () {
                   </Typography>
                 </Grid>
                 <Grid item xs = {12} align = "center">
-                  <Button disabled = {!isActive} variant='contained' onClick={getInfoPatientSubmit(onSubmit)} >Generar estimación</Button>
+                  <Button disabled = {!isActive} variant='contained' onClick={getInfoPatientSubmit(onSubmit)} >
+                   {isLoading && <CircularProgress color="inherit" size = {15} sx = {{ mr: 1 }} />}
+                    Generar estimación
+                  </Button>
                 </Grid>
               </Grid>
             </CardContent>
