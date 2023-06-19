@@ -40,16 +40,16 @@ export default function ForgotPassword () {
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    await SendEmailPassword(data, setResponse)
-  }
-
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
     }
     setOpenSnack(false)
+  }
+
+  const onSubmit = async (data) => {
+    setIsLoading(true)
+    await SendEmailPassword(data, setResponse)
   }
 
   const getSeverity = (statusCode) => {
@@ -73,7 +73,12 @@ export default function ForgotPassword () {
 
   return (
     <Grid container justifyContent="center">
-      <Card sx={{ my: 8, width: '450px', p: 10, boxShadow: 20 }}>
+      <Card sx={{
+        my: 8,
+        width: '450px',
+        p: 10,
+        boxShadow: 20
+      }}>
         <Box
           sx={{
             marginBottom: 1,

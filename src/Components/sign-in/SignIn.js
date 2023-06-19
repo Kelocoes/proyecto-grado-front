@@ -48,13 +48,6 @@ export default function SignIn () {
     await checkPassword(data, setResponse)
   }
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpenSnack(false)
-  }
-
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -63,6 +56,13 @@ export default function SignIn () {
     } else {
       setSeverity('error')
     }
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpenSnack(false)
   }
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function SignIn () {
 
   return (
     <Grid container justifyContent="center">
-      <Card sx={{ my: 8, width: '450px', p: 10, boxShadow: 20 }}>
+      <Card sx={{ width: '450px', my: 8, p: 10, boxShadow: 20 }}>
         <Box
           sx={{
             marginBottom: 1,
