@@ -99,6 +99,7 @@ export default function ChangePassword () {
                 fullWidth
                 label="Nueva contraseña"
                 autoComplete="new-password"
+                type="password"
                 autoFocus
                 {...registro('password', { required: true })}
                 inputProps={{
