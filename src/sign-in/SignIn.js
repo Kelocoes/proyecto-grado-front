@@ -12,20 +12,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Link as LinkRouter } from 'react-router-dom'
 
-function Copyright (props) {
+function Copyright () {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Universidad del Valle, Escuela de Ingeniería de Sistemas y Computación, '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   )
 }
-
 const defaultTheme = createTheme()
 
 export default function SignIn () {
@@ -45,16 +42,17 @@ export default function SignIn () {
         <Box
           sx={{
             marginTop: 8,
+            marginBottom: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Ingreso
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -87,23 +85,23 @@ export default function SignIn () {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Ingresa
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  ¿Olvidaste tu contraseña?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link component = {LinkRouter} to = {'/signup'} variant="body2">
+                  {'¿No tienes cuenta? Registrate'}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright />
       </Container>
     </ThemeProvider>
   )

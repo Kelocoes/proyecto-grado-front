@@ -9,16 +9,14 @@ import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 
-import { mainListItems, secondaryListItems } from './listItems'
+import ListChooser from './ListChooser/ListChooser'
 import Chart from './Chart'
 import Deposits from './Deposits'
 import Orders from './Orders'
@@ -85,7 +83,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme()
 
 export default function Dashboard () {
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
   const toggleDrawer = () => {
     setOpen(!open)
   }
@@ -121,11 +119,6 @@ export default function Dashboard () {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -143,9 +136,8 @@ export default function Dashboard () {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <ListChooser/>
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
           </List>
         </Drawer>
         <Box
