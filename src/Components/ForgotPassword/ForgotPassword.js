@@ -79,13 +79,15 @@ export default function ForgotPassword () {
 
   // Get severity by status code response
   const getSeverity = (statusCode) => {
+    let severity = 'info';
     if (statusCode === 200) {
-      setSeverity('success')
+      severity = 'success';
     } else if (statusCode < 500) {
-      setSeverity('warning')
+      severity = 'warning';
     } else {
-      setSeverity('error')
+      severity = 'error';
     }
+    setSeverity(severity);
   }
 
   // USE EFFECTS
@@ -94,10 +96,10 @@ export default function ForgotPassword () {
   useEffect(() => {
     try {
       if (JSON.stringify(response) !== '{}') {
-        getSeverity(response.status)
-        setIsLoading(false)
-        setOpenSnack(true)
         setMessage(response.data.detail)
+        getSeverity(response.status)
+        setOpenSnack(true)
+        setIsLoading(false)
       }
     } catch (error) {
       errorHandler()
