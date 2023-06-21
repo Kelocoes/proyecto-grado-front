@@ -19,7 +19,7 @@ import { Link as LinkRouter } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import IconButton from '@mui/material/IconButton'
 
-import { useEnv } from '../../context/env.context'
+import { useEnv } from '../../Context/EnvContext'
 import { useExternalApi } from '../../Api/Medic/MedicResponse'
 
 function Copyright () {
@@ -44,8 +44,26 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 })
 
 export default function SignUp () {
+  // HOOKS
+
+  // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
+
+  // Env hook
+  const { siteKey } = useEnv()
+
+  // Api hook
+  const { createMedic, getCaptchaScore } = useExternalApi()
+
+  // Navigation hook
+  const nav = useNavigate()
+
+  // Ref hook
+  const captchaRef = useRef(null)
+
+  // State hook
   const [isLoading, setIsLoading] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
@@ -53,12 +71,22 @@ export default function SignUp () {
   const [captchaToken, setCaptchaToken] = useState(null)
   const [captchaResponse, setCaptchaResponse] = useState(null)
   const [data, setData] = useState(null)
-  const captchaRef = useRef(null)
-  const { siteKey } = useEnv()
-  const { createMedic, getCaptchaScore } = useExternalApi()
-  const nav = useNavigate()
+
+  // CONSTANTS
+
   const tipeId = [{ value: 'CC', label: 'CC' }]
 
+  // ARROW FUNCTIONS
+
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
+  }
+
+  // Action when closing snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -66,6 +94,7 @@ export default function SignUp () {
     setOpenSnack(false)
   }
 
+  // Get severities using the status code
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -76,58 +105,82 @@ export default function SignUp () {
     }
   }
 
+  // Action when pressing the main button
   const onSubmit = async (data) => {
-    if (captchaToken) {
-      // console.log(captchaToken)
-      await getCaptchaScore(captchaToken, setCaptchaResponse)
-      setData(data)
+    setIsLoading(true)
+    setIsDisabled(true)
+    try {
+      if (captchaToken) {
+        // console.log(captchaToken)
+        await getCaptchaScore(captchaToken, setCaptchaResponse)
+        setData(data)
+      } else {
+        errorHandler()
+      }
+    } catch (error) {
+      errorHandler()
     }
   }
 
+  // Verify the captcha token
   const verify = () => {
     captchaRef.current.getResponse().then(res => {
       setCaptchaToken(res)
     })
   }
 
+  // USE EFFECTS
+
+  // Effect when captchaResponse state is updated
   useEffect(() => {
     async function fetchData () {
-      if (captchaResponse && data) {
-        if (captchaResponse.data.detail.success) {
-          setOpenSnack(true)
-          setSeverity('success')
-          setMessage('Has pasado la prueba de captcha')
-          data.city = transformarString(data.city)
-          setIsLoading(true)
-          await createMedic(data, setResponse)
-        } else {
-          setOpenSnack(true)
-          setSeverity('warning')
-          setMessage('No has pasado la prueba del captcha')
+      try {
+        if (captchaResponse && data) {
+          if (captchaResponse.data.detail.success) {
+            setOpenSnack(true)
+            setSeverity('success')
+            setMessage('Has pasado la prueba de captcha')
+            data.city = transformarString(data.city)
+            await createMedic(data, setResponse)
+          } else {
+            setOpenSnack(true)
+            setSeverity('warning')
+            setMessage('No has pasado la prueba del captcha')
+          }
         }
+      } catch (error) {
+        errorHandler()
       }
     }
     fetchData()
   }, [captchaResponse])
 
+  // Effect when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+        setTimeout(() => {
+          if (response.status === 200) {
+            localStorage.setItem('token', response.data.token)
+            nav('/dashboard')
+          }
+        }, 2000)
+      }
+    } catch (error) {
       setIsLoading(false)
+      setSeverity('error')
       setOpenSnack(true)
-      setMessage(response.data.detail)
-      setTimeout(() => {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
-          nav('/dashboard')
-        }
-      }, 2000)
+      setMessage('Ha ocurrido un error inesperado')
     }
   }, [response])
 
   return (
     <Grid container justifyContent='center'>
-      <Card sx={{ my: 8, width: '450px', p: 10, boxShadow: 20 }}>
+      <Card sx={{ marginY: 8, width: '550px', padding: 10, boxShadow: 20 }}>
         <Box
           sx={{
             marginBottom: 2,
@@ -137,14 +190,14 @@ export default function SignUp () {
           }}
         >
           <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
           </IconButton>
           <Typography component="h1" variant="h5">
             Registro
           </Typography>
-          <Box sx={{ mt: 3 }}>
+          <Box sx={{ marginTop: 3 }}>
             <form onSubmit={getInfoRegister(onSubmit)}>
               <Grid container spacing={2}>
                 <Grid item xs={4} sm={3}>
@@ -272,13 +325,15 @@ export default function SignUp () {
                 </Grid>
               </Grid>
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ marginTop: 3, marginBottom: 2 }}
                 onClick={getInfoRegister(onSubmit)}
               >
-                {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
+                {isLoading &&
+                  <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
                 Registrarse
               </Button>
               <Grid container justifyContent="flex-end">

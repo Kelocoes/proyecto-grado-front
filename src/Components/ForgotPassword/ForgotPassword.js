@@ -32,14 +32,25 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 })
 
 export default function ForgotPassword () {
+  // HOOKS
+
+  // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
+
+  // Api hook
   const { SendEmailPassword } = useExternalApi()
+
+  // States
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
+  const [isDisabled, setIsDisabled] = useState(false)
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  // ARROW FUNCTIONS
+
+  // Handle Close SnackBar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -47,11 +58,26 @@ export default function ForgotPassword () {
     setOpenSnack(false)
   }
 
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    await SendEmailPassword(data, setResponse)
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
   }
 
+  // Action by pressing main button
+  const onSubmit = async (data) => {
+    setIsLoading(true)
+    setIsDisabled(true)
+    try {
+      await SendEmailPassword(data, setResponse)
+    } catch (error) {
+      errorHandler()
+    }
+  }
+
+  // Get severity by status code response
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -62,12 +88,19 @@ export default function ForgotPassword () {
     }
   }
 
+  // USE EFFECTS
+
+  // Action when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
-      setIsLoading(false)
-      setOpenSnack(true)
-      setMessage(response.data.detail)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+      }
+    } catch (error) {
+      errorHandler()
     }
   }, [response])
 
@@ -110,6 +143,7 @@ export default function ForgotPassword () {
                 }}
               />
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -117,7 +151,7 @@ export default function ForgotPassword () {
                 onClick={getInfoRegister(onSubmit)}
               >
                 {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
-                Ingresa
+                Enviar
               </Button>
             </form>
           </Box>
@@ -130,6 +164,5 @@ export default function ForgotPassword () {
         </Alert>
       </Snackbar>
     </Grid>
-
   )
 }

@@ -34,20 +34,47 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 })
 
 export default function SignIn () {
+  // HOOKS
+
+  // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
+
+  // Api hook
   const { checkPassword } = useExternalApi()
+
+  // Navigation hook
+  const nav = useNavigate()
+
+  // States hook
   const [response, setResponse] = useState({})
+  const [isDisabled, setIsDisabled] = useState(false)
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const nav = useNavigate()
 
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    await checkPassword(data, setResponse)
+  // ARROW FUNCTIONS
+
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
   }
 
+  // Action when pressing the main button
+  const onSubmit = async (data) => {
+    setIsLoading(true)
+    setIsDisabled(true)
+    try {
+      await checkPassword(data, setResponse)
+    } catch (error) {
+      errorHandler()
+    }
+  }
+
+  // Get severity state using status code
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -58,6 +85,7 @@ export default function SignIn () {
     }
   }
 
+  // Action when pressing close button in snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -65,24 +93,31 @@ export default function SignIn () {
     setOpenSnack(false)
   }
 
+  // USE EFFECTS
+
+  // Action to perform when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
-      setIsLoading(false)
-      setOpenSnack(true)
-      setMessage(response.data.detail)
-      setTimeout(() => {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
-          nav('/dashboard')
-        }
-      }, 2000)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+        setTimeout(() => {
+          if (response.status === 200) {
+            localStorage.setItem('token', response.data.token)
+            nav('/dashboard')
+          }
+        }, 2000)
+      }
+    } catch (error) {
+      errorHandler()
     }
   }, [response])
 
   return (
     <Grid container justifyContent="center">
-      <Card sx={{ width: '450px', my: 8, p: 10, boxShadow: 20 }}>
+      <Card sx={{ width: '450px', marginY: 8, padding: 10, boxShadow: 20 }}>
         <Box
           sx={{
             marginBottom: 1,
@@ -92,14 +127,14 @@ export default function SignIn () {
           }}
         >
           <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
           </IconButton>
           <Typography component="h1" variant="h5">
             Ingreso
           </Typography>
-          <Box sx={{ mt: 1 }}>
+          <Box sx={{ marginTop: 1 }}>
             <form onSubmit={getInfoRegister(onSubmit)}>
               <TextField
                 margin="normal"
@@ -126,13 +161,15 @@ export default function SignIn () {
                 }}
               />
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ marginTop: 3, marginBottom: 2 }}
                 onClick={getInfoRegister(onSubmit)}
               >
-                {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
+                {isLoading &&
+                  <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
                 Ingresa
               </Button>
               <Grid container>
@@ -158,6 +195,5 @@ export default function SignIn () {
         </Alert>
       </Snackbar>
     </Grid>
-
   )
 }

@@ -14,11 +14,11 @@ function Copyright () {
   )
 }
 
-function Footer (props) {
+export default function Footer (props) {
   const { description, title, contact } = props
 
   return (
-    <Card sx = {{ boxShadow: 5, py: 2, overflow: 'auto' }}>
+    <Card sx={{ boxShadow: 5, paddingY: 2, overflow: 'auto' }}>
       <Container >
         <Typography variant="h6" align="center">
           {title}
@@ -49,5 +49,3 @@ Footer.propTypes = {
   description: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired
 }
-
-export default Footer
