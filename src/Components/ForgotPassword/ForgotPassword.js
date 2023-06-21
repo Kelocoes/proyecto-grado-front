@@ -94,10 +94,10 @@ export default function ForgotPassword () {
   useEffect(() => {
     try {
       if (JSON.stringify(response) !== '{}') {
-        getSeverity(response.status)
-        setIsLoading(false)
-        setOpenSnack(true)
         setMessage(response.data.detail)
+        getSeverity(response.status)
+        setOpenSnack(true)
+        setIsLoading(false)
       }
     } catch (error) {
       errorHandler()
