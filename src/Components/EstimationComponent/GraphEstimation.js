@@ -14,32 +14,36 @@ import testset from '../../static/testset.json'
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
 
 export default function GraphEstimation (props) {
-  const jsonTransformado1 = []
-  const jsonTransformado2 = []
+  // Constants
+  const jsonTransformed1 = []
+  const jsonTransformed2 = []
   const pointsBackGroundColor1 = []
   const pointsBackGroundColor2 = []
+
+  // Fill arrays for scatter
   for (const object in testset) {
     if (testset[object].color === '#F7B634') {
-      const objeto = { x: testset[object].x, y: testset[object].y }
-      jsonTransformado1.push(objeto)
+      const tuple = { x: testset[object].x, y: testset[object].y }
+      jsonTransformed1.push(tuple)
       pointsBackGroundColor1.push(testset[object].color)
     } else {
-      const objeto = { x: testset[object].x, y: testset[object].y }
-      jsonTransformado2.push(objeto)
+      const tuple = { x: testset[object].x, y: testset[object].y }
+      jsonTransformed2.push(tuple)
       pointsBackGroundColor2.push(testset[object].color)
     }
   }
 
+  // Config data for scatter
   const data = {
     datasets: [
       {
         label: 'Pacientes sanos',
-        data: jsonTransformado1,
+        data: jsonTransformed1,
         backgroundColor: pointsBackGroundColor1
       },
       {
         label: 'Pacientes con riesgo',
-        data: jsonTransformado2,
+        data: jsonTransformed2,
         backgroundColor: pointsBackGroundColor2
       },
       {
@@ -51,6 +55,7 @@ export default function GraphEstimation (props) {
     ]
   }
 
+  // Options for chart
   const options = {
     responsive: true,
     scales: {

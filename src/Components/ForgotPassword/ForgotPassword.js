@@ -32,14 +32,24 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 })
 
 export default function ForgotPassword () {
+  // HOOKS
+
+  // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
+
+  // Api hook
   const { SendEmailPassword } = useExternalApi()
+
+  // States
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  // ARROW FUNCTIONS
+
+  // Handle Close SnackBar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -47,11 +57,13 @@ export default function ForgotPassword () {
     setOpenSnack(false)
   }
 
+  // Action by pressing main button
   const onSubmit = async (data) => {
     setIsLoading(true)
     await SendEmailPassword(data, setResponse)
   }
 
+  // Get severity by status code response
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -62,6 +74,9 @@ export default function ForgotPassword () {
     }
   }
 
+  // USE EFFECTS
+
+  // Action when response state is updated
   useEffect(() => {
     if (JSON.stringify(response) !== '{}') {
       getSeverity(response.status)
@@ -130,6 +145,5 @@ export default function ForgotPassword () {
         </Alert>
       </Snackbar>
     </Grid>
-
   )
 }

@@ -32,20 +32,33 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 })
 
 export default function ChangePassword () {
+  // HOOKS
+
+  // Params hook
   const { token, secret } = useParams()
+
+  // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
+
+  // Api hook
   const { ChangePassword } = useExternalApi()
+
+  // States hook
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  // ARROW FUNCTIONS
+
+  // Action when pressing main button
   const onSubmit = async (data) => {
     setIsLoading(true)
     await ChangePassword(data, token, secret, setResponse)
   }
 
+  // Action for snackbar when closing
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -53,6 +66,7 @@ export default function ChangePassword () {
     setOpenSnack(false)
   }
 
+  // Get severity from status code
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -63,6 +77,9 @@ export default function ChangePassword () {
     }
   }
 
+  // USE EFFECTS
+
+  // Use effect when response state is updated
   useEffect(() => {
     if (JSON.stringify(response) !== '{}') {
       getSeverity(response.status)
@@ -74,7 +91,7 @@ export default function ChangePassword () {
 
   return (
     <Grid container justifyContent="center">
-      <Card sx={{ my: 8, width: '450px', p: 10, boxShadow: 20 }}>
+      <Card sx={{ marginY: 8, width: '450px', padding: 10, boxShadow: 20 }}>
         <Box
           sx={{
             marginBottom: 1,
@@ -84,14 +101,14 @@ export default function ChangePassword () {
           }}
         >
           <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ margin: 1, backgroundColor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
           </IconButton>
           <Typography component="h1" variant="h5">
             Ingresa tu nueva contraseña
           </Typography>
-          <Box sx={{ mt: 1 }}>
+          <Box sx={{ marginTop: 1 }}>
             <form onSubmit={getInfoRegister(onSubmit)}>
               <TextField
                 margin="normal"
@@ -110,10 +127,11 @@ export default function ChangePassword () {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ marginTop: 3, marginBottom: 2 }}
                 onClick={getInfoRegister(onSubmit)}
               >
-                {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
+                {isLoading &&
+                  <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
                 Cambiar contraseña
               </Button>
             </form>
@@ -127,6 +145,5 @@ export default function ChangePassword () {
         </Alert>
       </Snackbar>
     </Grid>
-
   )
 }

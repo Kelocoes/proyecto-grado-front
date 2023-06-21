@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { useEnv } from '../../context/env.context'
+import { useEnv } from '../../Context/EnvContext'
 import { DecypherData } from '../Decypher/DecypherData'
 
 export const useExternalApi = () => {

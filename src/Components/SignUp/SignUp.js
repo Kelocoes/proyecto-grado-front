@@ -19,7 +19,7 @@ import { Link as LinkRouter } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import IconButton from '@mui/material/IconButton'
 
-import { useEnv } from '../../context/env.context'
+import { useEnv } from '../../Context/EnvContext'
 import { useExternalApi } from '../../Api/Medic/MedicResponse'
 
 function Copyright () {
@@ -44,7 +44,24 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 })
 
 export default function SignUp () {
+  // HOOKS
+
+  // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
+
+  // Env hook
+  const { siteKey } = useEnv()
+
+  // Api hook
+  const { createMedic, getCaptchaScore } = useExternalApi()
+
+  // Navigation hook
+  const nav = useNavigate()
+
+  // Ref hook
+  const captchaRef = useRef(null)
+
+  // State hook
   const [isLoading, setIsLoading] = useState(false)
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
@@ -53,12 +70,14 @@ export default function SignUp () {
   const [captchaToken, setCaptchaToken] = useState(null)
   const [captchaResponse, setCaptchaResponse] = useState(null)
   const [data, setData] = useState(null)
-  const captchaRef = useRef(null)
-  const { siteKey } = useEnv()
-  const { createMedic, getCaptchaScore } = useExternalApi()
-  const nav = useNavigate()
+
+  // CONSTANTS
+
   const tipeId = [{ value: 'CC', label: 'CC' }]
 
+  // ARROW FUNCTIONS
+
+  // Action when closing snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -66,6 +85,7 @@ export default function SignUp () {
     setOpenSnack(false)
   }
 
+  // Get severities using the status code
   const getSeverity = (statusCode) => {
     if (statusCode === 200) {
       setSeverity('success')
@@ -76,6 +96,7 @@ export default function SignUp () {
     }
   }
 
+  // Action when pressing the main button
   const onSubmit = async (data) => {
     if (captchaToken) {
       // console.log(captchaToken)
@@ -84,12 +105,16 @@ export default function SignUp () {
     }
   }
 
+  // Verify the captcha token
   const verify = () => {
     captchaRef.current.getResponse().then(res => {
       setCaptchaToken(res)
     })
   }
 
+  // USE EFFECTS
+
+  // Effect when captchaResponse state is updated
   useEffect(() => {
     async function fetchData () {
       if (captchaResponse && data) {
@@ -110,6 +135,7 @@ export default function SignUp () {
     fetchData()
   }, [captchaResponse])
 
+  // Effect when response state is updated
   useEffect(() => {
     if (JSON.stringify(response) !== '{}') {
       getSeverity(response.status)
@@ -127,7 +153,7 @@ export default function SignUp () {
 
   return (
     <Grid container justifyContent='center'>
-      <Card sx={{ my: 8, width: '450px', p: 10, boxShadow: 20 }}>
+      <Card sx={{ marginY: 8, width: '450px', padding: 10, boxShadow: 20 }}>
         <Box
           sx={{
             marginBottom: 2,
@@ -137,14 +163,14 @@ export default function SignUp () {
           }}
         >
           <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
           </IconButton>
           <Typography component="h1" variant="h5">
             Registro
           </Typography>
-          <Box sx={{ mt: 3 }}>
+          <Box sx={{ marginTop: 3 }}>
             <form onSubmit={getInfoRegister(onSubmit)}>
               <Grid container spacing={2}>
                 <Grid item xs={4} sm={3}>
@@ -275,10 +301,11 @@ export default function SignUp () {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ marginTop: 3, marginBottom: 2 }}
                 onClick={getInfoRegister(onSubmit)}
               >
-                {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
+                {isLoading &&
+                  <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
                 Registrarse
               </Button>
               <Grid container justifyContent="flex-end">
