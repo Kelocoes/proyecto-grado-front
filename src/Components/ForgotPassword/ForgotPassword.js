@@ -79,15 +79,13 @@ export default function ForgotPassword () {
 
   // Get severity by status code response
   const getSeverity = (statusCode) => {
-    let severity = 'info'
     if (statusCode === 200) {
-      severity = 'success'
+      setSeverity('success')
     } else if (statusCode < 500) {
-      severity = 'warning'
+      setSeverity('warning')
     } else {
-      severity = 'error'
+      setSeverity('error')
     }
-    setSeverity(severity)
   }
 
   // USE EFFECTS
