@@ -66,7 +66,7 @@ export default function Header (props) {
           </Grid>
         }
         {localStorage.getItem('token') &&
-          <Grid item xs={12} md={5} sx={{ textAlign: { xs: 'center', md: 'right' } }} >
+          <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'right' } }} >
             <Button variant="outlined" size="small" component={LinkRouter} to={'/dashboard'} sx={{
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',

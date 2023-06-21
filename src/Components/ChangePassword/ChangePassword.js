@@ -64,7 +64,6 @@ export default function ChangePassword () {
   // Action when pressing main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    setIsDisabled(true)
     try {
       await ChangePassword(data, token, secret, setResponse)
     } catch (error) {
@@ -82,8 +81,9 @@ export default function ChangePassword () {
 
   // Get severity from status code
   const getSeverity = (statusCode) => {
-    if (statusCode === 200) {
+    if (statusCode < 210) {
       setSeverity('success')
+      setIsDisabled(true)
     } else if (statusCode < 500) {
       setSeverity('warning')
     } else {

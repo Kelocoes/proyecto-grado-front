@@ -66,7 +66,6 @@ export default function SignIn () {
   // Action when pressing the main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    setIsDisabled(true)
     try {
       await checkPassword(data, setResponse)
     } catch (error) {
@@ -76,8 +75,9 @@ export default function SignIn () {
 
   // Get severity state using status code
   const getSeverity = (statusCode) => {
-    if (statusCode === 200) {
+    if (statusCode < 210) {
       setSeverity('success')
+      setIsDisabled(true)
     } else if (statusCode < 500) {
       setSeverity('warning')
     } else {
