@@ -46,16 +46,30 @@ export default function ChangePassword () {
   // States hook
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
+  const [isDisabled, setIsDisabled] = useState(false)
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   // ARROW FUNCTIONS
 
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
+  }
+
   // Action when pressing main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    await ChangePassword(data, token, secret, setResponse)
+    setIsDisabled(true)
+    try {
+      await ChangePassword(data, token, secret, setResponse)
+    } catch (error) {
+      errorHandler()
+    }
   }
 
   // Action for snackbar when closing
@@ -81,11 +95,15 @@ export default function ChangePassword () {
 
   // Use effect when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
-      setIsLoading(false)
-      setOpenSnack(true)
-      setMessage(response.data.detail)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+      }
+    } catch (error) {
+      errorHandler()
     }
   }, [response])
 
@@ -124,6 +142,7 @@ export default function ChangePassword () {
                 }}
               />
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"

@@ -63,6 +63,7 @@ export default function SignUp () {
 
   // State hook
   const [isLoading, setIsLoading] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
@@ -76,6 +77,14 @@ export default function SignUp () {
   const tipeId = [{ value: 'CC', label: 'CC' }]
 
   // ARROW FUNCTIONS
+
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
+  }
 
   // Action when closing snackbar
   const handleClose = (event, reason) => {
@@ -98,10 +107,18 @@ export default function SignUp () {
 
   // Action when pressing the main button
   const onSubmit = async (data) => {
-    if (captchaToken) {
-      // console.log(captchaToken)
-      await getCaptchaScore(captchaToken, setCaptchaResponse)
-      setData(data)
+    setIsLoading(true)
+    setIsDisabled(true)
+    try {
+      if (captchaToken) {
+        // console.log(captchaToken)
+        await getCaptchaScore(captchaToken, setCaptchaResponse)
+        setData(data)
+      } else {
+        errorHandler()
+      }
+    } catch (error) {
+      errorHandler()
     }
   }
 
@@ -117,19 +134,22 @@ export default function SignUp () {
   // Effect when captchaResponse state is updated
   useEffect(() => {
     async function fetchData () {
-      if (captchaResponse && data) {
-        if (captchaResponse.data.detail.success) {
-          setOpenSnack(true)
-          setSeverity('success')
-          setMessage('Has pasado la prueba de captcha')
-          data.city = transformarString(data.city)
-          setIsLoading(true)
-          await createMedic(data, setResponse)
-        } else {
-          setOpenSnack(true)
-          setSeverity('warning')
-          setMessage('No has pasado la prueba del captcha')
+      try {
+        if (captchaResponse && data) {
+          if (captchaResponse.data.detail.success) {
+            setOpenSnack(true)
+            setSeverity('success')
+            setMessage('Has pasado la prueba de captcha')
+            data.city = transformarString(data.city)
+            await createMedic(data, setResponse)
+          } else {
+            setOpenSnack(true)
+            setSeverity('warning')
+            setMessage('No has pasado la prueba del captcha')
+          }
         }
+      } catch (error) {
+        errorHandler()
       }
     }
     fetchData()
@@ -137,23 +157,30 @@ export default function SignUp () {
 
   // Effect when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+        setTimeout(() => {
+          if (response.status === 200) {
+            localStorage.setItem('token', response.data.token)
+            nav('/dashboard')
+          }
+        }, 2000)
+      }
+    } catch (error) {
       setIsLoading(false)
+      setSeverity('error')
       setOpenSnack(true)
-      setMessage(response.data.detail)
-      setTimeout(() => {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
-          nav('/dashboard')
-        }
-      }, 2000)
+      setMessage('Ha ocurrido un error inesperado')
     }
   }, [response])
 
   return (
     <Grid container justifyContent='center'>
-      <Card sx={{ marginY: 8, width: '450px', padding: 10, boxShadow: 20 }}>
+      <Card sx={{ marginY: 8, width: '550px', padding: 10, boxShadow: 20 }}>
         <Box
           sx={{
             marginBottom: 2,
@@ -298,6 +325,7 @@ export default function SignUp () {
                 </Grid>
               </Grid>
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"

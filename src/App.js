@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
 import Landing from './Components/Landing/Landing'
 import Dashboard from './Components/Dashboard/Dashboard'
@@ -12,16 +14,29 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import './App.css'
 
 export default function App () {
+  const [actualTheme, setActualTheme] = useState('light')
+
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/changepassword/:token/:secret" element={<ChangePassword />} />
-        <Route path="/dashboard" element={<ProtectedRoute component = {Dashboard} />}></Route>
-      </Routes>
-    </HashRouter>
+    <ThemeProvider
+      theme={createTheme({
+        palette: {
+          mode: actualTheme
+        }
+      })}>
+      <CssBaseline/>
+      <HashRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<Landing actualTheme = {actualTheme} setActualTheme = {setActualTheme}/>}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/changepassword/:token/:secret" element={<ChangePassword />} />
+          <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />}></Route>
+        </Routes>
+      </HashRouter>
+    </ThemeProvider>
   )
 }

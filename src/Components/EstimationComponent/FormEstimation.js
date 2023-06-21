@@ -96,7 +96,11 @@ export default function MainFeaturedPost () {
   // Action when pressing the main button
   const onSubmit = async data => {
     setIsLoading(true)
-    await getEstimation(data, setEstimation, setActiveButtonGraph)
+    try {
+      await getEstimation(data, setEstimation, setActiveButtonGraph)
+    } catch (error) {
+      console.log('Hubo un error inesperado')
+    }
   }
 
   // Action when pressing button for dialog

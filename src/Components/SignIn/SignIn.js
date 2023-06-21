@@ -47,6 +47,7 @@ export default function SignIn () {
 
   // States hook
   const [response, setResponse] = useState({})
+  const [isDisabled, setIsDisabled] = useState(false)
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
@@ -54,10 +55,23 @@ export default function SignIn () {
 
   // ARROW FUNCTIONS
 
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
+  }
+
   // Action when pressing the main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    await checkPassword(data, setResponse)
+    setIsDisabled(true)
+    try {
+      await checkPassword(data, setResponse)
+    } catch (error) {
+      errorHandler()
+    }
   }
 
   // Get severity state using status code
@@ -83,17 +97,21 @@ export default function SignIn () {
 
   // Action to perform when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
-      setIsLoading(false)
-      setOpenSnack(true)
-      setMessage(response.data.detail)
-      setTimeout(() => {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
-          nav('/dashboard')
-        }
-      }, 2000)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+        setTimeout(() => {
+          if (response.status === 200) {
+            localStorage.setItem('token', response.data.token)
+            nav('/dashboard')
+          }
+        }, 2000)
+      }
+    } catch (error) {
+      errorHandler()
     }
   }, [response])
 
@@ -143,6 +161,7 @@ export default function SignIn () {
                 }}
               />
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"

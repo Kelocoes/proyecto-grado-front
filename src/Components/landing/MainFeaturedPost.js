@@ -9,7 +9,7 @@ import imageUrl from '../../assets/doctor-model.png'
 
 export default function MainFeaturedPost () {
   return (
-    <Card sx={{ boxShadow: 5, marginBottom: 3, marginTop: 2 }}>
+    <Card sx={{ boxShadow: 5, marginBottom: 3 }}>
       <Grid container alignItems="center" >
         <Grid item xs={12} md={10} >
           <CardContent sx={{ marginRight: 2 }}>
@@ -17,15 +17,21 @@ export default function MainFeaturedPost () {
               Estimación de riesgo cardiovascular
             </Typography>
             <Typography variant="body1" color="inherit" paragraph align="justify">
-              Mediante el poder de las redes neuronales y la inteligencia artificial, nuestra innovadora herramienta,
-              diseñada específicamente para pacientes colombianos, te proporciona una evaluación precisa y personalizada del riesgo cardiovascular
-              que podrías enfrentar en función de tus características individuales. Al combinar datos demográficos, factores de estilo de vida,
-              antecedentes médicos y otros indicadores relevantes dentro del contexto colombiano, nuestro algoritmo de vanguardia analiza y procesa
-              esta información para ofrecerte un puntaje objetivo y confiable de tu riesgo cardiovascular.
+              Mediante el poder de las redes neuronales y la inteligencia artificial, nuestra
+              innovadora herramienta, diseñada específicamente para pacientes colombianos, te
+              proporciona una evaluación precisa y personalizada del riesgo cardiovascular que
+              podrías enfrentar en función de tus características individuales. Al combinar datos
+              demográficos, factores de estilo de vida,antecedentes médicos y otros indicadores
+              relevantes dentro del contexto colombiano, nuestro algoritmo de vanguardia analiza y
+              procesa esta información para ofrecerte un puntaje objetivo y confiable de tu riesgo
+              cardiovascular.
             </Typography>
           </CardContent>
         </Grid>
-        <Grid item xs={12} md={2} textAlign="center" sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid item xs={12} md={2}
+          textAlign="center"
+          sx={{ display: 'flex', justifyContent: 'center' }}
+        >
           <CardMedia
             sx={{ width: { xs: '200px' }, paddingRight: 3 }}
             component="img"

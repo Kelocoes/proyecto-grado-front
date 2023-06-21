@@ -1,5 +1,4 @@
 import * as React from 'react'
-import CssBaseline from '@mui/material/CssBaseline'
 import Container from '@mui/material/Container'
 
 import FormEstimation from '../EstimationComponent/FormEstimation'
@@ -8,12 +7,15 @@ import Header from './Header'
 import MainFeaturedPost from './MainFeaturedPost'
 import Footer from './Footer'
 
-export default function Landing () {
+export default function Landing (props) {
   return (
     <Container >
-      <CssBaseline />
       <Container maxWidth="lg" >
-        <Header title="Riesgo cardiovascular UV" />
+        <Header
+          title="Riesgo cardiovascular UV"
+          actualTheme={props.actualTheme}
+          setActualTheme={props.setActualTheme}
+        />
         <MainFeaturedPost />
         <FormEstimation />
         <Footer

@@ -43,6 +43,7 @@ export default function ForgotPassword () {
   // States
   const [response, setResponse] = useState({})
   const [message, setMessage] = useState('')
+  const [isDisabled, setIsDisabled] = useState(false)
   const [severity, setSeverity] = useState('info')
   const [openSnack, setOpenSnack] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -57,10 +58,23 @@ export default function ForgotPassword () {
     setOpenSnack(false)
   }
 
+  // Error handler
+  const errorHandler = () => {
+    setIsLoading(false)
+    setSeverity('error')
+    setOpenSnack(true)
+    setMessage('Ha ocurrido un error inesperado')
+  }
+
   // Action by pressing main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    await SendEmailPassword(data, setResponse)
+    setIsDisabled(true)
+    try {
+      await SendEmailPassword(data, setResponse)
+    } catch (error) {
+      errorHandler()
+    }
   }
 
   // Get severity by status code response
@@ -78,11 +92,15 @@ export default function ForgotPassword () {
 
   // Action when response state is updated
   useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      getSeverity(response.status)
-      setIsLoading(false)
-      setOpenSnack(true)
-      setMessage(response.data.detail)
+    try {
+      if (JSON.stringify(response) !== '{}') {
+        getSeverity(response.status)
+        setIsLoading(false)
+        setOpenSnack(true)
+        setMessage(response.data.detail)
+      }
+    } catch (error) {
+      errorHandler()
     }
   }, [response])
 
@@ -125,6 +143,7 @@ export default function ForgotPassword () {
                 }}
               />
               <Button
+                disabled={isDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -132,7 +151,7 @@ export default function ForgotPassword () {
                 onClick={getInfoRegister(onSubmit)}
               >
                 {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
-                Ingresa
+                Enviar
               </Button>
             </form>
           </Box>
