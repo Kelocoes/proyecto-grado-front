@@ -96,8 +96,9 @@ export default function SignUp () {
 
   // Get severities using the status code
   const getSeverity = (statusCode) => {
-    if (statusCode === 200) {
+    if (statusCode < 210) {
       setSeverity('success')
+      setIsDisabled(true)
     } else if (statusCode < 500) {
       setSeverity('warning')
     } else {
@@ -108,7 +109,6 @@ export default function SignUp () {
   // Action when pressing the main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    setIsDisabled(true)
     try {
       if (captchaToken) {
         // console.log(captchaToken)

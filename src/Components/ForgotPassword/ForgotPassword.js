@@ -69,7 +69,6 @@ export default function ForgotPassword () {
   // Action by pressing main button
   const onSubmit = async (data) => {
     setIsLoading(true)
-    setIsDisabled(true)
     try {
       await SendEmailPassword(data, setResponse)
     } catch (error) {
@@ -79,8 +78,9 @@ export default function ForgotPassword () {
 
   // Get severity by status code response
   const getSeverity = (statusCode) => {
-    if (statusCode === 200) {
+    if (statusCode < 210) {
       setSeverity('success')
+      setIsDisabled(true)
     } else if (statusCode < 500) {
       setSeverity('warning')
     } else {
