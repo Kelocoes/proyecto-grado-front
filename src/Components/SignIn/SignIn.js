@@ -106,7 +106,8 @@ export default function SignIn () {
         setTimeout(() => {
           if (response.status === 200) {
             localStorage.setItem('token', response.data.token)
-            nav('/dashboard')
+            const typeUser = response.data.is_admin ? 'admin' : 'medic'
+            nav(`/dashboard/${typeUser}`)
           }
         }, 2000)
       }

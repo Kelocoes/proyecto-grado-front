@@ -166,7 +166,7 @@ export default function SignUp () {
         setTimeout(() => {
           if (response.status === 200) {
             localStorage.setItem('token', response.data.token)
-            nav('/dashboard')
+            nav('/dashboard/medic')
           }
         }, 2000)
       }

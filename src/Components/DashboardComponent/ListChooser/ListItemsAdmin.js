@@ -3,44 +3,86 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import DashboardIcon from '@mui/icons-material/Dashboard'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import PeopleIcon from '@mui/icons-material/People'
+import GroupIcon from '@mui/icons-material/Group'
+import ApiIcon from '@mui/icons-material/Api'
 import BarChartIcon from '@mui/icons-material/BarChart'
-import LayersIcon from '@mui/icons-material/Layers'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import HomeIcon from '@mui/icons-material/Home'
+import LogoutIcon from '@mui/icons-material/Logout'
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
 import { Link as LinkRouter } from 'react-router-dom'
 
-export default function MainListItemsAdmin () {
+export default function MainListItemsAdmin (props) {
   return (
     <React.Fragment>
-      <ListItemButton component={LinkRouter} to={'/'}>
+      <ListItemButton component={LinkRouter} to={'/'}
+        onClick = {() => { props.setTitleAppBar('') }}
+      >
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Página principal" />
+      </ListItemButton>
+      <ListItemButton component={LinkRouter} to={'admin'}
+        onClick = {() => { props.setTitleAppBar('Inicio') }}
+      >
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Inicio" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={LinkRouter} to={'admin/patients'}
+        onClick = {() => { props.setTitleAppBar('Pacientes') }}
+      >
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <GroupIcon />
         </ListItemIcon>
-        <ListItemText primary="Admin" />
+        <ListItemText primary="Pacientes" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={LinkRouter} to={'admin/medics'}
+        onClick = {() => { props.setTitleAppBar('Medicos') }}
+      >
         <ListItemIcon>
-          <PeopleIcon />
+          <MedicalServicesIcon />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
+        <ListItemText primary="Medicos" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={LinkRouter} to={'admin/estimation'}
+        onClick = {() => { props.setTitleAppBar('Estimación') }}
+      >
+        <ListItemIcon>
+          <ApiIcon />
+        </ListItemIcon>
+        <ListItemText primary="Estimación" />
+      </ListItemButton>
+      <ListItemButton component={LinkRouter} to={'admin/reports'}
+        onClick = {() => { props.setTitleAppBar('Reportes') }}
+      >
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Reports" />
+        <ListItemText primary="Reportes" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={LinkRouter} to={'admin/profile'}
+        onClick = {() => { props.setTitleAppBar('Perfil') }}
+      >
         <ListItemIcon>
-          <LayersIcon />
+          <AccountCircleIcon />
         </ListItemIcon>
-        <ListItemText primary="Integrations" />
+        <ListItemText primary="Perfil" />
+      </ListItemButton>
+      <ListItemButton
+        component={LinkRouter} to={'/'}
+        onClick = {() => {
+          props.setTitleAppBar('Cerrando sesión...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('type')
+        }}
+      >
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText primary="Cerrar sesión" />
       </ListItemButton>
     </React.Fragment>
   )

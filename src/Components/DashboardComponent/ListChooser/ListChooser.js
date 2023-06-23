@@ -3,12 +3,12 @@ import React from 'react'
 import MainListItemsAdmin from './ListItemsAdmin'
 import MainListItemsMedic from './ListItemsMedic'
 
-export default function ListChooser () {
+export default function ListChooser (props) {
   const userType = window.localStorage.getItem('type')
   if (userType === 'Medic') {
-    return <MainListItemsMedic />
+    return <MainListItemsMedic setTitleAppBar = {props.setTitleAppBar}/>
   }
   if (userType === 'Admin') {
-    return <MainListItemsAdmin />
+    return <MainListItemsAdmin setTitleAppBar = {props.setTitleAppBar}/>
   }
 }

@@ -67,12 +67,18 @@ export default function Header (props) {
         }
         {localStorage.getItem('token') &&
           <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'right' } }} >
-            <Button variant="outlined" size="small" component={LinkRouter} to={'/dashboard'} sx={{
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              display: 'inline-block'
-            }}>
+            <Button
+              variant="outlined"
+              size="small"
+              component={LinkRouter}
+              to={`/dashboard/${localStorage.getItem('type').toLowerCase()}`}
+              sx={{
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                display: 'inline-block'
+              }}
+            >
               Dashboard
             </Button>
             <Button variant="outlined" onClick={logout} size="small" sx={{ mx: 1 }}>
