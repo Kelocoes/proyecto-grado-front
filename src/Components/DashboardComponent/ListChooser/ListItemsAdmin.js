@@ -11,7 +11,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
 import { Link as LinkRouter } from 'react-router-dom'
-// noinspection all
+// NOSONAR
 
 export default function MainListItemsAdmin (props) {
   return (

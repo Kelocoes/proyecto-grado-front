@@ -10,7 +10,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import HomeIcon from '@mui/icons-material/Home'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { Link as LinkRouter } from 'react-router-dom'
-// noinspection all
+// NOSONAR
 
 export default function MainListItemsAdmin (props) {
   return (
