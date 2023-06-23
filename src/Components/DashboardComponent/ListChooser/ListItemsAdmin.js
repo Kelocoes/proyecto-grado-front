@@ -1,3 +1,4 @@
+// noinspection all
 import * as React from 'react'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -11,7 +12,6 @@ import HomeIcon from '@mui/icons-material/Home'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
 import { Link as LinkRouter } from 'react-router-dom'
-// NOSONAR
 
 export default function MainListItemsAdmin (props) {
   return (
