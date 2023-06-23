@@ -1,4 +1,5 @@
-import * as React from 'react'
+import React, { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
 import MuiDrawer from '@mui/material/Drawer'
 import Box from '@mui/material/Box'
@@ -8,30 +9,10 @@ import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
-import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
 import ListChooser from './ListChooser/ListChooser'
-import Chart from './Chart'
-import Deposits from './Deposits'
-import Orders from './Orders'
-
-function Copyright (props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
 
 const drawerWidth = 240
 
@@ -80,7 +61,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 export default function Dashboard () {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
+  const [titleAppBar, setTitleAppBar] = useState('Inicio')
   const toggleDrawer = () => {
     setOpen(!open)
   }
@@ -112,7 +94,7 @@ export default function Dashboard () {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+            {titleAppBar}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -131,7 +113,7 @@ export default function Dashboard () {
         </Toolbar>
         <Divider />
         <List component="nav">
-          <ListChooser />
+          <ListChooser setTitleAppBar = {setTitleAppBar} />
           <Divider sx={{ my: 1 }} />
         </List>
       </Drawer>
@@ -148,43 +130,7 @@ export default function Dashboard () {
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240
-                }}
-              >
-                <Chart />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240
-                }}
-              >
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Orders />
-              </Paper>
-            </Grid>
-          </Grid>
-          <Copyright sx={{ pt: 4 }} />
-        </Container>
+        <Outlet />
       </Box>
     </Box>
   )

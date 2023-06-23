@@ -26,7 +26,20 @@ export default function ProtectedRoute ({ component: Component, ...args }) {
           // console.log('Medic')
           localStorage.setItem('type', 'Medic')
         }
+        if (!window.location.href.includes(localStorage.getItem('type').toLowerCase())) {
+          console.log('Me meti donde no era')
+          nav('/')
+          localStorage.removeItem('token')
+          localStorage.removeItem('type')
+        } else {
+          console.log('Entré a mi lugar correcto')
+        }
       }
+    }).catch((error) => {
+      console.log('Hay un error: ', error)
+      nav('/')
+      localStorage.removeItem('token')
+      localStorage.removeItem('type')
     })
   }, [])
   return (<Component />)
