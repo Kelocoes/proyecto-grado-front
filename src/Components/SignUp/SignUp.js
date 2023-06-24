@@ -18,6 +18,7 @@ import Reaptcha from 'reaptcha'
 import { Link as LinkRouter } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import IconButton from '@mui/material/IconButton'
+import Fade from '@mui/material/Fade'
 
 import { useEnv } from '../../Context/EnvContext'
 import { useExternalApi } from '../../Api/Medic/MedicResponse'
@@ -179,180 +180,182 @@ export default function SignUp () {
   }, [response])
 
   return (
-    <Grid container justifyContent='center'>
-      <Card sx={{ marginY: 8, width: '550px', padding: 10, boxShadow: 20 }}>
-        <Box
-          sx={{
-            marginBottom: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-          </IconButton>
-          <Typography component="h1" variant="h5">
-            Registro
-          </Typography>
-          <Box sx={{ marginTop: 3 }}>
-            <form onSubmit={getInfoRegister(onSubmit)}>
-              <Grid container spacing={2}>
-                <Grid item xs={4} sm={3}>
-                  <TextField
-                    required
-                    variant="outlined"
-                    label="Tipo"
-                    select
-                    fullWidth
-                    autoFocus
-                    defaultValue=''
-                    {...registro('id_type', { required: true })}
-                  >
-                    {tipeId.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+    <Fade in={true}>
+      <Grid container justifyContent='center'>
+        <Card sx={{ marginY: 8, width: '550px', padding: 10, boxShadow: 20 }}>
+          <Box
+            sx={{
+              marginBottom: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <IconButton component={LinkRouter} to={'/'}>
+              <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+            </IconButton>
+            <Typography component="h1" variant="h5">
+              Registro
+            </Typography>
+            <Box sx={{ marginTop: 3 }}>
+              <form onSubmit={getInfoRegister(onSubmit)}>
+                <Grid container spacing={2}>
+                  <Grid item xs={4} sm={3}>
+                    <TextField
+                      required
+                      variant="outlined"
+                      label="Tipo"
+                      select
+                      fullWidth
+                      autoFocus
+                      defaultValue=''
+                      {...registro('id_type', { required: true })}
+                    >
+                      {tipeId.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={8} sm={9}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Identificación"
+                      type="number"
+                      {...registro('id', { required: true })}
+                      inputProps={{
+                        min: 0
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      autoComplete="given-name"
+                      required
+                      fullWidth
+                      label="Nombre"
+                      {...registro('first_name', { required: true })}
+                      inputProps={{
+                        maxLength: 50
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Apellido"
+                      autoComplete="family-name"
+                      {...registro('last_name', { required: true })}
+                      inputProps={{
+                        maxLength: 100
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Ciudad"
+                      {...registro('city', { required: true })}
+                      inputProps={{
+                        maxLength: 50
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Telefono"
+                      type="number"
+                      autoComplete="tel"
+                      {...registro('cellphone', { required: true })}
+                      inputProps={{
+                        min: 0,
+                        maxLength: 20
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Correo electrónico"
+                      autoComplete="email"
+                      {...registro('email', { required: true })}
+                      inputProps={{
+                        maxLength: 254
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Usuario"
+                      autoComplete="nickname"
+                      {...registro('username', { required: true })}
+                      inputProps={{
+                        maxLength: 150
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Contraseña"
+                      type="password"
+                      autoComplete="new-password"
+                      {...registro('password', { required: true })}
+                      inputProps={{
+                        maxLength: 128
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} display='flex' justifyContent='center'>
+                    <Reaptcha
+                      sitekey={siteKey}
+                      ref={captchaRef}
+                      onVerify={verify}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={8} sm={9}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Identificación"
-                    type="number"
-                    {...registro('id', { required: true })}
-                    inputProps={{
-                      min: 0
-                    }}
-                  />
+                <Button
+                  disabled={isDisabled}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ marginTop: 3, marginBottom: 2 }}
+                  onClick={getInfoRegister(onSubmit)}
+                >
+                  {isLoading &&
+                    <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
+                  Registrarse
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link component={LinkRouter} to={'/signin'} variant="body2">
+                      Ya tienes una cuenta? Ingresa
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    required
-                    fullWidth
-                    label="Nombre"
-                    {...registro('first_name', { required: true })}
-                    inputProps={{
-                      maxLength: 50
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Apellido"
-                    autoComplete="family-name"
-                    {...registro('last_name', { required: true })}
-                    inputProps={{
-                      maxLength: 100
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Ciudad"
-                    {...registro('city', { required: true })}
-                    inputProps={{
-                      maxLength: 50
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Telefono"
-                    type="number"
-                    autoComplete="tel"
-                    {...registro('cellphone', { required: true })}
-                    inputProps={{
-                      min: 0,
-                      maxLength: 20
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Correo electrónico"
-                    autoComplete="email"
-                    {...registro('email', { required: true })}
-                    inputProps={{
-                      maxLength: 254
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Usuario"
-                    autoComplete="nickname"
-                    {...registro('username', { required: true })}
-                    inputProps={{
-                      maxLength: 150
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Contraseña"
-                    type="password"
-                    autoComplete="new-password"
-                    {...registro('password', { required: true })}
-                    inputProps={{
-                      maxLength: 128
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} display='flex' justifyContent='center'>
-                  <Reaptcha
-                    sitekey={siteKey}
-                    ref={captchaRef}
-                    onVerify={verify}
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                disabled={isDisabled}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ marginTop: 3, marginBottom: 2 }}
-                onClick={getInfoRegister(onSubmit)}
-              >
-                {isLoading &&
-                  <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
-                Registrarse
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link component={LinkRouter} to={'/signin'} variant="body2">
-                    Ya tienes una cuenta? Ingresa
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
+              </form>
+            </Box>
           </Box>
-        </Box>
-        <Copyright />
-        <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
-            {message}
-          </Alert>
-        </Snackbar>
-      </Card>
-    </Grid>
+          <Copyright />
+          <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+              {message}
+            </Alert>
+          </Snackbar>
+        </Card>
+      </Grid>
+    </Fade>
   )
 }

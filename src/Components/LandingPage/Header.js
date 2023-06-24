@@ -3,7 +3,8 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import { Link as LinkRouter } from 'react-router-dom'
-import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 import IconButton from '@mui/material/IconButton'
 
 export default function Header (props) {
@@ -47,7 +48,6 @@ export default function Header (props) {
             }}
           >
             <Button
-              variant="outlined"
               size="small"
               component={LinkRouter}
               to={'/signin'}
@@ -55,7 +55,7 @@ export default function Header (props) {
             >
               Iniciar Sesión
             </Button>
-            <Button variant="outlined" size="small" component={LinkRouter} to={'/signup'} sx={{
+            <Button size="small" component={LinkRouter} to={'/signup'} sx={{
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -68,7 +68,6 @@ export default function Header (props) {
         {localStorage.getItem('token') &&
           <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'right' } }} >
             <Button
-              variant="outlined"
               size="small"
               component={LinkRouter}
               to={`/dashboard/${localStorage.getItem('type').toLowerCase()}`}
@@ -81,7 +80,7 @@ export default function Header (props) {
             >
               Dashboard
             </Button>
-            <Button variant="outlined" onClick={logout} size="small" sx={{ mx: 1 }}>
+            <Button onClick={logout} size="small" sx={{ mx: 1 }}>
               Cerrar Sesión
             </Button>
           </Grid>
@@ -96,8 +95,8 @@ export default function Header (props) {
             padding: '0px'
           }}
         >
-          <IconButton onClick={changeTheme} >
-            <LightbulbIcon />
+          <IconButton color="inherit" onClick={changeTheme}>
+            {actualTheme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
           </IconButton>
         </Grid>
       </Grid>

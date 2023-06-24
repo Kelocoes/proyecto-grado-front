@@ -14,6 +14,7 @@ import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
+import Fade from '@mui/material/Fade'
 
 import { useExternalApi } from '../../Api/Account/AccountResponse'
 
@@ -105,64 +106,66 @@ export default function ForgotPassword () {
   }, [response])
 
   return (
-    <Grid container justifyContent="center">
-      <Card sx={{
-        my: 8,
-        width: '450px',
-        p: 10,
-        boxShadow: 20
-      }}>
-        <Box
-          sx={{
-            marginBottom: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-          </IconButton>
-          <Typography component="h1" variant="h5">
-            Ingresa tu usuario o correo electrónico
-          </Typography>
-          <Box sx={{ mt: 1 }}>
-            <form onSubmit={getInfoRegister(onSubmit)}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Usuario o correo"
-                autoComplete="email"
-                autoFocus
-                {...registro('username', { required: true })}
-                inputProps={{
-                  maxLength: 254
-                }}
-              />
-              <Button
-                disabled={isDisabled}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={getInfoRegister(onSubmit)}
-              >
-                {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
-                Enviar
-              </Button>
-            </form>
+    <Fade in={true}>
+      <Grid container justifyContent="center">
+        <Card sx={{
+          my: 8,
+          width: '450px',
+          p: 10,
+          boxShadow: 20
+        }}>
+          <Box
+            sx={{
+              marginBottom: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <IconButton component={LinkRouter} to={'/'}>
+              <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+            </IconButton>
+            <Typography component="h1" variant="h5">
+              Ingresa tu usuario o correo electrónico
+            </Typography>
+            <Box sx={{ mt: 1 }}>
+              <form onSubmit={getInfoRegister(onSubmit)}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Usuario o correo"
+                  autoComplete="email"
+                  autoFocus
+                  {...registro('username', { required: true })}
+                  inputProps={{
+                    maxLength: 254
+                  }}
+                />
+                <Button
+                  disabled={isDisabled}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={getInfoRegister(onSubmit)}
+                >
+                  {isLoading && <CircularProgress color="inherit" size={15} sx={{ mr: 1 }} />}
+                  Enviar
+                </Button>
+              </form>
+            </Box>
           </Box>
-        </Box>
-        <Copyright />
-      </Card>
-      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </Grid>
+          <Copyright />
+        </Card>
+        <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
+      </Grid>
+    </Fade>
   )
 }

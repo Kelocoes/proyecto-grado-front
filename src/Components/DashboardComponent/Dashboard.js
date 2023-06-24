@@ -11,6 +11,8 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 
 import ListChooser from './ListChooser/ListChooser'
 
@@ -60,11 +62,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   })
 )
 
-export default function Dashboard () {
+export default function Dashboard (props) {
+  const { actualTheme, setActualTheme } = props
   const [open, setOpen] = useState(false)
   const [titleAppBar, setTitleAppBar] = useState('Inicio')
+
   const toggleDrawer = () => {
     setOpen(!open)
+  }
+
+  const changeTheme = () => {
+    setActualTheme(actualTheme.localeCompare('light') ? 'light' : 'dark')
   }
 
   return (
@@ -96,6 +104,9 @@ export default function Dashboard () {
           >
             {titleAppBar}
           </Typography>
+          <IconButton color="inherit" onClick={changeTheme}>
+            {actualTheme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -120,10 +131,6 @@ export default function Dashboard () {
       <Box
         component="main"
         sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto'

@@ -16,6 +16,7 @@ import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
+import Fade from '@mui/material/Fade'
 
 import { useExternalApi } from '../../Api/Account/AccountResponse'
 
@@ -117,84 +118,86 @@ export default function SignIn () {
   }, [response])
 
   return (
-    <Grid container justifyContent="center">
-      <Card sx={{ width: '450px', marginY: 8, padding: 10, boxShadow: 20 }}>
-        <Box
-          sx={{
-            marginBottom: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <IconButton component={LinkRouter} to={'/'}>
-            <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-          </IconButton>
-          <Typography component="h1" variant="h5">
-            Ingreso
-          </Typography>
-          <Box sx={{ marginTop: 1 }}>
-            <form onSubmit={getInfoRegister(onSubmit)}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Usuario o correo"
-                autoComplete="email"
-                autoFocus
-                {...registro('username', { required: true })}
-                inputProps={{
-                  maxLength: 254
-                }}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Contraseña"
-                type="password"
-                autoComplete="current-password"
-                {...registro('password', { required: true })}
-                inputProps={{
-                  maxLength: 128
-                }}
-              />
-              <Button
-                disabled={isDisabled}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ marginTop: 3, marginBottom: 2 }}
-                onClick={getInfoRegister(onSubmit)}
-              >
-                {isLoading &&
-                  <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
-                Ingresa
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link component={LinkRouter} to={'/forgotpassword'} variant="body2">
-                    ¿Olvidaste tu contraseña?
-                  </Link>
+    <Fade in={true}>
+      <Grid container justifyContent="center">
+        <Card sx={{ width: '450px', marginY: 8, padding: 10, boxShadow: 20 }}>
+          <Box
+            sx={{
+              marginBottom: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <IconButton component={LinkRouter} to={'/'}>
+              <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+            </IconButton>
+            <Typography component="h1" variant="h5">
+              Ingreso
+            </Typography>
+            <Box sx={{ marginTop: 1 }}>
+              <form onSubmit={getInfoRegister(onSubmit)}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Usuario o correo"
+                  autoComplete="email"
+                  autoFocus
+                  {...registro('username', { required: true })}
+                  inputProps={{
+                    maxLength: 254
+                  }}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Contraseña"
+                  type="password"
+                  autoComplete="current-password"
+                  {...registro('password', { required: true })}
+                  inputProps={{
+                    maxLength: 128
+                  }}
+                />
+                <Button
+                  disabled={isDisabled}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ marginTop: 3, marginBottom: 2 }}
+                  onClick={getInfoRegister(onSubmit)}
+                >
+                  {isLoading &&
+                    <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
+                  Ingresa
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link component={LinkRouter} to={'/forgotpassword'} variant="body2">
+                      ¿Olvidaste tu contraseña?
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link component={LinkRouter} to={'/signup'} variant="body2">
+                      {'¿No tienes cuenta? Registrate'}
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Link component={LinkRouter} to={'/signup'} variant="body2">
-                    {'¿No tienes cuenta? Registrate'}
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
+              </form>
+            </Box>
           </Box>
-        </Box>
-        <Copyright />
-      </Card>
-      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </Grid>
+          <Copyright />
+        </Card>
+        <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
+      </Grid>
+    </Fade>
   )
 }
