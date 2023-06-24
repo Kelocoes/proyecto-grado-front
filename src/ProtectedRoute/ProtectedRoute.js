@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { useExternalApi } from '../Api/Account/AccountResponse'
 
 export default function ProtectedRoute ({ component: Component, ...args }) {
+  const { actualTheme, setActualTheme } = args
   const nav = useNavigate()
   const { getInfoAccount } = useExternalApi()
   useEffect(() => {
@@ -42,5 +43,8 @@ export default function ProtectedRoute ({ component: Component, ...args }) {
       localStorage.removeItem('type')
     })
   }, [])
-  return (<Component />)
+  return (<Component
+    actualTheme={actualTheme}
+    setActualTheme={setActualTheme}
+  />)
 }

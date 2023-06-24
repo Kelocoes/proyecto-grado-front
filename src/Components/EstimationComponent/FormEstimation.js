@@ -304,7 +304,7 @@ export default function MainFeaturedPost () {
             </CardContent>
           </Box>
         </Grid>
-        <Grid item xs={12} md={5} textAlign="center" sx={{ paddingRight: 5 }} >
+        <Grid item xs={12} md={5} textAlign="center" sx={{ paddingRight: { sx: 0, md: 10 } }} >
           <CardContent >
             <CircularProgressWithLabel
               variant="determinate"

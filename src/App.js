@@ -25,28 +25,55 @@ import './App.css'
 
 export default function App () {
   const [actualTheme, setActualTheme] = useState('light')
+  const customTheme = createTheme({
+    palette: {
+      mode: actualTheme,
+      ...(actualTheme === 'dark'
+        ? {
+            background: {
+              default: '#393939'
+            }
+          }
+        : {
+            background: {
+              default: '#ddd'
+            },
+            primary: {
+              main: '#1c41bff0'
+            }
+          }
+      )
+    },
+    typography: {
+      fontFamily: 'Georgia'
+    }
+  })
 
   return (
-    <ThemeProvider
-      theme={createTheme({
-        palette: {
-          mode: actualTheme
-        }
-      })}>
-      <CssBaseline/>
+    <ThemeProvider theme={customTheme}>
+      <CssBaseline />
       <HashRouter>
         <Routes>
           <Route
             path="/"
-            element={<Landing actualTheme = {actualTheme} setActualTheme = {setActualTheme}/>}
+            element={<Landing actualTheme={actualTheme} setActualTheme={setActualTheme} />}
           />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/changepassword/:token/:secret" element={<ChangePassword />} />
-          <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />}>
-            <Route path="admin" element={<LandingDashboard />} />
-            <Route path="medic" element={<LandingDashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute
+                component={Dashboard}
+                actualTheme={actualTheme}
+                setActualTheme={setActualTheme}
+              />
+            }
+          >
+            <Route path="admin" element={<LandingDashboard type="admin" />} />
+            <Route path="medic" element={<LandingDashboard type="medic" />} />
             <Route path="medic/patients" element={<MedicPatients />} />
             <Route path="medic/estimation" element={<MedicEstimation />} />
             <Route path="medic/reports" element={<MedicReports />} />
