@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import CheckLocation from '../CheckLocation'
+import InformationProfile from '../../InformationProfile/InformationProfile'
 
-export default function AdminProfile () {
+export default function MedicProfile () {
   const nav = useNavigate()
   useEffect(() => {
     if (CheckLocation()) {
@@ -12,6 +13,6 @@ export default function AdminProfile () {
   }, [])
 
   return (
-    <h1>Perfil de Admin</h1>
+    <InformationProfile method="UPDATE" type="admin" />
   )
 }

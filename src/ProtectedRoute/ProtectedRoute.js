@@ -22,12 +22,12 @@ export default function ProtectedRoute ({ component: Component, ...args }) {
         console.log('Entre correctamente como admin? ', res.data.is_admin)
         if (res.data.is_admin) {
           // console.log('Admin')
-          localStorage.setItem('type', 'Admin')
+          localStorage.setItem('type', 'admin')
         } else {
           // console.log('Medic')
-          localStorage.setItem('type', 'Medic')
+          localStorage.setItem('type', 'medic')
         }
-        if (!window.location.href.includes(localStorage.getItem('type').toLowerCase())) {
+        if (!window.location.href.includes(localStorage.getItem('type'))) {
           console.log('Me meti donde no era')
           nav('/')
           localStorage.removeItem('token')

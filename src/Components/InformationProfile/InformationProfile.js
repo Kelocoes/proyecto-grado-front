@@ -19,19 +19,13 @@ import { Link as LinkRouter } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import IconButton from '@mui/material/IconButton'
 import Fade from '@mui/material/Fade'
+import * as EmailValidator from 'email-validator'
+import Skeleton from '@mui/material/Skeleton'
 
 import { useEnv } from '../../Context/EnvContext'
-import { useExternalApi } from '../../Api/Medic/MedicResponse'
-
-function Copyright () {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Universidad del Valle, Escuela de Ingeniería de Sistemas y Computación, '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
+import { useExternalApi as useExternalApiMedic } from '../../Api/Medic/MedicResponse'
+import { useExternalApi as useExternalApiAdmin } from '../../Api/Admin/AdminResponse'
+import Copyright from '../Copyright/Copyright'
 
 function transformarString (text) {
   let result = text.toLowerCase()
@@ -44,10 +38,10 @@ const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-export default function SignUp (props) {
+export default function InformationProfile (props) {
   // PROPS
 
-  const { method } = props
+  const { method, type } = props
 
   // HOOKS
 
@@ -58,7 +52,8 @@ export default function SignUp (props) {
   const { siteKey } = useEnv()
 
   // Api hook
-  const { createMedic, getCaptchaScore, getMedic, updateMedic } = useExternalApi()
+  const { createMedic, getCaptchaScore, getMedic, updateMedic } = useExternalApiMedic()
+  const { getAdmin, updateAdmin } = useExternalApiAdmin()
 
   // Navigation hook
   const nav = useNavigate()
@@ -66,9 +61,10 @@ export default function SignUp (props) {
   // Ref hook
   const captchaRef = useRef(null)
 
-  // State hook
+  // States hook
   const [isLoading, setIsLoading] = useState(false)
   const [isDisabled, setIsDisabled] = useState(false)
+  const [isValidEmail, setIsValidEmail] = useState(true)
   const [response, setResponse] = useState({})
   const [profileData, setProfileData] = useState({})
   const [message, setMessage] = useState('')
@@ -80,48 +76,18 @@ export default function SignUp (props) {
 
   // CONSTANTS
 
-  const tipeId = [{ value: 'CC', label: 'CC' }]
+  const tipeId = [{ value: 'CC', label: 'CC' }, { value: 'CE', label: 'CE' }]
 
-  const dataByMethod = method === 'UPDATE'
-    ? {
-        showIcon: false,
-        title: 'Tu perfil',
-        buttonText: 'Actualizar',
-        showLastLogin: true,
-        defaultData: true,
-        enableUser: false,
-        enableEmail: false,
-        showPassword: false,
-        showCaptcha: false,
-        showForgotPassword: true,
-        showAlreadyAccount: false,
-        showFooter: false,
-        checkCaptcha: false
-      }
-    : {
-        showIcon: true,
-        title: 'Regístrate',
-        buttonText: 'Registrarse',
-        showLastLogin: false,
-        defaultData: false,
-        enableUser: true,
-        enableEmail: true,
-        showPassword: true,
-        showCaptcha: true,
-        showForgotPassword: false,
-        showAlreadyAccount: true,
-        showFooter: true,
-        checkCaptcha: true
-      }
+  const isUpdate = method === 'UPDATE'
 
   // ARROW FUNCTIONS
 
   // Error handler
-  const errorHandler = () => {
+  const errorHandler = (type, message) => {
     setIsLoading(false)
-    setSeverity('error')
+    setSeverity(type)
     setOpenSnack(true)
-    setMessage('Ha ocurrido un error inesperado')
+    setMessage(message)
   }
 
   // Action when closing snackbar
@@ -148,25 +114,30 @@ export default function SignUp (props) {
 
   // Action when pressing the main button
   const onSubmit = async (data) => {
-    setIsLoading(true)
     try {
-      if (dataByMethod.checkCaptcha) {
-        if (captchaToken) {
-          // console.log(captchaToken)
-          await getCaptchaScore(captchaToken, setCaptchaResponse)
+      if (EmailValidator.validate(data.email)) {
+        setIsValidEmail(true)
+        setIsLoading(true)
+        if (!isUpdate) {
+          if (captchaToken) {
+            // console.log(captchaToken)
+            await getCaptchaScore(captchaToken, setCaptchaResponse)
+          } else {
+            errorHandler('warning', 'Debes hacer la prueba del captcha')
+            captchaRef.current.reset()
+          }
         } else {
-          setIsLoading(false)
-          setSeverity('warning')
-          setOpenSnack(true)
-          setMessage('Ha ocurrido un error con el catpcha')
+          data.city = transformarString(data.city)
+          type === 'medic'
+            ? await updateMedic(data, setResponse, localStorage.getItem('token'))
+            : await updateAdmin(data, setResponse, localStorage.getItem('token'))
         }
+        setData(data)
       } else {
-        data.city = transformarString(data.city)
-        await updateMedic(data, setResponse, localStorage.getItem('token'))
+        setIsValidEmail(false)
       }
-      setData(data)
     } catch (error) {
-      errorHandler()
+      errorHandler('error', 'Ha ocurrido un error inesperado')
     }
   }
 
@@ -191,13 +162,12 @@ export default function SignUp (props) {
             data.city = transformarString(data.city)
             await createMedic(data, setResponse)
           } else {
-            setOpenSnack(true)
-            setSeverity('warning')
-            setMessage('No has pasado la prueba del captcha')
+            errorHandler('warning', 'No has pasado la prueba del captcha')
+            captchaRef.current.reset()
           }
         }
       } catch (error) {
-        errorHandler()
+        errorHandler('error', 'Ha ocurrido un error inesperado')
       }
     }
     fetchData()
@@ -216,12 +186,14 @@ export default function SignUp (props) {
             if (response.status === 200) {
               localStorage.setItem('token', response.data.token)
               nav('/dashboard/medic')
+            } else {
+              captchaRef.current.reset()
             }
           }, 2000)
         }
       }
     } catch (error) {
-      errorHandler()
+      errorHandler('error', 'Ha ocurrido un error inesperado')
     }
   }, [response])
 
@@ -229,21 +201,31 @@ export default function SignUp (props) {
   useEffect(() => {
     async function fetchData () {
       try {
-        if (method === 'UPDATE') {
-          await getMedic(setProfileData, localStorage.getItem('token'))
+        if (isUpdate) {
+          type === 'medic'
+            ? await getMedic(setProfileData, localStorage.getItem('token'))
+            : await getAdmin(setProfileData, localStorage.getItem('token'))
         }
       } catch (error) {
-        errorHandler()
+        errorHandler('error', 'Ha ocurrido un error inesperado')
       }
     }
     fetchData()
   }, [])
 
-  if (method === 'UPDATE' && JSON.stringify(profileData) === '{}') {
+  if (isUpdate && JSON.stringify(profileData) === '{}') {
     return (
-      <Typography>
-        Cargando...
-      </Typography>
+      <Fade in={true}>
+        <Grid container justifyContent='center'>
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            width="550px"
+            height="600px"
+            sx={{ marginY: 5, boxShadow: 20 }}
+          />
+        </Grid>
+      </Fade>
     )
   } else {
     return (
@@ -258,7 +240,7 @@ export default function SignUp (props) {
                 alignItems: 'center'
               }}
             >
-              {dataByMethod.showIcon &&
+              {!isUpdate &&
                 <IconButton component={LinkRouter} to={'/'}>
                   <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
                     <LockOutlinedIcon />
@@ -266,11 +248,11 @@ export default function SignUp (props) {
                 </IconButton>
               }
               <Typography component="h1" variant="h5">
-                {dataByMethod.title}
+                {isUpdate ? 'Tu perfil' : 'Regístrate'}
               </Typography>
-              {dataByMethod.showLastLogin &&
+              {isUpdate &&
                 <Typography variant="body2" paddingTop={1}>
-                  Último inicio de sesión:
+                  Último inicio de sesión: {profileData.data.user_id.last_login.split('T')[0]}
                 </Typography>
               }
               <Box sx={{ marginTop: 3 }}>
@@ -284,7 +266,7 @@ export default function SignUp (props) {
                         select
                         fullWidth
                         autoFocus
-                        defaultValue={dataByMethod.defaultData ? profileData.data.id_type : ''}
+                        defaultValue={isUpdate ? profileData.data.id_type : ''}
                         {...registro('id_type', { required: true })}
                       >
                         {tipeId.map((option) => (
@@ -300,7 +282,7 @@ export default function SignUp (props) {
                         fullWidth
                         label="Identificación"
                         type="number"
-                        defaultValue={dataByMethod.defaultData ? profileData.data.id : ''}
+                        defaultValue={isUpdate ? profileData.data.id : ''}
                         {...registro('id', { required: true })}
                         inputProps={{
                           min: 0
@@ -313,7 +295,7 @@ export default function SignUp (props) {
                         required
                         fullWidth
                         label="Nombre"
-                        defaultValue={dataByMethod.defaultData ? profileData.data.first_name : ''}
+                        defaultValue={isUpdate ? profileData.data.first_name : ''}
                         {...registro('first_name', { required: true })}
                         inputProps={{
                           maxLength: 50
@@ -326,7 +308,7 @@ export default function SignUp (props) {
                         fullWidth
                         label="Apellido"
                         autoComplete="family-name"
-                        defaultValue={dataByMethod.defaultData ? profileData.data.last_name : ''}
+                        defaultValue={isUpdate ? profileData.data.last_name : ''}
                         {...registro('last_name', { required: true })}
                         inputProps={{
                           maxLength: 100
@@ -338,7 +320,7 @@ export default function SignUp (props) {
                         required
                         fullWidth
                         label="Ciudad"
-                        defaultValue={dataByMethod.defaultData ? profileData.data.city : ''}
+                        defaultValue={isUpdate ? profileData.data.city : ''}
                         {...registro('city', { required: true })}
                         inputProps={{
                           maxLength: 50
@@ -352,7 +334,7 @@ export default function SignUp (props) {
                         label="Telefono"
                         type="number"
                         autoComplete="tel"
-                        defaultValue={dataByMethod.defaultData ? profileData.data.cellphone : ''}
+                        defaultValue={isUpdate ? profileData.data.cellphone : ''}
                         {...registro('cellphone', { required: true })}
                         inputProps={{
                           min: 0,
@@ -366,15 +348,19 @@ export default function SignUp (props) {
                         fullWidth
                         label="Correo electrónico"
                         autoComplete="email"
+                        error={!isValidEmail}
+                        helperText={!isValidEmail &&
+                          'Por favor, ingresa un correo electrónico válido.'
+                        }
                         defaultValue={
-                          dataByMethod.defaultData ? profileData.data.user_id.email : ''
+                          isUpdate ? profileData.data.user_id.email : ''
                         }
                         {...registro('email', { required: true })}
                         inputProps={{
                           maxLength: 254
                         }}
                         InputProps={{
-                          readOnly: dataByMethod.defaultData
+                          readOnly: isUpdate
                         }}
                       />
                     </Grid>
@@ -385,18 +371,18 @@ export default function SignUp (props) {
                         label="Usuario"
                         autoComplete="nickname"
                         defaultValue={
-                          dataByMethod.defaultData ? profileData.data.user_id.username : ''
+                          isUpdate ? profileData.data.user_id.username : ''
                         }
                         {...registro('username', { required: true })}
                         inputProps={{
                           maxLength: 150
                         }}
                         InputProps={{
-                          readOnly: dataByMethod.defaultData
+                          readOnly: isUpdate
                         }}
                       />
                     </Grid>
-                    {dataByMethod.showPassword &&
+                    {!isUpdate &&
                       <Grid item xs={12}>
                         <TextField
                           required
@@ -411,7 +397,7 @@ export default function SignUp (props) {
                         />
                       </Grid>
                     }
-                    {dataByMethod.showCaptcha &&
+                    {!isUpdate &&
                       <Grid item xs={12} display='flex' justifyContent='center'>
                         <Reaptcha
                           sitekey={siteKey}
@@ -431,9 +417,9 @@ export default function SignUp (props) {
                   >
                     {isLoading &&
                       <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
-                    {dataByMethod.buttonText}
+                    {isUpdate ? 'Actualizar' : 'Registrarse'}
                   </Button>
-                  {dataByMethod.showAlreadyAccount &&
+                  {!isUpdate &&
                     <Grid container justifyContent="flex-end">
                       <Grid item>
                         <Link component={LinkRouter} to={'/signin'} variant="body2">
@@ -445,7 +431,7 @@ export default function SignUp (props) {
                 </form>
               </Box>
             </Box>
-            {dataByMethod.showFooter && <Copyright />}
+            {!isUpdate && <Copyright />}
             <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
               <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                 {message}

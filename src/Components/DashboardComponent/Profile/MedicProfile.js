@@ -13,6 +13,6 @@ export default function MedicProfile () {
   }, [])
 
   return (
-    <InformationProfile method="UPDATE" />
+    <InformationProfile method="UPDATE" type="medic" />
   )
 }
