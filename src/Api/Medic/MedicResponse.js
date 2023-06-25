@@ -46,8 +46,37 @@ export const useExternalApi = () => {
     setCaptchaResponse(response)
   }
 
+  const getMedic = async (setResponse, token) => {
+    const config = {
+      url: `${apiServerUrl}/api/medic/get`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeRequest({ config })
+    setResponse(response)
+  }
+
+  const updateMedic = async (datos, setResponse, token) => {
+    const config = {
+      url: `${apiServerUrl}/api/medic/update/self`,
+      method: 'PUT',
+      headers: {
+        Authorization: `Token ${token}`
+      },
+      data: datos
+    }
+
+    const response = await makeRequest({ config })
+    setResponse(response)
+  }
+
   return {
     createMedic,
-    getCaptchaScore
+    getCaptchaScore,
+    getMedic,
+    updateMedic
   }
 }

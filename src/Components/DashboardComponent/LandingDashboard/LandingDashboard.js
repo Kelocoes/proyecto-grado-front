@@ -15,7 +15,10 @@ import reportsUrl from '../../../assets/reportsImage.png'
 import profileUrl from '../../../assets/profileImage.png'
 
 export default function LandingDashboard (props) {
+  // CONSTANTS
+
   const { type } = props
+
   return (
     <Container
       maxWidth="md"
