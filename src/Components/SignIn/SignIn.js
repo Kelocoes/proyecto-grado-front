@@ -19,16 +19,7 @@ import IconButton from '@mui/material/IconButton'
 import Fade from '@mui/material/Fade'
 
 import { useExternalApi } from '../../Api/Account/AccountResponse'
-
-function Copyright () {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Universidad del Valle, Escuela de Ingeniería de Sistemas y Computación, '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
+import Copyright from '../Copyright/Copyright'
 
 const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
@@ -57,11 +48,11 @@ export default function SignIn () {
   // ARROW FUNCTIONS
 
   // Error handler
-  const errorHandler = () => {
+  const errorHandler = (type, message) => {
     setIsLoading(false)
-    setSeverity('error')
+    setSeverity(type)
     setOpenSnack(true)
-    setMessage('Ha ocurrido un error inesperado')
+    setMessage(message)
   }
 
   // Action when pressing the main button
@@ -70,7 +61,7 @@ export default function SignIn () {
     try {
       await checkPassword(data, setResponse)
     } catch (error) {
-      errorHandler()
+      errorHandler('error', 'Ha ocurrido un error inesperado')
     }
   }
 
@@ -113,7 +104,7 @@ export default function SignIn () {
         }, 2000)
       }
     } catch (error) {
-      errorHandler()
+      errorHandler('error', 'Ha ocurrido un error inesperado')
     }
   }, [response])
 

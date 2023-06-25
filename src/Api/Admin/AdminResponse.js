@@ -18,37 +18,9 @@ export const useExternalApi = () => {
     }
   }
 
-  const createMedic = async (datos, setResponse) => {
+  const getAdmin = async (setResponse, token) => {
     const config = {
-      url: `${apiServerUrl}/api/medic/create`,
-      method: 'POST',
-      headers: {
-      },
-      data: datos
-    }
-
-    const response = await makeRequest({ config })
-    setResponse(response)
-  }
-
-  const getCaptchaScore = async (token, setCaptchaResponse) => {
-    const config = {
-      url: `${apiServerUrl}/api/captcha/getResponse`,
-      method: 'post',
-      headers: {
-      },
-      data: {
-        token
-      }
-    }
-
-    const response = await makeRequest({ config })
-    setCaptchaResponse(response)
-  }
-
-  const getMedic = async (setResponse, token) => {
-    const config = {
-      url: `${apiServerUrl}/api/medic/get`,
+      url: `${apiServerUrl}/api/admin/get`,
       method: 'GET',
       headers: {
         Authorization: `Token ${token}`
@@ -59,9 +31,9 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
-  const updateMedic = async (datos, setResponse, token) => {
+  const updateAdmin = async (datos, setResponse, token) => {
     const config = {
-      url: `${apiServerUrl}/api/medic/update/self`,
+      url: `${apiServerUrl}/api/admin/update/self`,
       method: 'PUT',
       headers: {
         Authorization: `Token ${token}`
@@ -74,9 +46,7 @@ export const useExternalApi = () => {
   }
 
   return {
-    createMedic,
-    getCaptchaScore,
-    getMedic,
-    updateMedic
+    getAdmin,
+    updateAdmin
   }
 }

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import CheckLocation from '../CheckLocation'
+import InformationProfile from '../../InformationProfile/InformationProfile'
 
 export default function MedicProfile () {
   const nav = useNavigate()
@@ -12,6 +13,6 @@ export default function MedicProfile () {
   }, [])
 
   return (
-    <h1>Perfil de medico</h1>
+    <InformationProfile method="UPDATE" type="medic" />
   )
 }

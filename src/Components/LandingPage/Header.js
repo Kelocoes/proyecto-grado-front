@@ -70,7 +70,7 @@ export default function Header (props) {
             <Button
               size="small"
               component={LinkRouter}
-              to={`/dashboard/${localStorage.getItem('type').toLowerCase()}`}
+              to={`/dashboard/${localStorage.getItem('type')}`}
               sx={{
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',

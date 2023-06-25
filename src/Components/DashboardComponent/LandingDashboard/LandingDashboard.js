@@ -9,13 +9,17 @@ import Typography from '@mui/material/Typography'
 import { Link as LinkRouter } from 'react-router-dom'
 import Fade from '@mui/material/Fade'
 
-import patientsUrl from '../../../assets/patientsImage.svg'
+import patientsUrl from '../../../assets/patientsImage.png'
+import medicsUrl from '../../../assets/medicImage.png'
 import estimationUrl from '../../../assets/estimationImage.png'
 import reportsUrl from '../../../assets/reportsImage.png'
 import profileUrl from '../../../assets/profileImage.png'
 
 export default function LandingDashboard (props) {
+  // CONSTANTS
+
   const { type } = props
+
   return (
     <Container
       maxWidth="md"
@@ -24,29 +28,31 @@ export default function LandingDashboard (props) {
       <Fade in={true}>
         <Grid container spacing={5}>
           <Grid item xs={12} sm={6} >
-              <Card sx={{ boxShadow: 10 }}>
-                <CardActionArea component={LinkRouter} to={'patients'}>
-                  <CardMedia
-                    component="img"
-                    height="160"
-                    image={patientsUrl}
-                  />
-                  <CardContent>
-                    <Typography align='center' variant='h6'>
-                      Gestión de pacientes
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+            <Card align="center" sx={{ boxShadow: 10 }}>
+              <CardActionArea component={LinkRouter} to={'patients'}>
+                <CardMedia
+                  component="img"
+                  height="160"
+                  sx={{ width: '160px' }}
+                  image={patientsUrl}
+                />
+                <CardContent>
+                  <Typography align='center' variant='h6'>
+                    Gestión de pacientes
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
           {type === 'admin' &&
             <Grid item xs={12} sm={6} >
-              <Card sx={{ boxShadow: 10 }}>
+              <Card align="center" sx={{ boxShadow: 10 }}>
                 <CardActionArea component={LinkRouter} to={'medics'}>
                   <CardMedia
                     component="img"
                     height="160"
-                    image={patientsUrl}
+                    sx={{ width: '160px' }}
+                    image={medicsUrl}
                   />
                   <CardContent>
                     <Typography align='center' variant='h6'>

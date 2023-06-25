@@ -1,6 +1,6 @@
 export default function CheckLocation () {
   try {
-    if (!window.location.href.includes(localStorage.getItem('type').toLowerCase())) {
+    if (!window.location.href.includes(localStorage.getItem('type'))) {
       // console.log('Me meti donde no era')
       localStorage.removeItem('token')
       localStorage.removeItem('type')

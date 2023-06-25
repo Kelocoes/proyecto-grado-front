@@ -36,7 +36,7 @@ export default function App () {
           }
         : {
             background: {
-              default: '#ddd'
+              default: '#efefef'
             },
             primary: {
               main: '#1c41bff0'

@@ -4,15 +4,7 @@ import Card from '@mui/material/Card'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 
-function Copyright () {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Universidad del Valle, Escuela de Ingeniería de Sistemas y Computación, '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
+import Copyright from '../Copyright/Copyright'
 
 export default function Footer (props) {
   const { description, title, contact } = props
