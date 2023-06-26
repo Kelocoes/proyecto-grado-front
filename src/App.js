@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
@@ -20,6 +20,7 @@ import AdminMedics from './Components/DashboardComponent/Medics/AdminMedics'
 import AdminEstimation from './Components/DashboardComponent/Estimation/AdminEstimation'
 import AdminReports from './Components/DashboardComponent/Reports/AdminReports'
 import AdminProfile from './Components/DashboardComponent/Profile/AdminProfile'
+import NotFound from './Components/NotFound/NotFound'
 
 import './App.css'
 
@@ -84,6 +85,8 @@ export default function App () {
             <Route path="admin/reports" element={<AdminReports />} />
             <Route path="admin/profile" element={<AdminProfile />} />
           </Route>
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/404" />} />
         </Routes>
       </HashRouter>
     </ThemeProvider>
