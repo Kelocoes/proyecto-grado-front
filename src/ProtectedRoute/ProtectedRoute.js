@@ -56,7 +56,7 @@ export default function ProtectedRoute ({ component: Component, ...args }) {
   if (!isAuthenticated) {
     return (
     <Backdrop
-      open={!isAuthenticated}
+      open={true}
       sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <CircularProgress size={75} color='inherit'/>
