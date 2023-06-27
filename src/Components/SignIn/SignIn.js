@@ -111,7 +111,7 @@ export default function SignIn () {
   return (
     <Fade in={true}>
       <Grid container justifyContent="center">
-        <Card sx={{ width: '450px', marginY: 8, padding: 10, boxShadow: 20 }}>
+        <Card sx={{ width: '530px', marginY: 8, padding: 10, boxShadow: 20 }}>
           <Box
             sx={{
               marginBottom: 1,
