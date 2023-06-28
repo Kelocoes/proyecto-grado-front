@@ -22,6 +22,24 @@ export default function TablePacientes (props) {
     { value: 'O+', label: 'O+' },
     { value: 'O-', label: 'O-' }]
 
+  function CustomCell (value, tableMeta, updateValue) {
+    return (<FormControlLabel
+      label=""
+      value={value}
+      control={<TextField
+        label=""
+        type="number"
+        variant="standard"
+        InputProps={{
+          disableUnderline: true,
+          maxLength: 30
+        }}
+        sx={{ width: '15ch' }}
+      />
+      }
+      onChange={event => updateValue(event.target.value)}
+    />)
+  }
   const [isCleaned, setIsCleaned] = useState(false)
   const [columns, setColumns] = useState([
     {
@@ -56,22 +74,7 @@ export default function TablePacientes (props) {
       options: {
         filter: false,
         customBodyRender: (value, tableMeta, updateValue) => (
-          <FormControlLabel
-            label=""
-            value={value}
-            control={<TextField
-              label=""
-              type="number"
-              variant="standard"
-              InputProps={{
-                disableUnderline: true,
-                maxLength: 30
-              }}
-              sx={{ width: '15ch' }}
-            />
-            }
-            onChange={event => updateValue(event.target.value)}
-          />
+          CustomCell(value, tableMeta, updateValue)
         )
       }
     },
