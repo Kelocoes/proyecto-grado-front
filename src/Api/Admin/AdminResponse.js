@@ -58,6 +58,7 @@ export const useExternalApi = () => {
 
     const responseAsArray = response.data.map((item) => {
       return [
+        item.user_id.id,
         item.id_type,
         item.id,
         item.first_name,
@@ -69,7 +70,7 @@ export const useExternalApi = () => {
       ]
     })
 
-    setResponse({ response, responseAsArray })
+    setResponse(responseAsArray)
   }
 
   const getAllPatients = async (setResponse, token) => {
@@ -97,8 +98,7 @@ export const useExternalApi = () => {
       ]
     })
 
-    console.log(responseAsArray)
-    setResponse({ response, responseAsArray })
+    setResponse(responseAsArray)
   }
 
   return {

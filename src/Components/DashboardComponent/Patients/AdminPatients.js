@@ -43,6 +43,6 @@ export default function AdminPatients () {
   }
 
   return (
-    <ManagementTable response={response} type='Pacientes' />
+    <ManagementTable response={response} setResponse = {setResponse} type='Pacientes' />
   )
 }
