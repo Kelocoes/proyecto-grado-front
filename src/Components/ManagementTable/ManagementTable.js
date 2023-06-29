@@ -91,7 +91,7 @@ function CustomSwitchCell (value, tableMeta, updateValue) {
       control={<Switch
         checked={value}
         onChange={event => {
-          updateValue(!(event.target.value === 'true'))
+          updateValue(event.target.value !== 'true')
           console.log('Quiero cambiarme a ', !value)
           console.log(tableMeta.rowData)
         }}
