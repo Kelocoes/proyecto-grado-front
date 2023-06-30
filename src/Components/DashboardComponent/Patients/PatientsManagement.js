@@ -8,18 +8,25 @@ import Typography from '@mui/material/Typography'
 
 import CheckLocation from '../CheckLocation'
 import ManagementTable from '../../ManagementTable/ManagementTable'
-import { useExternalApi } from '../../../Api/Admin/AdminResponse'
+import { useExternalApi as useExternalApiAdmin } from '../../../Api/Admin/AdminResponse'
+import { useExternalApi as useExternalApiMedic } from '../../../Api/Medic/MedicResponse'
 
-export default function AdminPatients () {
+export default function PatientsManagement (props) {
+  const { type } = props
   const nav = useNavigate()
   const [response, setResponse] = useState({})
-  const { getAllMedics } = useExternalApi()
+  const { getAllPatients: getAllPatientsAsAdmin } = useExternalApiAdmin()
+  const { getAllPatients: getAllPatientsAsMedic } = useExternalApiMedic()
 
   useEffect(() => {
     if (CheckLocation()) {
       nav('/')
     } else {
-      getAllMedics(setResponse, localStorage.getItem('token'))
+      if (type === 'Admin') {
+        getAllPatientsAsAdmin(setResponse, localStorage.getItem('token'))
+      } else {
+        getAllPatientsAsMedic(setResponse, localStorage.getItem('token'))
+      }
     }
   }, [])
 
@@ -44,13 +51,13 @@ export default function AdminPatients () {
               textAlign: 'center'
             }}
           >
-            Gestión de médicos
+            Gestión de pacientes
           </Typography>
           {JSON.stringify(response) === '{}' &&
             <Skeleton
               animation="wave"
               variant="rounded"
-              width="1300px"
+              width="1500px"
               height="400px"
               sx={{
                 boxShadow: 20
@@ -61,11 +68,11 @@ export default function AdminPatients () {
             <ManagementTable
               response={response}
               setResponse={setResponse}
-              title='Tabla de Médicos'
+              title='Tabla de Pacientes'
               includeList={[
-                'key', 'Tipo', 'Documento',
-                'Nombre', 'Apellido', 'Ciudad',
-                'Teléfono', 'Correo', 'Activo', 'Actualizar']}
+                'Documento', 'Nombre', 'Apellido', 'Ciudad',
+                'Dirección', 'Teléfono', 'Sangre', 'Nacimiento',
+                'Estimación', type === 'Admin' ? 'Médico' : undefined, 'Eliminar', 'Actualizar']}
             />
           }
         </Box>

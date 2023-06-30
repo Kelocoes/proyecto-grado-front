@@ -35,7 +35,7 @@ export default function ListChooser (props) {
         <ListItemText primary="Inicio" />
       </ListItemButton>
       <ListItemButton component={LinkRouter} to={`${userType}/patients`}
-        onClick={() => { props.setTitleAppBar('Pacientes') }}
+        onClick={() => { props.setTitleAppBar('Gestión de pacientes') }}
       >
         <ListItemIcon>
           <GroupIcon />
@@ -44,7 +44,7 @@ export default function ListChooser (props) {
       </ListItemButton>
       {isAdmin &&
         <ListItemButton component={LinkRouter} to={'admin/medics'}
-          onClick={() => { props.setTitleAppBar('Medicos') }}
+          onClick={() => { props.setTitleAppBar('Gestión de médicos') }}
         >
           <ListItemIcon>
             <MedicalServicesIcon />

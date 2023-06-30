@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Box from '@mui/material/Box'
 import MUIDataTable from 'mui-datatables'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -7,8 +6,8 @@ import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import SyncAltIcon from '@mui/icons-material/SyncAlt'
 import Switch from '@mui/material/Switch'
-import Fade from '@mui/material/Fade'
 import CancelIcon from '@mui/icons-material/Cancel'
+import Box from '@mui/material/Box'
 
 function CustomCell (value, tableMeta, updateValue, type, width, maxLength) {
   return (<FormControlLabel
@@ -17,9 +16,8 @@ function CustomCell (value, tableMeta, updateValue, type, width, maxLength) {
     control={<TextField
       label=""
       type={type}
-      variant="standard"
+      variant="outlined"
       InputProps={{
-        disableUnderline: true,
         maxLength
       }}
       sx={{ width: { width } }}
@@ -48,10 +46,7 @@ function CustomItemCell (value, tableMeta, updateValue, type) {
       value={value}
       control={<TextField
         select
-        variant="standard"
-        InputProps={{
-          disableUnderline: true
-        }}
+        variant="outlined"
         label=""
       >
         {mainList.map((option) => (
@@ -78,7 +73,7 @@ function CustomDeleteCell (value, tableMeta, updateValue, response, setResponse)
       }
       }
     >
-      <CancelIcon color="error"/>
+      <CancelIcon color="error" />
     </IconButton>
   )
 }
@@ -95,7 +90,7 @@ function CustomSwitchCell (value, tableMeta, updateValue) {
           console.log('Quiero cambiarme a ', !value)
           console.log(tableMeta.rowData)
         }}
-        />
+      />
       }
     />
   )
@@ -110,7 +105,7 @@ function CustomUpdateCell (value, tableMeta, updateValue) {
 }
 
 export default function ManagementTable (props) {
-  const { response, setResponse, type } = props
+  const { response, setResponse, title, includeList } = props
 
   const [isCleaned, setIsCleaned] = useState(false)
   const [columns, setColumns] = useState([
@@ -133,7 +128,7 @@ export default function ManagementTable (props) {
       name: 'Documento',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'number', '15ch', 20)
+          CustomCell(value, tableMeta, updateValue, 'number', '18ch', 20)
         )
       }
     },
@@ -157,15 +152,15 @@ export default function ManagementTable (props) {
       name: 'Ciudad',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'string', '10ch', 50)
+          CustomCell(value, tableMeta, updateValue, 'string', '15ch', 50)
         )
       }
     },
     {
-      name: 'Direccion',
+      name: 'Dirección',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'string', '10ch', 200)
+          CustomCell(value, tableMeta, updateValue, 'string', '15ch', 200)
         )
       }
     },
@@ -173,7 +168,7 @@ export default function ManagementTable (props) {
       name: 'Teléfono',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'number', '15ch', 20)
+          CustomCell(value, tableMeta, updateValue, 'number', '17ch', 20)
         )
       }
     },
@@ -197,7 +192,7 @@ export default function ManagementTable (props) {
       name: 'Nacimiento',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'date', '15ch')
+          CustomCell(value, tableMeta, updateValue, 'date', '18ch')
         )
       }
     },
@@ -205,9 +200,12 @@ export default function ManagementTable (props) {
       name: 'Estimación',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'number', '10ch')
+          CustomCell(value, tableMeta, updateValue, 'number', '15ch')
         )
       }
+    },
+    {
+      name: 'Médico'
     },
     {
       name: 'Eliminar',
@@ -236,40 +234,31 @@ export default function ManagementTable (props) {
     }])
 
   const options = {
-    selectableRows: 'none'
+    selectableRows: 'none',
+    rowsPerPage: 5,
+    rowsPerPageOptions: [5]
   }
 
   useEffect(() => {
-    let excludeList = []
-    if (type === 'Medicos') {
-      excludeList = ['Nacimiento', 'Direccion', 'Sangre', 'Estimación', 'Eliminar']
-    } else {
-      excludeList = ['Tipo', 'Correo', 'Activo', 'key']
-    }
-    setColumns(columns.filter(item => !excludeList.includes(item.name)))
+    setColumns(columns.filter(item => includeList.includes(item.name)))
     setIsCleaned(true)
   }, [])
 
-  if (!isCleaned) {
-    return (<div />)
-  }
-
   return (
-    <Fade in={true}>
-      <Box
-        sx={{
-          maxWidth: '1500px',
-          marginTop: '5%',
-          marginX: '10%'
-        }}
-      >
+    <Box
+      sx={{
+        maxWidth: '1500px'
+      }}
+    >
+      {!isCleaned && <div /> }
+      {isCleaned &&
         <MUIDataTable
-          title={`Lista de ${type}`}
+          title={title}
           data={response}
           columns={columns}
           options={options}
         />
-      </Box>
-    </Fade>
+      }
+    </Box>
   )
 }

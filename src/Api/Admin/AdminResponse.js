@@ -86,15 +86,16 @@ export const useExternalApi = () => {
 
     const responseAsArray = response.data.map((item) => {
       return [
-        item.patient_id,
-        item.first_name,
-        item.last_name,
-        item.city,
-        item.address,
-        item.cellphone,
-        item.blood_type,
-        item.birth_date,
-        item.actual_estimation
+        item.patient.patient_id,
+        item.patient.first_name,
+        item.patient.last_name,
+        item.patient.city,
+        item.patient.address,
+        item.patient.cellphone,
+        item.patient.blood_type,
+        item.patient.birth_date,
+        item.patient.actual_estimation,
+        item.user.first_name.concat(' ', item.user.last_name)
       ]
     })
 

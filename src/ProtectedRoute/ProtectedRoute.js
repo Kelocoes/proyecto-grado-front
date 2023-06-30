@@ -6,7 +6,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useExternalApi } from '../Api/Account/AccountResponse'
 
 export default function ProtectedRoute ({ component: Component, ...args }) {
-  const { actualTheme, setActualTheme } = args
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const nav = useNavigate()
@@ -64,7 +63,6 @@ export default function ProtectedRoute ({ component: Component, ...args }) {
   }
 
   return (<Component
-    actualTheme={actualTheme}
-    setActualTheme={setActualTheme}
+    {...args}
   />)
 }
