@@ -5,23 +5,30 @@ import Grid from '@mui/material/Grid'
 import Fade from '@mui/material/Fade'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Dialog from '@mui/material/Dialog'
 
 import CheckLocation from '../CheckLocation'
 import ManagementTable from '../../ManagementTable/ManagementTable'
 import { useExternalApi } from '../../../Api/Admin/AdminResponse'
+import InformationProfile from '../../InformationProfile/InformationProfile'
 
 export default function AdminPatients () {
   const nav = useNavigate()
   const [response, setResponse] = useState({})
+  const [isOpenMedic, setIsOpenMedic] = useState(false)
+  const [reloadInfo, setReloadInfo] = useState(false)
   const { getAllMedics } = useExternalApi()
 
   useEffect(() => {
     if (CheckLocation()) {
       nav('/')
-    } else {
-      getAllMedics(setResponse, localStorage.getItem('token'))
     }
   }, [])
+
+  useEffect(() => {
+    console.log('Recargando')
+    getAllMedics(setResponse, localStorage.getItem('token'))
+  }, [reloadInfo])
 
   return (
     <Fade in={true}>
@@ -66,9 +73,18 @@ export default function AdminPatients () {
                 'key', 'Tipo', 'Documento',
                 'Nombre', 'Apellido', 'Ciudad',
                 'Teléfono', 'Correo', 'Activo', 'Actualizar']}
+              setIsOpen={setIsOpenMedic}
+              setReloadInfo={setReloadInfo}
+              reloadInfo={reloadInfo}
             />
           }
         </Box>
+        <Dialog
+          onClose={() => setIsOpenMedic(false)}
+          open={isOpenMedic}
+        >
+          <InformationProfile method="CREATE" isAdmin={true}/>
+        </Dialog>
       </Grid>
     </Fade>
   )

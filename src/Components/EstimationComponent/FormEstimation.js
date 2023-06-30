@@ -15,6 +15,7 @@ import Stack from '@mui/material/Stack'
 import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
 import Checkbox from '@mui/material/Checkbox'
+import Link from '@mui/material/Link'
 
 import { useExternalApi } from '../../Api/Results/ResultsResponse'
 
@@ -105,18 +106,18 @@ export default function MainFeaturedPost () {
 
   // Action when pressing button for dialog
   const handleButtonClick = () => {
-    setIsActive(true)
     setOpen(false)
   }
 
   // Action for checkbox button
   const handlePrivacyClick = () => {
-    if (!open && !isChecked) {
-      setOpen(true)
-    } else {
-      setIsActive(false)
-    }
+    setIsActive(!isActive)
     setIsChecked(!isChecked)
+  }
+
+  // Action for terms and conditions
+  const handleTermsClick = () => {
+    setOpen(true)
   }
 
   // USE EFFECTS
@@ -286,7 +287,11 @@ export default function MainFeaturedPost () {
                 <Grid item xs={12} sx={{ paddingBottom: 1 }}>
                   <Typography sx={{ paddingTop: 1 }}>
                     <Checkbox onClick={handlePrivacyClick} />
-                    He leído y acepto la política de privacidad.
+                    He leído y acepto la
+                    {' '}
+                    <Link component="button" onClick={handleTermsClick}>
+                      política de privacidad.
+                    </Link>
                   </Typography>
                 </Grid>
                 <Grid item xs={12} align="center">

@@ -8,6 +8,9 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt'
 import Switch from '@mui/material/Switch'
 import CancelIcon from '@mui/icons-material/Cancel'
 import Box from '@mui/material/Box'
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined'
+import CachedIcon from '@mui/icons-material/Cached'
+import CircularProgress from '@mui/material/CircularProgress'
 
 function CustomCell (value, tableMeta, updateValue, type, width, maxLength) {
   return (<FormControlLabel
@@ -105,9 +108,10 @@ function CustomUpdateCell (value, tableMeta, updateValue) {
 }
 
 export default function ManagementTable (props) {
-  const { response, setResponse, title, includeList } = props
+  const { response, setResponse, title, includeList, setIsOpen, reloadInfo, setReloadInfo } = props
 
   const [isCleaned, setIsCleaned] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState([
     {
       name: 'key',
@@ -236,13 +240,35 @@ export default function ManagementTable (props) {
   const options = {
     selectableRows: 'none',
     rowsPerPage: 5,
-    rowsPerPageOptions: [5]
+    rowsPerPageOptions: [5],
+    customToolbar: () => (
+      <React.Fragment>
+        <IconButton color="success" onClick={ () => setIsOpen(true)}>
+          <AddCircleOutlinedIcon />
+        </IconButton>
+        {isLoading
+          ? <IconButton> <CircularProgress color="success"size={20}/> </IconButton>
+          : <IconButton color="success"
+            onClick={ () => {
+              setIsLoading(true)
+              setReloadInfo(!reloadInfo)
+            }}
+          >
+            <CachedIcon />
+          </IconButton>
+        }
+      </React.Fragment>
+    )
   }
 
   useEffect(() => {
     setColumns(columns.filter(item => includeList.includes(item.name)))
     setIsCleaned(true)
   }, [])
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [response])
 
   return (
     <Box
