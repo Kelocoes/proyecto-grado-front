@@ -107,6 +107,27 @@ function CustomUpdateCell (value, tableMeta, updateValue) {
   )
 }
 
+function CustomToolBarRender (isLoading, setIsLoading, setIsOpen, reloadInfo, setReloadInfo) {
+  return (
+    <React.Fragment>
+      <IconButton color="success" onClick={() => setIsOpen(true)}>
+        <AddCircleOutlinedIcon />
+      </IconButton>
+      {isLoading
+        ? <IconButton> <CircularProgress color="success" size={20} /> </IconButton>
+        : <IconButton color="success"
+          onClick={() => {
+            setIsLoading(true)
+            setReloadInfo(!reloadInfo)
+          }}
+        >
+          <CachedIcon />
+        </IconButton>
+      }
+    </React.Fragment>
+  )
+}
+
 export default function ManagementTable (props) {
   const { response, setResponse, title, includeList, setIsOpen, reloadInfo, setReloadInfo } = props
 
@@ -242,22 +263,7 @@ export default function ManagementTable (props) {
     rowsPerPage: 5,
     rowsPerPageOptions: [5],
     customToolbar: () => (
-      <React.Fragment>
-        <IconButton color="success" onClick={ () => setIsOpen(true)}>
-          <AddCircleOutlinedIcon />
-        </IconButton>
-        {isLoading
-          ? <IconButton> <CircularProgress color="success"size={20}/> </IconButton>
-          : <IconButton color="success"
-            onClick={ () => {
-              setIsLoading(true)
-              setReloadInfo(!reloadInfo)
-            }}
-          >
-            <CachedIcon />
-          </IconButton>
-        }
-      </React.Fragment>
+      CustomToolBarRender(isLoading, setIsLoading, setIsOpen, reloadInfo, setReloadInfo)
     )
   }
 
@@ -276,7 +282,7 @@ export default function ManagementTable (props) {
         maxWidth: '1500px'
       }}
     >
-      {!isCleaned && <div /> }
+      {!isCleaned && <div />}
       {isCleaned &&
         <MUIDataTable
           title={title}
