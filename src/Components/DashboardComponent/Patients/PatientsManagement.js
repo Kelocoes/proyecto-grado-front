@@ -5,30 +5,37 @@ import Grid from '@mui/material/Grid'
 import Fade from '@mui/material/Fade'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Dialog from '@mui/material/Dialog'
 
 import CheckLocation from '../CheckLocation'
 import ManagementTable from '../../ManagementTable/ManagementTable'
 import { useExternalApi as useExternalApiAdmin } from '../../../Api/Admin/AdminResponse'
 import { useExternalApi as useExternalApiMedic } from '../../../Api/Medic/MedicResponse'
+import PatientRegisterForm from '../../InformationProfile/PatientRegisterForm'
 
 export default function PatientsManagement (props) {
   const { type } = props
   const nav = useNavigate()
   const [response, setResponse] = useState({})
+  const [isOpenPatient, setIsOpenPatient] = useState(false)
+  const [reloadInfo, setReloadInfo] = useState(false)
   const { getAllPatients: getAllPatientsAsAdmin } = useExternalApiAdmin()
   const { getAllPatients: getAllPatientsAsMedic } = useExternalApiMedic()
 
   useEffect(() => {
     if (CheckLocation()) {
       nav('/')
-    } else {
-      if (type === 'Admin') {
-        getAllPatientsAsAdmin(setResponse, localStorage.getItem('token'))
-      } else {
-        getAllPatientsAsMedic(setResponse, localStorage.getItem('token'))
-      }
     }
   }, [])
+
+  useEffect(() => {
+    console.log('Recargando')
+    if (type === 'Admin') {
+      getAllPatientsAsAdmin(setResponse, localStorage.getItem('token'))
+    } else {
+      getAllPatientsAsMedic(setResponse, localStorage.getItem('token'))
+    }
+  }, [reloadInfo])
 
   return (
     <Fade in={true}>
@@ -73,9 +80,18 @@ export default function PatientsManagement (props) {
                 'Documento', 'Nombre', 'Apellido', 'Ciudad',
                 'Dirección', 'Teléfono', 'Sangre', 'Nacimiento',
                 'Estimación', type === 'Admin' ? 'Médico' : undefined, 'Eliminar', 'Actualizar']}
+              setIsOpen={setIsOpenPatient}
+              setReloadInfo={setReloadInfo}
+              reloadInfo={reloadInfo}
             />
           }
         </Box>
+        <Dialog
+          onClose={() => setIsOpenPatient(false)}
+          open={isOpenPatient}
+        >
+          <PatientRegisterForm />
+        </Dialog>
       </Grid>
     </Fade>
   )

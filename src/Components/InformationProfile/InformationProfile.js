@@ -41,7 +41,7 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 export default function InformationProfile (props) {
   // PROPS
 
-  const { method, type } = props
+  const { method, type, isAdmin } = props
 
   // HOOKS
 
@@ -181,16 +181,16 @@ export default function InformationProfile (props) {
         setIsLoading(false)
         setOpenSnack(true)
         setMessage(response.data.detail)
-        if (method === 'CREATE') {
-          setTimeout(() => {
-            if (response.status === 200) {
+        setTimeout(() => {
+          if (response.status === 200) {
+            if (method === 'CREATE' && !isAdmin) {
               localStorage.setItem('token', response.data.token)
               nav('/dashboard/medic')
-            } else {
-              captchaRef.current.reset()
             }
-          }, 2000)
-        }
+          } else {
+            captchaRef.current.reset()
+          }
+        }, 2000)
       }
     } catch (error) {
       errorHandler('error', 'Ha ocurrido un error inesperado')

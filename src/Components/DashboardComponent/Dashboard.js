@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
+import Fade from '@mui/material/Fade'
 
 import ListChooser from './ListChooser/ListChooser'
 
@@ -75,69 +76,71 @@ export default function Dashboard (props) {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar position="absolute" open={open}>
-        <Toolbar
-          sx={{
-            pr: '24px' // keep right padding when drawer closed
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
+    <Fade in={true}>
+      <Box sx={{ display: 'flex' }}>
+        <AppBar position="absolute" open={open}>
+          <Toolbar
             sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' })
+              pr: '24px' // keep right padding when drawer closed
             }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '36px',
+                ...(open && { display: 'none' })
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              {titleAppBar}
+            </Typography>
+            <IconButton color="inherit" onClick={changeTheme}>
+              {actualTheme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              px: [1]
+            }}
           >
-            {titleAppBar}
-          </Typography>
-          <IconButton color="inherit" onClick={changeTheme}>
-            {actualTheme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <Toolbar
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List component="nav">
+            <ListChooser setTitleAppBar={setTitleAppBar} />
+            <Divider sx={{ my: 1 }} />
+          </List>
+        </Drawer>
+        <Box
+          component="main"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1]
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto'
           }}
         >
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <List component="nav">
-          <ListChooser setTitleAppBar = {setTitleAppBar} />
-          <Divider sx={{ my: 1 }} />
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto'
-        }}
-      >
-        <Toolbar />
-        <Outlet />
+          <Toolbar />
+          <Outlet />
+        </Box>
       </Box>
-    </Box>
+    </Fade>
   )
 }
