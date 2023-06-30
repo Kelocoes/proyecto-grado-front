@@ -18,7 +18,7 @@ import profileUrl from '../../../assets/profileImage.png'
 export default function LandingDashboard (props) {
   // CONSTANTS
 
-  const { type } = props
+  const { type, setTitleAppBar } = props
 
   return (
     <Container
@@ -29,7 +29,9 @@ export default function LandingDashboard (props) {
         <Grid container spacing={5}>
           <Grid item xs={12} sm={6} >
             <Card align="center" sx={{ boxShadow: 10 }}>
-              <CardActionArea component={LinkRouter} to={'patients'}>
+              <CardActionArea component={LinkRouter} to={'patients'}
+                onClick={() => { setTitleAppBar('Gestión de pacientes') }}
+              >
                 <CardMedia
                   component="img"
                   height="160"
@@ -47,7 +49,9 @@ export default function LandingDashboard (props) {
           {type === 'admin' &&
             <Grid item xs={12} sm={6} >
               <Card align="center" sx={{ boxShadow: 10 }}>
-                <CardActionArea component={LinkRouter} to={'medics'}>
+                <CardActionArea component={LinkRouter} to={'medics'}
+                  onClick={() => { setTitleAppBar('Gestión de médicos') }}
+                >
                   <CardMedia
                     component="img"
                     height="160"
@@ -65,7 +69,9 @@ export default function LandingDashboard (props) {
           }
           <Grid item xs={12} sm={6} >
             <Card align="center" sx={{ boxShadow: 10 }}>
-              <CardActionArea component={LinkRouter} to={'estimation'}>
+              <CardActionArea component={LinkRouter} to={'estimation'}
+                onClick={() => { setTitleAppBar('Estimación') }}
+              >
                 <CardMedia
                   component="img"
                   height="160"
@@ -82,7 +88,9 @@ export default function LandingDashboard (props) {
           </Grid>
           <Grid item xs={12} sm={6} >
             <Card align="center" sx={{ boxShadow: 10 }}>
-              <CardActionArea component={LinkRouter} to={'reports'}>
+              <CardActionArea component={LinkRouter} to={'reports'}
+                onClick={() => { setTitleAppBar('Reportes') }}
+              >
                 <CardMedia
                   component="img"
                   height="160"
@@ -99,7 +107,9 @@ export default function LandingDashboard (props) {
           </Grid>
           <Grid item xs={12} sm={type === 'admin' ? 12 : 6}>
             <Card align="center" sx={{ boxShadow: 10 }}>
-              <CardActionArea component={LinkRouter} to={'profile'}>
+              <CardActionArea component={LinkRouter} to={'profile'}
+                onClick={() => { setTitleAppBar('Perfil') }}
+              >
                 <CardMedia
                   component="img"
                   height="160"

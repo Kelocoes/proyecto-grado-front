@@ -63,9 +63,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 export default function Dashboard (props) {
-  const { actualTheme, setActualTheme } = props
+  const { actualTheme, setActualTheme, titleAppBar, setTitleAppBar } = props
   const [open, setOpen] = useState(false)
-  const [titleAppBar, setTitleAppBar] = useState('Inicio')
 
   const toggleDrawer = () => {
     setOpen(!open)
