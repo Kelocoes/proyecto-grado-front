@@ -1,25 +1,10 @@
-import axios from 'axios'
-
 import { useEnv } from '../../Context/EnvContext'
-import { DecypherData } from '../Cypher&Decypher/DecypherData'
 import { CypherData } from '../Cypher&Decypher/CypherData'
+import { useMakeRequest } from '../MakeEncryptedRequest'
 
 export const useExternalApi = () => {
   const { apiServerUrl, aesIv, aesSecretKey } = useEnv()
-
-  const makeRequest = async (options) => {
-    try {
-      const response = await axios(options.config)
-      const decryptedResponseBody = DecypherData(response.data, aesIv, aesSecretKey)
-      response.data = decryptedResponseBody
-      return response
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return error.response
-      }
-      return error.message
-    }
-  }
+  const { makeEncryptedRequest: makeRequest } = useMakeRequest()
 
   const createPatient = async (datos, setResponse, token) => {
     const config = {

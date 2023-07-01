@@ -1,22 +1,9 @@
-import axios from 'axios'
-
 import { useEnv } from '../../Context/EnvContext'
+import { useMakeRequest } from '../MakeEncryptedRequest'
 
 export const useExternalApi = () => {
   const { apiServerUrl } = useEnv()
-
-  const makeRequest = async (options) => {
-    try {
-      const response = await axios(options.config)
-      return response
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return error.response.data
-      }
-
-      return error.message
-    }
-  }
+  const { makeDefaultRequest: makeRequest } = useMakeRequest()
 
   const getEstimation = async (datos, setEstimation, setActiveButtonGraph) => {
     const config = {
