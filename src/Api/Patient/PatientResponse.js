@@ -15,6 +15,8 @@ export const useExternalApi = () => {
       return response
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
+        const decryptedResponseBody = DecypherData(error.response.data, aesIv, aesSecretKey)
+        error.response.data = decryptedResponseBody
         return error.response
       }
       return error.message
