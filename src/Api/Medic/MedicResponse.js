@@ -40,7 +40,7 @@ export const useExternalApi = () => {
       method: 'post',
       headers: {
       },
-      data: CypherData(token, aesIv, aesSecretKey)
+      data: CypherData({ token }, aesIv, aesSecretKey)
     }
 
     const response = await makeRequest({ config })
