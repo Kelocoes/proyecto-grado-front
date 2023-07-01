@@ -41,7 +41,7 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 export default function InformationProfile (props) {
   // PROPS
 
-  const { method, type, isAdmin } = props
+  const { method, type, toWho } = props
 
   // HOOKS
 
@@ -183,7 +183,7 @@ export default function InformationProfile (props) {
         setMessage(response.data.detail)
         setTimeout(() => {
           if (response.status === 200) {
-            if (method === 'CREATE' && !isAdmin) {
+            if (method === 'CREATE' && toWho !== 'other') {
               localStorage.setItem('token', response.data.token)
               nav('/dashboard/medic')
             }

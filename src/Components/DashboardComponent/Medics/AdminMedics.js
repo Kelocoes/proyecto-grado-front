@@ -6,18 +6,54 @@ import Fade from '@mui/material/Fade'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Dialog from '@mui/material/Dialog'
+import MuiAlert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
-import CheckLocation from '../CheckLocation'
+import CheckLocation from '../../../Utils/CheckLocation'
 import ManagementTable from '../../ManagementTable/ManagementTable'
-import { useExternalApi } from '../../../Api/Admin/AdminResponse'
+import { useExternalApi as useExternalApiMedic } from '../../../Api/Medic/MedicResponse'
+import { useExternalApi as useExternalApiAdmin } from '../../../Api/Admin/AdminResponse'
 import InformationProfile from '../../InformationProfile/InformationProfile'
+import GetSeverity from '../../../Utils/GetSeveirty'
+
+const Alert = React.forwardRef(function Alert (props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+})
 
 export default function AdminPatients () {
   const nav = useNavigate()
   const [response, setResponse] = useState({})
-  const [isOpenMedic, setIsOpenMedic] = useState(false)
+  const [responseMessage, setResponseMessage] = useState({})
+  const [isOpenRegisterMedic, setIsOpenRegisterMedic] = useState(false)
   const [reloadInfo, setReloadInfo] = useState(false)
-  const { getAllMedics } = useExternalApi()
+  const [openSnack, setOpenSnack] = useState(false)
+  const [message, setMessage] = useState('')
+  const [severity, setSeverity] = useState('info')
+  const { getAllMedics } = useExternalApiMedic()
+  const { updateMedicAsOther } = useExternalApiAdmin()
+
+  // Error handler
+  const errorHandler = (type, message) => {
+    setSeverity(type)
+    setOpenSnack(true)
+    setMessage(message)
+  }
+
+  // Action when closing snackbar
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpenSnack(false)
+  }
+
+  const updateFunction = async (data) => {
+    try {
+      await updateMedicAsOther(data, localStorage.getItem('token'), setResponseMessage)
+    } catch (error) {
+      errorHandler('error', 'Error al actualizar el paciente')
+    }
+  }
 
   useEffect(() => {
     if (CheckLocation()) {
@@ -26,8 +62,34 @@ export default function AdminPatients () {
   }, [])
 
   useEffect(() => {
-    console.log('Recargando')
-    getAllMedics(setResponse, localStorage.getItem('token'))
+    if (JSON.stringify(response) !== '{}') {
+      setOpenSnack(true)
+      GetSeverity(response.status, setSeverity)
+      setMessage(response.data.detail)
+    }
+  }, [response])
+
+  useEffect(() => {
+    if (JSON.stringify(responseMessage) !== '{}') {
+      setOpenSnack(true)
+      GetSeverity(responseMessage.status, setSeverity)
+      setMessage(responseMessage.data.detail)
+      setReloadInfo(!reloadInfo)
+    }
+  }, [responseMessage])
+
+  useEffect(() => {
+    async function fetchData () {
+      try {
+        await getAllMedics(setResponse, localStorage.getItem('token'))
+        setOpenSnack(true)
+        GetSeverity(response.status, setSeverity)
+        setMessage(response.detail)
+      } catch (error) {
+        errorHandler('error', 'Error al cargar la información')
+      }
+    }
+    fetchData()
   }, [reloadInfo])
 
   return (
@@ -66,25 +128,30 @@ export default function AdminPatients () {
           }
           {JSON.stringify(response) !== '{}' &&
             <ManagementTable
-              response={response}
-              setResponse={setResponse}
+              response={response.responseAsArray}
               title='Tabla de Médicos'
               includeList={[
                 'key', 'Tipo', 'Documento',
                 'Nombre', 'Apellido', 'Ciudad',
                 'Teléfono', 'Correo', 'Activo', 'Actualizar']}
-              setIsOpen={setIsOpenMedic}
+              setIsOpenRegister={setIsOpenRegisterMedic}
               setReloadInfo={setReloadInfo}
               reloadInfo={reloadInfo}
+              updateFunction={updateFunction}
             />
           }
         </Box>
         <Dialog
-          onClose={() => setIsOpenMedic(false)}
-          open={isOpenMedic}
+          onClose={() => { setIsOpenRegisterMedic(false); setReloadInfo(!reloadInfo) }}
+          open={isOpenRegisterMedic}
         >
-          <InformationProfile method="CREATE" isAdmin={true}/>
+          <InformationProfile method="CREATE" toWho={'other'}/>
         </Dialog>
+        <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Grid>
     </Fade>
   )
