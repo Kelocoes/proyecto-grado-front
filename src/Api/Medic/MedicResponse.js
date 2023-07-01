@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import { useEnv } from '../../Context/EnvContext'
 import { DecypherData } from '../Cypher&Decypher/DecypherData'
+import { CypherData } from '../Cypher&Decypher/CypherData'
 
 export const useExternalApi = () => {
   const { apiServerUrl, aesIv, aesSecretKey } = useEnv()
@@ -26,7 +27,7 @@ export const useExternalApi = () => {
       method: 'POST',
       headers: {
       },
-      data: datos
+      data: CypherData(datos, aesIv, aesSecretKey)
     }
 
     const response = await makeRequest({ config })
@@ -39,9 +40,7 @@ export const useExternalApi = () => {
       method: 'post',
       headers: {
       },
-      data: {
-        token
-      }
+      data: CypherData(token, aesIv, aesSecretKey)
     }
 
     const response = await makeRequest({ config })
@@ -68,7 +67,7 @@ export const useExternalApi = () => {
       headers: {
         Authorization: `Token ${token}`
       },
-      data: datos
+      data: CypherData(datos, aesIv, aesSecretKey)
     }
 
     const response = await makeRequest({ config })
