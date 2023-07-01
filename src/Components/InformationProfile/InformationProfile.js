@@ -253,7 +253,10 @@ export default function InformationProfile (props) {
             </Typography>
             {isUpdate &&
               <Typography variant="body2" paddingTop={1}>
-                Último inicio de sesión: {profileData.data.user_id.last_login.split('T')[0]}
+                Último inicio de sesión:
+                {profileData.data.user_id.last_login
+                  ? profileData.data.user_id.last_login.split('T')[0]
+                  : ''}
               </Typography>
             }
             <Box sx={{ marginTop: 3 }}>

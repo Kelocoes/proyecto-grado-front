@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { useEnv } from '../../Context/EnvContext'
-import { DecypherData } from '../Decypher/DecypherData'
+import { DecypherData } from '../Cypher&Decypher/DecypherData'
 
 export const useExternalApi = () => {
   const { apiServerUrl, aesIv, aesSecretKey } = useEnv()
@@ -9,9 +9,9 @@ export const useExternalApi = () => {
   const makeRequest = async (options) => {
     try {
       const response = await axios(options.config)
-      const { data } = response
-
-      return data
+      const decryptedResponseBody = DecypherData(response.data, aesIv, aesSecretKey)
+      response.data = decryptedResponseBody
+      return response
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         return error.response.data
@@ -46,9 +46,8 @@ export const useExternalApi = () => {
       }
     }
 
-    const cypherData = await makeRequest({ config })
-    const data = DecypherData(cypherData, aesIv, aesSecretKey)
-    setEstimation(data)
+    const response = await makeRequest({ config })
+    setEstimation(response)
     setActiveButtonGraph(true)
   }
 

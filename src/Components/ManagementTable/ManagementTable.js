@@ -218,12 +218,7 @@ export default function ManagementTable (props) {
       }
     },
     {
-      name: 'Correo',
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'string', '30ch', 254)
-        )
-      }
+      name: 'Correo'
     },
     {
       name: 'Nacimiento',
@@ -234,12 +229,7 @@ export default function ManagementTable (props) {
       }
     },
     {
-      name: 'Estimación',
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => (
-          CustomCell(value, tableMeta, updateValue, 'number', '15ch')
-        )
-      }
+      name: 'Estimación'
     },
     {
       name: 'Médico'
