@@ -63,7 +63,7 @@ export default function MainFeaturedPost () {
   const { getEstimation } = useExternalApi()
 
   // States hook
-  const [estimation, setEstimation] = useState({ prediction: 0, severity: 'none' })
+  const [estimation, setEstimation] = useState({ data: { prediction: 0, severity: 'none' } })
   const [isActive, setIsActive] = useState(false)
   const [open, setOpen] = useState(false)
   const [buttonGraph, setActiveButtonGraph] = useState(false)
@@ -314,9 +314,9 @@ export default function MainFeaturedPost () {
             <CircularProgressWithLabel
               variant="determinate"
               size={250}
-              value={estimation.prediction * 100}
-              style={{ color: colorLevel[estimation.severity] }}
-              severity={severity[estimation.severity]} />
+              value={estimation.data.prediction * 100}
+              style={{ color: colorLevel[estimation.data.severity] }}
+              severity={severity[estimation.data.severity]} />
           </CardContent>
           <CardContent>
             <Button
@@ -334,7 +334,7 @@ export default function MainFeaturedPost () {
       </Dialog>
       <Dialog open={openGraph} maxWidth="xl" onClose={() => { setOpenGraph(false) }}>
         <Container sx={{ width: '1000px', height: '550px', overflow: 'auto' }}>
-          <GraphEstimation estimation={estimation.prediction} />
+          <GraphEstimation estimation={estimation.data.prediction} />
           <Typography align="justify" sx={{ fontStyle: 'italic', pt: 1 }} >
             Este gráfico representa el conjunto de prueba que hizo parte de la selección
             del modelo de Redes Neuronales que es utilizado en esta aplicación. Esto
