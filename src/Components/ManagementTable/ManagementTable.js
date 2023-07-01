@@ -63,8 +63,7 @@ function CustomItemCell (value, tableMeta, updateValue, type) {
   )
 }
 
-function CustomDeleteCell (value, tableMeta, updateValue,
-  reloadInfo, setReloadInfo, deleteFunction) {
+function CustomDeleteCell (value, tableMeta, updateValue, deleteFunction) {
   return (
     <IconButton
       aria-label="delete"
@@ -79,7 +78,7 @@ function CustomDeleteCell (value, tableMeta, updateValue,
   )
 }
 
-function CustomSwitchCell (value, tableMeta, updateValue, reloadInfo, setReloadInfo) {
+function CustomSwitchCell (value, tableMeta, updateValue, activateFunction) {
   return (
     <FormControlLabel
       label=""
@@ -88,8 +87,7 @@ function CustomSwitchCell (value, tableMeta, updateValue, reloadInfo, setReloadI
         checked={value}
         onChange={event => {
           updateValue(event.target.value !== 'true')
-          console.log('Quiero cambiarme a ', !value)
-          console.log(tableMeta.rowData)
+          activateFunction(tableMeta.rowData[0], event.target.value)
         }}
       />
       }
@@ -97,8 +95,7 @@ function CustomSwitchCell (value, tableMeta, updateValue, reloadInfo, setReloadI
   )
 }
 
-function CustomUpdateCell (value, tableMeta, updateValue,
-  reloadInfo, setReloadInfo, updateFunction) {
+function CustomUpdateCell (value, tableMeta, updateValue, updateFunction) {
   return (
     <IconButton
       onClick={() => {
@@ -142,7 +139,8 @@ export default function ManagementTable (props) {
     reloadInfo,
     setReloadInfo,
     deleteFunction,
-    updateFunction
+    updateFunction,
+    activateFunction
   } = props
 
   const [isCleaned, setIsCleaned] = useState(false)
@@ -250,10 +248,7 @@ export default function ManagementTable (props) {
       name: 'Eliminar',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomDeleteCell(
-            value, tableMeta,
-            updateValue, reloadInfo,
-            setReloadInfo, deleteFunction)
+          CustomDeleteCell(value, tableMeta, updateValue, deleteFunction)
         )
       }
     },
@@ -261,7 +256,7 @@ export default function ManagementTable (props) {
       name: 'Activo',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomSwitchCell(value, tableMeta, updateValue, reloadInfo, setReloadInfo)
+          CustomSwitchCell(value, tableMeta, updateValue, activateFunction)
         )
       }
     },
@@ -270,7 +265,7 @@ export default function ManagementTable (props) {
       options: {
         filter: false,
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomUpdateCell(value, tableMeta, updateValue, reloadInfo, setReloadInfo, updateFunction)
+          CustomUpdateCell(value, tableMeta, updateValue, updateFunction)
         )
       }
     }])

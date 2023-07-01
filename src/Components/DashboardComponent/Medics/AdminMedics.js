@@ -13,6 +13,7 @@ import CheckLocation from '../../../Utils/CheckLocation'
 import ManagementTable from '../../ManagementTable/ManagementTable'
 import { useExternalApi as useExternalApiMedic } from '../../../Api/Medic/MedicResponse'
 import { useExternalApi as useExternalApiAdmin } from '../../../Api/Admin/AdminResponse'
+import { useExternalApi as useExternalApiAccount } from '../../../Api/Account/AccountResponse'
 import InformationProfile from '../../InformationProfile/InformationProfile'
 import GetSeverity from '../../../Utils/GetSeveirty'
 
@@ -31,6 +32,7 @@ export default function AdminPatients () {
   const [severity, setSeverity] = useState('info')
   const { getAllMedics } = useExternalApiMedic()
   const { updateMedicAsOther } = useExternalApiAdmin()
+  const { changeStatus } = useExternalApiAccount()
 
   // Error handler
   const errorHandler = (type, message) => {
@@ -51,7 +53,15 @@ export default function AdminPatients () {
     try {
       await updateMedicAsOther(data, localStorage.getItem('token'), setResponseMessage)
     } catch (error) {
-      errorHandler('error', 'Error al actualizar el paciente')
+      errorHandler('error', 'Error al actualizar el médico')
+    }
+  }
+
+  const activateFunction = async (id, data) => {
+    try {
+      await changeStatus(id, data !== 'true', localStorage.getItem('token'), setResponseMessage)
+    } catch (error) {
+      errorHandler('error', 'Error al actualizar el médico')
     }
   }
 
@@ -71,6 +81,7 @@ export default function AdminPatients () {
 
   useEffect(() => {
     if (JSON.stringify(responseMessage) !== '{}') {
+      setResponse({})
       setOpenSnack(true)
       GetSeverity(responseMessage.status, setSeverity)
       setMessage(responseMessage.data.detail)
@@ -138,6 +149,7 @@ export default function AdminPatients () {
               setReloadInfo={setReloadInfo}
               reloadInfo={reloadInfo}
               updateFunction={updateFunction}
+              activateFunction={activateFunction}
             />
           }
         </Box>

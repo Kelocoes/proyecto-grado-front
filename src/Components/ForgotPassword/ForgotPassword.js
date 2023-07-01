@@ -30,7 +30,7 @@ export default function ForgotPassword () {
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
 
   // Api hook
-  const { SendEmailPassword } = useExternalApi()
+  const { sendEmailPassword } = useExternalApi()
 
   // States
   const [response, setResponse] = useState({})
@@ -62,7 +62,7 @@ export default function ForgotPassword () {
   const onSubmit = async (data) => {
     setIsLoading(true)
     try {
-      await SendEmailPassword(data, setResponse)
+      await sendEmailPassword(data, setResponse)
     } catch (error) {
       errorHandler('error', 'Ha ocurrido un error inesperado')
     }

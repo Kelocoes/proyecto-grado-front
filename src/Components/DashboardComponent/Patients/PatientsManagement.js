@@ -89,6 +89,7 @@ export default function PatientsManagement (props) {
 
   useEffect(() => {
     if (JSON.stringify(responseMessage) !== '{}') {
+      setResponse({})
       setOpenSnack(true)
       GetSeverity(responseMessage.status, setSeverity)
       setMessage(responseMessage.data.detail)

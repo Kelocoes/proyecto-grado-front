@@ -46,7 +46,7 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
-  const SendEmailPassword = async (datos, setResponse) => {
+  const sendEmailPassword = async (datos, setResponse) => {
     const config = {
       url: `${apiServerUrl}/api/account/sendemailpassword`,
       method: 'POST',
@@ -61,7 +61,7 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
-  const ChangePassword = async (datos, token, secret, setResponse) => {
+  const changePassword = async (datos, token, secret, setResponse) => {
     const config = {
       url: `${apiServerUrl}/api/account/changepassword`,
       method: 'PUT',
@@ -78,10 +78,28 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
+  const changeStatus = async (id, value, token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/account/update/status`,
+      method: 'PUT',
+      headers: {
+        Authorization: `Token ${token}`
+      },
+      data: {
+        id,
+        is_active: value
+      }
+    }
+
+    const response = await makeRequest({ config })
+    setResponse(response)
+  }
+
   return {
     getInfoAccount,
     checkPassword,
-    SendEmailPassword,
-    ChangePassword
+    sendEmailPassword,
+    changePassword,
+    changeStatus
   }
 }
