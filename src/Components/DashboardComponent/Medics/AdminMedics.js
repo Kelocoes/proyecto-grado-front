@@ -73,18 +73,18 @@ export default function AdminPatients () {
 
   useEffect(() => {
     if (JSON.stringify(response) !== '{}') {
-      setOpenSnack(true)
       GetSeverity(response.status, setSeverity)
       setMessage(response.data.detail)
+      setOpenSnack(true)
     }
   }, [response])
 
   useEffect(() => {
     if (JSON.stringify(responseMessage) !== '{}') {
       setResponse({})
-      setOpenSnack(true)
       GetSeverity(responseMessage.status, setSeverity)
       setMessage(responseMessage.data.detail)
+      setOpenSnack(true)
       setReloadInfo(!reloadInfo)
     }
   }, [responseMessage])
