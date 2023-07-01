@@ -73,9 +73,9 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
-  const getAllPatients = async (setResponse, token) => {
+  const getAllMedics = async (setResponse, token) => {
     const config = {
-      url: `${apiServerUrl}/api/patient/get/all`,
+      url: `${apiServerUrl}/api/medic/get/all`,
       method: 'GET',
       headers: {
         Authorization: `Token ${token}`
@@ -84,21 +84,25 @@ export const useExternalApi = () => {
 
     const response = await makeRequest({ config })
 
-    const responseAsArray = response.data.map((item) => {
+    const responseAsArray = response.data.results.map((item) => {
       return [
-        item.patient_id,
+        item.user_id.id,
+        item.id_type,
+        item.id,
         item.first_name,
         item.last_name,
         item.city,
-        item.address,
         item.cellphone,
-        item.blood_type,
-        item.birth_date,
-        item.actual_estimation
+        item.user_id.email,
+        item.user_id.is_active
       ]
     })
 
-    setResponse(responseAsArray)
+    setResponse({
+      status: response.status,
+      responseAsArray,
+      data: { detail: response.data.detail }
+    })
   }
 
   return {
@@ -106,6 +110,6 @@ export const useExternalApi = () => {
     getCaptchaScore,
     getMedic,
     updateMedic,
-    getAllPatients
+    getAllMedics
   }
 }

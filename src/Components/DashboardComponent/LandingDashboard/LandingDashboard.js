@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -19,6 +19,10 @@ export default function LandingDashboard (props) {
   // CONSTANTS
 
   const { type, setTitleAppBar } = props
+
+  useEffect(() => {
+    setTitleAppBar('Inicio')
+  }, [])
 
   return (
     <Container

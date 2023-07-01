@@ -33,7 +33,7 @@ export default function ChangePassword () {
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
 
   // Api hook
-  const { ChangePassword } = useExternalApi()
+  const { changePassword } = useExternalApi()
 
   // States hook
   const [response, setResponse] = useState({})
@@ -57,7 +57,7 @@ export default function ChangePassword () {
   const onSubmit = async (data) => {
     setIsLoading(true)
     try {
-      await ChangePassword(data, token, secret, setResponse)
+      await changePassword(data, token, secret, setResponse)
     } catch (error) {
       errorHandler('error', 'Ha ocurrido un error inesperado')
     }

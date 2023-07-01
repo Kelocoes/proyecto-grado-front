@@ -63,16 +63,13 @@ function CustomItemCell (value, tableMeta, updateValue, type) {
   )
 }
 
-function CustomDeleteCell (value, tableMeta, updateValue, response, setResponse) {
+function CustomDeleteCell (value, tableMeta, updateValue, deleteFunction) {
   return (
     <IconButton
       aria-label="delete"
       size="large"
-      onClick={() => {
-        console.log('Quiero borrarme', tableMeta.rowData)
-        const updatedData = [...response]
-        updatedData.splice(tableMeta.rowIndex, 1)
-        setResponse(updatedData)
+      onClick={async () => {
+        await deleteFunction(tableMeta.rowData[0])
       }
       }
     >
@@ -81,7 +78,7 @@ function CustomDeleteCell (value, tableMeta, updateValue, response, setResponse)
   )
 }
 
-function CustomSwitchCell (value, tableMeta, updateValue) {
+function CustomSwitchCell (value, tableMeta, updateValue, activateFunction) {
   return (
     <FormControlLabel
       label=""
@@ -90,8 +87,7 @@ function CustomSwitchCell (value, tableMeta, updateValue) {
         checked={value}
         onChange={event => {
           updateValue(event.target.value !== 'true')
-          console.log('Quiero cambiarme a ', !value)
-          console.log(tableMeta.rowData)
+          activateFunction(tableMeta.rowData[0], event.target.value)
         }}
       />
       }
@@ -99,18 +95,24 @@ function CustomSwitchCell (value, tableMeta, updateValue) {
   )
 }
 
-function CustomUpdateCell (value, tableMeta, updateValue) {
+function CustomUpdateCell (value, tableMeta, updateValue, updateFunction) {
   return (
-    <IconButton onClick={() => console.log('Quiero actualizarme ', tableMeta.rowData)}>
+    <IconButton
+      onClick={() => {
+        updateFunction(tableMeta.rowData)
+      }
+    }
+    >
       <SyncAltIcon />
     </IconButton>
   )
 }
 
-function CustomToolBarRender (isLoading, setIsLoading, setIsOpen, reloadInfo, setReloadInfo) {
+function CustomToolBarRender (isLoading, setIsLoading, setIsOpenRegister,
+  reloadInfo, setReloadInfo) {
   return (
     <React.Fragment>
-      <IconButton color="success" onClick={() => setIsOpen(true)}>
+      <IconButton color="success" onClick={() => setIsOpenRegister(true)}>
         <AddCircleOutlinedIcon />
       </IconButton>
       {isLoading
@@ -129,7 +131,17 @@ function CustomToolBarRender (isLoading, setIsLoading, setIsOpen, reloadInfo, se
 }
 
 export default function ManagementTable (props) {
-  const { response, setResponse, title, includeList, setIsOpen, reloadInfo, setReloadInfo } = props
+  const {
+    response,
+    title,
+    includeList,
+    setIsOpenRegister,
+    reloadInfo,
+    setReloadInfo,
+    deleteFunction,
+    updateFunction,
+    activateFunction
+  } = props
 
   const [isCleaned, setIsCleaned] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -236,7 +248,7 @@ export default function ManagementTable (props) {
       name: 'Eliminar',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomDeleteCell(value, tableMeta, updateValue, response, setResponse)
+          CustomDeleteCell(value, tableMeta, updateValue, deleteFunction)
         )
       }
     },
@@ -244,7 +256,7 @@ export default function ManagementTable (props) {
       name: 'Activo',
       options: {
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomSwitchCell(value, tableMeta, updateValue)
+          CustomSwitchCell(value, tableMeta, updateValue, activateFunction)
         )
       }
     },
@@ -253,7 +265,7 @@ export default function ManagementTable (props) {
       options: {
         filter: false,
         customBodyRender: (value, tableMeta, updateValue) => (
-          CustomUpdateCell(value, tableMeta, updateValue)
+          CustomUpdateCell(value, tableMeta, updateValue, updateFunction)
         )
       }
     }])
@@ -263,7 +275,7 @@ export default function ManagementTable (props) {
     rowsPerPage: 5,
     rowsPerPageOptions: [5],
     customToolbar: () => (
-      CustomToolBarRender(isLoading, setIsLoading, setIsOpen, reloadInfo, setReloadInfo)
+      CustomToolBarRender(isLoading, setIsLoading, setIsOpenRegister, reloadInfo, setReloadInfo)
     )
   }
 

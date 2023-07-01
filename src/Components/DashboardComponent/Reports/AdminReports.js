@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
-import CheckLocation from '../CheckLocation'
+import CheckLocation from '../../../Utils/CheckLocation'
 
 export default function AdminReports () {
   const nav = useNavigate()

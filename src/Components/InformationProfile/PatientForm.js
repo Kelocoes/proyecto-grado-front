@@ -15,6 +15,7 @@ import Fade from '@mui/material/Fade'
 
 import { useExternalApi } from '../../Api/Patient/PatientResponse'
 import Copyright from '../Copyright/Copyright'
+import GetSeverity from '../../Utils/GetSeveirty'
 
 function transformarString (text) {
   let result = text.toLowerCase()
@@ -27,7 +28,7 @@ const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-export default function PatientRegisterForm () {
+export default function PatientForm () {
   // PROPS
 
   // HOOKS
@@ -75,17 +76,6 @@ export default function PatientRegisterForm () {
     setOpenSnack(false)
   }
 
-  // Get severities using the status code
-  const getSeverity = (statusCode) => {
-    if (statusCode < 210) {
-      setSeverity('success')
-    } else if (statusCode < 500) {
-      setSeverity('warning')
-    } else {
-      setSeverity('error')
-    }
-  }
-
   // Action when pressing the main button
   const onSubmit = async (data) => {
     try {
@@ -103,7 +93,7 @@ export default function PatientRegisterForm () {
   useEffect(() => {
     try {
       if (JSON.stringify(response) !== '{}') {
-        getSeverity(response.status)
+        GetSeverity(response.status, setSeverity)
         setIsLoading(false)
         setOpenSnack(true)
         setMessage(response.data.detail)
@@ -216,6 +206,7 @@ export default function PatientRegisterForm () {
                       variant="outlined"
                       label=""
                       sx = {{ width: '10ch' }}
+                      defaultValue="A+"
                       {...registro('blood_type', { required: true })}
                     >
                       {bloodTypes.map((option) => (
