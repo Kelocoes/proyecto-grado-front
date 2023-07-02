@@ -11,7 +11,7 @@ export const useExternalApi = () => {
       url: `${apiServerUrl}/api/results/model/generate`,
       method: 'POST',
       headers: {
-        Authorization: `Token ${token}`
+        ...(register && { Authorization: `Token ${token}` })
       },
       data: {
         registered: register,
