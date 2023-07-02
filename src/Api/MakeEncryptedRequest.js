@@ -14,7 +14,6 @@ export const useMakeRequest = () => {
       response.data = decryptedResponseBody
       return response
     } catch (error) {
-      console.log('error', error.message)
       if (axios.isAxiosError(error) && error.response) {
         const decryptedResponseBody = DecypherData(error.response.data, aesIv, aesSecretKey)
         error.response.data = decryptedResponseBody
@@ -30,7 +29,7 @@ export const useMakeRequest = () => {
       return response
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        return error.response.data
+        return error.response
       }
 
       return error.message
