@@ -9,22 +9,25 @@ import CircularProgress from '@mui/material/CircularProgress'
 function CustomToolBarRender (isLoading, setIsLoading, setIsOpenRegister,
   reloadInfo, setReloadInfo) {
   return (
-    <React.Fragment>
-      <IconButton color="success" onClick={() => setIsOpenRegister(true)}>
+    <>
+      <IconButton
+        color="success"
+        onClick={() => setIsOpenRegister(true)}
+      >
         <AddCircleOutlinedIcon />
       </IconButton>
       {isLoading
         ? <IconButton> <CircularProgress color="success" size={20} /> </IconButton>
         : <IconButton color="success"
           onClick={() => {
-            setIsLoading(true)
             setReloadInfo(!reloadInfo)
+            setIsLoading(true)
           }}
         >
           <CachedIcon />
         </IconButton>
       }
-    </React.Fragment>
+    </>
   )
 }
 
