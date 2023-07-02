@@ -6,15 +6,16 @@ export const useExternalApi = () => {
   const { apiServerUrl, aesIv, aesSecretKey } = useEnv()
   const { makeDefaultRequest, makeEncryptedRequest } = useMakeRequest()
 
-  const getEstimation = async (datos, setEstimation, setActiveButtonGraph) => {
+  const getEstimation = async (datos, setEstimation, setActiveButtonGraph, register, token) => {
     const config = {
       url: `${apiServerUrl}/api/results/model/generate`,
       method: 'POST',
       headers: {
+        Authorization: `Token ${token}`
       },
       data: {
-        registered: false,
-        patient_id: '0',
+        registered: register,
+        patient_id: datos.patient_id ? datos.patient_id : '0',
         sex: datos.sex,
         diabetes: datos.diabetes,
         smoking: datos.smoking,

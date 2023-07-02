@@ -15,13 +15,13 @@ import EstimationManagement from '../../EstimationTable/EstimationTable'
 import CheckLocation from '../../../Utils/CheckLocation'
 import GetSeverity from '../../../Utils/GetSeveirty'
 import { useExternalApi } from '../../../Api/Results/ResultsResponse'
+import FormEstimation from '../../EstimationComponent/FormEstimation'
 
 const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
 export default function DashboardEstimation (props) {
-  const { type } = props
   const nav = useNavigate()
   const [response, setResponse] = useState({})
   const [patientId, setPatientId] = useState(null)
@@ -114,7 +114,7 @@ export default function DashboardEstimation (props) {
               textAlign: 'center'
             }}
           >
-            Estimaciones de {type}
+            Estimaciones de riesgo cardiovascular
           </Typography>
           <TextField sx={{ marginBottom: 1, width: '30ch' }}
             label="Identificación del paciente"
@@ -136,8 +136,9 @@ export default function DashboardEstimation (props) {
         <Dialog
           onClose={() => { setIsOpenRegisterEstimation(false); setReloadInfo(!reloadInfo) }}
           open={isOpenRegisterEstimation}
+          maxWidth= 'md'
         >
-          <h1>Hola</h1>
+          <FormEstimation type="register" />
         </Dialog>
         <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>

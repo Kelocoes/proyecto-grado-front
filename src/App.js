@@ -98,7 +98,7 @@ export default function App () {
             <Route path="medic/profile" element={<MedicProfile />} />
             <Route path="admin/patients" element={<PatientsManagement type="Admin" />} />
             <Route path="admin/medics" element={<AdminMedics />} />
-            <Route path="admin/estimation" element={<DashboardEstimation type ="Admin"/>} />
+            <Route path="admin/estimation" element={<DashboardEstimation/>} />
             <Route path="admin/reports" element={<AdminReports />} />
             <Route path="admin/profile" element={<AdminProfile />} />
           </Route>

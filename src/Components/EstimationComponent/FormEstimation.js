@@ -16,8 +16,11 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
 import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
+import Snackbar from '@mui/material/Snackbar'
+import MuiAlert from '@mui/material/Alert'
 
 import { useExternalApi } from '../../Api/Results/ResultsResponse'
+import GetSeverity from '../../Utils/GetSeveirty'
 
 import TermsAndConditions from './TermsAndConditions'
 import GraphEstimation from './GraphEstimation'
@@ -53,7 +56,14 @@ function CircularProgressWithLabel (props) {
   )
 }
 
-export default function MainFeaturedPost () {
+const Alert = React.forwardRef(function Alert (props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+})
+
+export default function FormEstimation (props) {
+  // PROPS
+  const { type } = props
+
   // HOOKS
 
   // Form hook
@@ -70,6 +80,9 @@ export default function MainFeaturedPost () {
   const [openGraph, setOpenGraph] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [snackSeverity, setSnackSeverity] = useState('info')
+  const [openSnack, setOpenSnack] = useState(false)
 
   // CONSTANTS
 
@@ -94,13 +107,33 @@ export default function MainFeaturedPost () {
 
   // ARROW FUNCTIONS
 
+  // Error handler
+  const errorHandler = (type, message) => {
+    setIsLoading(false)
+    setSnackSeverity(type)
+    setOpenSnack(true)
+    setMessage(message)
+  }
+
+  // Action when closing snackbar
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpenSnack(false)
+  }
+
   // Action when pressing the main button
   const onSubmit = async data => {
     setIsLoading(true)
     try {
-      await getEstimation(data, setEstimation, setActiveButtonGraph)
+      await getEstimation(data,
+        setEstimation,
+        setActiveButtonGraph,
+        type === 'register',
+        localStorage.getItem('token'))
     } catch (error) {
-      console.log('Hubo un error inesperado')
+      errorHandler('error', 'Ha ocurrido un error inesperado')
     }
   }
 
@@ -124,7 +157,13 @@ export default function MainFeaturedPost () {
 
   // Action to perform when estimation is updated
   useEffect(() => {
-    setIsLoading(false)
+    if (JSON.stringify(estimation) !==
+      JSON.stringify({ data: { prediction: 0, severity: 'none' } })) {
+      setIsLoading(false)
+      setOpenSnack(true)
+      GetSeverity(estimation.status, setSnackSeverity)
+      setMessage(estimation.data.detail)
+    }
   }, [estimation])
 
   return (
@@ -144,6 +183,19 @@ export default function MainFeaturedPost () {
             <CardContent sx={{ width: '500px' }}>
               <form onSubmit={getInfoPatientSubmit(onSubmit)}>
                 <Grid container spacing={2} align="center">
+                  {type === 'register' &&
+                    <Grid item xs={12}>
+                      <TextField required variant="outlined" label="Documento paciente"
+                        type="number"
+                        fullWidth
+                        {...registro('patient_id', { valueAsNumber: true, required: true })}
+                        inputProps={{
+                          min: 0,
+                          max: 150
+                        }}
+                      />
+                    </Grid>
+                  }
                   <Grid item xs={6}>
                     <TextField required variant="outlined" label="Edad" type="number" fullWidth
                       {...registro('age', { valueAsNumber: true, required: true })}
@@ -343,6 +395,11 @@ export default function MainFeaturedPost () {
           </Typography>
         </Container>
       </Dialog>
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snackSeverity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Card>
   )
 }
