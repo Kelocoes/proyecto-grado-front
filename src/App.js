@@ -11,11 +11,10 @@ import ForgotPassword from './Components/ForgotPassword/ForgotPassword'
 import ChangePassword from './Components/ChangePassword/ChangePassword'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import LandingDashboard from './Components/DashboardComponent/LandingDashboard/LandingDashboard'
-import MedicEstimation from './Components/DashboardComponent/Estimation/MedicEstimation'
 import MedicReports from './Components/DashboardComponent/Reports/MedicReports'
 import MedicProfile from './Components/DashboardComponent/Profile/MedicProfile'
 import AdminMedics from './Components/DashboardComponent/Medics/AdminMedics'
-import AdminEstimation from './Components/DashboardComponent/Estimation/AdminEstimation'
+import DashboardEstimation from './Components/DashboardComponent/Estimation/DashboardEstimation'
 import AdminReports from './Components/DashboardComponent/Reports/AdminReports'
 import AdminProfile from './Components/DashboardComponent/Profile/AdminProfile'
 import PatientsManagement from './Components/DashboardComponent/Patients/PatientsManagement'
@@ -94,12 +93,12 @@ export default function App () {
               }
             />
             <Route path="medic/patients" element={<PatientsManagement type="Medic" />} />
-            <Route path="medic/estimation" element={<MedicEstimation />} />
+            <Route path="medic/estimation" element={<DashboardEstimation type ="Medic"/>} />
             <Route path="medic/reports" element={<MedicReports />} />
             <Route path="medic/profile" element={<MedicProfile />} />
             <Route path="admin/patients" element={<PatientsManagement type="Admin" />} />
             <Route path="admin/medics" element={<AdminMedics />} />
-            <Route path="admin/estimation" element={<AdminEstimation />} />
+            <Route path="admin/estimation" element={<DashboardEstimation type ="Admin"/>} />
             <Route path="admin/reports" element={<AdminReports />} />
             <Route path="admin/profile" element={<AdminProfile />} />
           </Route>
