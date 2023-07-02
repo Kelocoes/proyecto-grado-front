@@ -93,7 +93,7 @@ export default function App () {
               }
             />
             <Route path="medic/patients" element={<PatientsManagement type="Medic" />} />
-            <Route path="medic/estimation" element={<DashboardEstimation type ="Medic"/>} />
+            <Route path="medic/estimation" element={<DashboardEstimation/>} />
             <Route path="medic/reports" element={<MedicReports />} />
             <Route path="medic/profile" element={<MedicProfile />} />
             <Route path="admin/patients" element={<PatientsManagement type="Admin" />} />
