@@ -44,10 +44,10 @@ function CircularProgressWithLabel (props) {
         }}
       >
         <Stack>
-          <Typography variant="h2" component="div" color="text.secondary">
+          <Typography variant="h3" component="div" color="text.secondary">
             {`${parseFloat(valueCenter.toFixed(3))}`}
           </Typography>
-          <Typography variant="h5" component="div" color="text.secondary">
+          <Typography variant="h6" component="div" color="text.secondary">
             {`${props.severity}`}
           </Typography>
         </Stack>
@@ -73,7 +73,8 @@ export default function FormEstimation (props) {
   const { getEstimation } = useExternalApi()
 
   // States hook
-  const [estimation, setEstimation] = useState({ data: { prediction: 0, severity: 'none' } })
+  const [estimation, setEstimation] = useState(
+    { data: { prediction: 0, severity: 'none', framingham: 0 } })
   const [isActive, setIsActive] = useState(false)
   const [open, setOpen] = useState(false)
   const [buttonGraph, setActiveButtonGraph] = useState(false)
@@ -158,7 +159,7 @@ export default function FormEstimation (props) {
   // Action to perform when estimation is updated
   useEffect(() => {
     if (JSON.stringify(estimation) !==
-      JSON.stringify({ data: { prediction: 0, severity: 'none' } })) {
+      JSON.stringify({ data: { prediction: 0, severity: 'none', framingham: 0 } })) {
       setIsLoading(false)
       setOpenSnack(true)
       GetSeverity(estimation.status, setSnackSeverity)
@@ -365,7 +366,7 @@ export default function FormEstimation (props) {
           <CardContent >
             <CircularProgressWithLabel
               variant="determinate"
-              size={250}
+              size={175}
               value={estimation.data.prediction * 100}
               style={{ color: colorLevel[estimation.data.severity] }}
               severity={severity[estimation.data.severity]} />
@@ -378,6 +379,14 @@ export default function FormEstimation (props) {
             >
               ¡Compárate!
             </Button>
+          </CardContent>
+          <CardContent >
+            <CircularProgressWithLabel
+              variant="determinate"
+              size={175}
+              value={estimation.data.framingham * 100}
+              style={{ color: 'green' }}
+              severity={'Framingham'} />
           </CardContent>
         </Grid>
       </Grid>
