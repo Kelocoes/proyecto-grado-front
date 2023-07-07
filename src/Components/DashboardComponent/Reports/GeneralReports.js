@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 
 import CheckLocation from '../../../Utils/CheckLocation'
 
-export default function MedicReports () {
+export default function GeneralReports (props) {
   const nav = useNavigate()
   useEffect(() => {
     if (CheckLocation()) {
@@ -12,6 +12,6 @@ export default function MedicReports () {
   }, [])
 
   return (
-    <h1>Reporte de Medico</h1>
+    <h1>Reporte general de {props.type}</h1>
   )
 }

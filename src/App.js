@@ -11,14 +11,15 @@ import ForgotPassword from './Components/ForgotPassword/ForgotPassword'
 import ChangePassword from './Components/ChangePassword/ChangePassword'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import LandingDashboard from './Components/DashboardComponent/LandingDashboard/LandingDashboard'
-import MedicReports from './Components/DashboardComponent/Reports/MedicReports'
 import MedicProfile from './Components/DashboardComponent/Profile/MedicProfile'
 import AdminMedics from './Components/DashboardComponent/Medics/AdminMedics'
 import DashboardEstimation from './Components/DashboardComponent/Estimation/DashboardEstimation'
-import AdminReports from './Components/DashboardComponent/Reports/AdminReports'
+import LandingReports from './Components/DashboardComponent/Reports/LandingReports'
 import AdminProfile from './Components/DashboardComponent/Profile/AdminProfile'
 import PatientsManagement from './Components/DashboardComponent/Patients/PatientsManagement'
 import NotFound from './Components/NotFound/NotFound'
+import GeneralReports from './Components/DashboardComponent/Reports/GeneralReports'
+import AnonymousReports from './Components/DashboardComponent/Reports/AnonymousReports'
 
 import './App.css'
 
@@ -94,13 +95,16 @@ export default function App () {
             />
             <Route path="medic/patients" element={<PatientsManagement type="Medic" />} />
             <Route path="medic/estimation" element={<DashboardEstimation/>} />
-            <Route path="medic/reports" element={<MedicReports />} />
+            <Route path="medic/reports" element={<LandingReports type ="medic" />} />
             <Route path="medic/profile" element={<MedicProfile />} />
+            <Route path="medic/reports/general" element={<GeneralReports type="medic" />} />
             <Route path="admin/patients" element={<PatientsManagement type="Admin" />} />
             <Route path="admin/medics" element={<AdminMedics />} />
             <Route path="admin/estimation" element={<DashboardEstimation/>} />
-            <Route path="admin/reports" element={<AdminReports />} />
+            <Route path="admin/reports" element={<LandingReports type ="admin" />} />
             <Route path="admin/profile" element={<AdminProfile />} />
+            <Route path="admin/reports/general" element={<GeneralReports type="admin" />} />
+            <Route path="admin/reports/anonymous" element={<AnonymousReports />} />
           </Route>
           <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" />} />

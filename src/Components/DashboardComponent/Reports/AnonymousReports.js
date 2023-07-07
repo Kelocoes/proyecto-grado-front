@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 
 import CheckLocation from '../../../Utils/CheckLocation'
 
-export default function AdminReports () {
+export default function AnonymousReports () {
   const nav = useNavigate()
   useEffect(() => {
     if (CheckLocation()) {
@@ -12,6 +12,6 @@ export default function AdminReports () {
   }, [])
 
   return (
-    <h1>Reporte de Admin</h1>
+    <h1>Reporte anonimos</h1>
   )
 }
