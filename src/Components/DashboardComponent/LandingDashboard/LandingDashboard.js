@@ -27,10 +27,10 @@ export default function LandingDashboard (props) {
   return (
     <Container
       maxWidth="md"
-      sx={{ marginTop: 7 }}
+      sx={{ marginTop: 2 }}
     >
       <Fade in={true}>
-        <Grid container spacing={5}>
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={6} >
             <Card align="center" sx={{ boxShadow: 10 }}>
               <CardActionArea component={LinkRouter} to={'patients'}
@@ -64,7 +64,7 @@ export default function LandingDashboard (props) {
                   />
                   <CardContent>
                     <Typography align='center' variant='h6'>
-                      Gestión de medicos
+                      Gestión de médicos
                     </Typography>
                   </CardContent>
                 </CardActionArea>
