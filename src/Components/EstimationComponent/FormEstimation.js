@@ -74,7 +74,7 @@ export default function FormEstimation (props) {
 
   // States hook
   const [estimation, setEstimation] = useState(
-    { data: { prediction: 0, severity: 'none', framingham: 0 } })
+    { data: { prediction: 0, severity: 'Ninguno', framingham: 0 } })
   const [isActive, setIsActive] = useState(false)
   const [open, setOpen] = useState(false)
   const [buttonGraph, setActiveButtonGraph] = useState(false)
@@ -94,16 +94,9 @@ export default function FormEstimation (props) {
   const sex = [{ value: '1', label: 'Femenino' }, { value: '0', label: 'Masculino' }]
 
   const colorLevel = {
-    Low: 'green',
-    Medium: 'yellow',
-    High: 'red'
-  }
-
-  const severity = {
-    none: 'Ninguno',
-    Low: 'Bajo',
-    Medium: 'Leve',
-    High: 'Alto'
+    Bajo: 'green',
+    Leve: 'yellow',
+    Alto: 'red'
   }
 
   // ARROW FUNCTIONS
@@ -159,7 +152,7 @@ export default function FormEstimation (props) {
   // Action to perform when estimation is updated
   useEffect(() => {
     if (JSON.stringify(estimation) !==
-      JSON.stringify({ data: { prediction: 0, severity: 'none', framingham: 0 } })) {
+      JSON.stringify({ data: { prediction: 0, severity: 'Ninguno', framingham: 0 } })) {
       setIsLoading(false)
       setOpenSnack(true)
       GetSeverity(estimation.status, setSnackSeverity)
@@ -369,7 +362,7 @@ export default function FormEstimation (props) {
               size={175}
               value={estimation.data.prediction * 100}
               style={{ color: colorLevel[estimation.data.severity] }}
-              severity={severity[estimation.data.severity]} />
+              severity={estimation.data.severity} />
           </CardContent>
           <CardContent>
             <Button

@@ -71,7 +71,8 @@ export const useExternalApi = () => {
         item.result.triglycerides,
         item.result.smoking === '1' ? 'Si' : 'No',
         item.result.background === '1' ? 'Si' : 'No',
-        item.result.estimation.toFixed(4)
+        item.result.estimation.toFixed(4),
+        item.result.severity
       ]
     })
 
