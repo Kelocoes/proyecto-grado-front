@@ -148,11 +148,40 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
+  const getResultsByMonth = async (token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/results/get/byMonth`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeEncryptedRequest({ config })
+    setResponse(response)
+  }
+
+  const getScatterPatients = async (token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/results/get/scatterpatient`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeEncryptedRequest({ config })
+    console.log(response.data)
+    setResponse(response)
+  }
+
   return {
     getEstimation,
     getEstimationByPatient,
     getAnonymousEstimations,
     getResultsByCategory,
-    getResultsAvg
+    getResultsAvg,
+    getResultsByMonth,
+    getScatterPatients
   }
 }

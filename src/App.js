@@ -40,7 +40,7 @@ export default function App () {
               default: '#efefef'
             },
             primary: {
-              main: '#1c41bff0'
+              main: '#00786A'
             }
           }
       )
