@@ -59,11 +59,11 @@ export default function AnonymousManagement (props) {
     async function fetchData () {
       try {
         await getAnonymousEstimations(localStorage.getItem('token'), setResponse)
-        setOpenSnack(true)
-        GetSeverity(response.status, setSeverity)
         setMessage(response.detail)
+        GetSeverity(response.status, setSeverity)
+        setOpenSnack(true)
       } catch (error) {
-        errorHandler('error', 'Error al cargar la información')
+        errorHandler('error', 'Error al cargar los resultados anónimos')
       }
     }
     fetchData()
@@ -76,11 +76,11 @@ export default function AnonymousManagement (props) {
           sx={{
             maxWidth: 'lg',
             display: 'flex',
+            marginTop: '5%',
+            marginX: '10%',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '5%',
-            marginX: '10%'
+            justifyContent: 'center'
           }}
         >
           <Typography

@@ -58,7 +58,7 @@ export default function DashboardEstimation (props) {
         setMessage(response.detail)
       }
     } catch (error) {
-      errorHandler('error', 'Error al cargar la información')
+      errorHandler('error', 'Error al obtener la información')
     }
   }
 
@@ -83,9 +83,9 @@ export default function DashboardEstimation (props) {
         if (patientId !== null) {
           setIsLoading(true)
           await getEstimationByPatient(patientId, localStorage.getItem('token'), setResponse)
-          setOpenSnack(true)
           GetSeverity(response.status, setSeverity)
           setMessage(response.detail)
+          setOpenSnack(true)
         }
       } catch (error) {
         errorHandler('error', 'Error al cargar la información')
