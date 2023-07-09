@@ -8,10 +8,11 @@ import {
   Legend
 } from 'chart.js'
 import { Scatter } from 'react-chartjs-2'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 import testset from '../../static/testset.json'
 
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, ChartDataLabels)
 
 export default function GraphEstimation (props) {
   // Constants
@@ -39,25 +40,36 @@ export default function GraphEstimation (props) {
       {
         label: 'Pacientes sanos',
         data: jsonTransformed1,
-        backgroundColor: pointsBackGroundColor1
+        backgroundColor: pointsBackGroundColor1,
+        datalabels: {
+          display: false
+        }
       },
       {
         label: 'Pacientes con riesgo',
         data: jsonTransformed2,
-        backgroundColor: pointsBackGroundColor2
+        backgroundColor: pointsBackGroundColor2,
+        datalabels: {
+          display: false
+        }
       },
       {
         label: 'Tú',
         data: [{ x: 322, y: props.estimation }],
         pointRadius: 5,
-        backgroundColor: '#0070FF'
+        backgroundColor: '#0070FF',
+        datalabels: {
+          display: false
+        }
       }
+
     ]
   }
 
   // Options for chart
   const options = {
     responsive: true,
+    plugins: [ChartDataLabels],
     scales: {
       y: {
         beginAtZero: true,
