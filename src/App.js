@@ -19,8 +19,7 @@ import AdminProfile from './Components/DashboardComponent/Profile/AdminProfile'
 import PatientsManagement from './Components/DashboardComponent/Patients/PatientsManagement'
 import NotFound from './Components/NotFound/NotFound'
 import GeneralReports from './Components/DashboardComponent/Reports/GeneralReports'
-import AnonymousReports from './Components/DashboardComponent/Reports/AnonymousReports'
-import TableAnonymous from './Components/DashboardComponent/Reports/TableAnonymous'
+import AnonymousManagement from './Components/DashboardComponent/Reports/AnonymousManagement'
 
 import './App.css'
 
@@ -98,15 +97,16 @@ export default function App () {
             <Route path="medic/estimation" element={<DashboardEstimation/>} />
             <Route path="medic/reports" element={<LandingReports type ="medic" />} />
             <Route path="medic/profile" element={<MedicProfile />} />
-            <Route path="medic/reports/general" element={<GeneralReports type="medic" />} />
+            <Route path="medic/reports/general" element={<GeneralReports type="Medic" />} />
             <Route path="admin/patients" element={<PatientsManagement type="Admin" />} />
             <Route path="admin/medics" element={<AdminMedics />} />
             <Route path="admin/estimation" element={<DashboardEstimation/>} />
             <Route path="admin/reports" element={<LandingReports type ="admin" />} />
             <Route path="admin/profile" element={<AdminProfile />} />
-            <Route path="admin/reports/general" element={<GeneralReports type="admin" />} />
-            <Route path="admin/reports/anonymous" element={<AnonymousReports />} />
-            <Route path="admin/reports/tableanonymous" element={<TableAnonymous />} />
+            <Route path="admin/reports/general" element={<GeneralReports type="Admin" />} />
+            <Route path="admin/reports/tableanonymous"
+              element={<AnonymousManagement />}
+            />
           </Route>
           <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" />} />

@@ -12,7 +12,6 @@ import Fade from '@mui/material/Fade'
 
 import CheckLocation from '../../../Utils/CheckLocation'
 import generalReportsUrl from '../../../assets/generalReports.png'
-import anonimousReportsUrl from '../../../assets/anonimousReports.png'
 import anonymousTableUrl from '../../../assets/anonymousTable.png'
 
 export default function LandingReports (props) {
@@ -34,26 +33,7 @@ export default function LandingReports (props) {
     >
       <Fade in={true}>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={type === 'admin' ? 0 : 4} />
-          {type === 'admin' &&
-            <Grid item xs={12} sm={4} >
-              <Card align="center" sx={{ boxShadow: 10 }}>
-                <CardActionArea component={LinkRouter} to={'anonymous'}>
-                  <CardMedia
-                    component="img"
-                    height="160"
-                    sx={{ width: '140px' }}
-                    image={anonimousReportsUrl}
-                  />
-                  <CardContent>
-                    <Typography align='center' variant='h6'>
-                      Reporte de estimaciones anónimas
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          }
+          <Grid item xs={12} sm={type === 'admin' ? 2 : 4} />
           <Grid item xs={12} sm={4} >
             <Card align="center" sx={{ boxShadow: 10 }}>
               <CardActionArea component={LinkRouter} to={'general'}>

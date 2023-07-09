@@ -1,35 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import Skeleton from '@mui/material/Skeleton'
-import Grid from '@mui/material/Grid'
-import Fade from '@mui/material/Fade'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Dialog from '@mui/material/Dialog'
-import MuiAlert from '@mui/material/Alert'
+import Grid from '@mui/material/Grid'
+import Fade from '@mui/material/Fade'
 import Snackbar from '@mui/material/Snackbar'
+import MuiAlert from '@mui/material/Alert'
+import Skeleton from '@mui/material/Skeleton'
 
+import AnonymousEstimationTable from '../../EstimationTable/AnonymousEstimationTable'
 import CheckLocation from '../../../Utils/CheckLocation'
-import ManagementTable from '../../ManagementTable/ManagementTable'
-import { useExternalApi } from '../../../Api/Patient/PatientResponse'
-import PatientForm from '../../InformationProfile/PatientForm'
 import GetSeverity from '../../../Utils/GetSeveirty'
+import { useExternalApi } from '../../../Api/Results/ResultsResponse'
 
 const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-export default function PatientsManagement (props) {
-  const { type } = props
+export default function AnonymousManagement (props) {
   const nav = useNavigate()
   const [response, setResponse] = useState({})
-  const [responseMessage, setResponseMessage] = useState({})
-  const [isOpenRegisterPatient, setIsOpenRegisterPatient] = useState(false)
   const [reloadInfo, setReloadInfo] = useState(false)
   const [openSnack, setOpenSnack] = useState(false)
   const [message, setMessage] = useState('')
   const [severity, setSeverity] = useState('info')
-  const { getAllPatients, deletePatient, updatePatient } = useExternalApi()
+  const { getAnonymousEstimations } = useExternalApi()
 
   // Error handler
   const errorHandler = (type, message) => {
@@ -46,22 +41,6 @@ export default function PatientsManagement (props) {
     setOpenSnack(false)
   }
 
-  const deleteFunction = async (id) => {
-    try {
-      await deletePatient(id, localStorage.getItem('token'), setResponseMessage)
-    } catch (error) {
-      errorHandler('error', 'Error al eliminar el paciente')
-    }
-  }
-
-  const updateFunction = async (data) => {
-    try {
-      await updatePatient(data, localStorage.getItem('token'), setResponseMessage)
-    } catch (error) {
-      errorHandler('error', 'Error al actualizar el paciente')
-    }
-  }
-
   useEffect(() => {
     if (CheckLocation()) {
       nav('/')
@@ -69,33 +48,26 @@ export default function PatientsManagement (props) {
   }, [])
 
   useEffect(() => {
+    if (JSON.stringify(response) !== '{}') {
+      GetSeverity(response.status, setSeverity)
+      setMessage(response.data.detail)
+      setOpenSnack(true)
+    }
+  }, [response])
+
+  useEffect(() => {
     async function fetchData () {
       try {
-        await getAllPatients(setResponse, localStorage.getItem('token'), type)
+        await getAnonymousEstimations(localStorage.getItem('token'), setResponse)
+        setOpenSnack(true)
+        GetSeverity(response.status, setSeverity)
+        setMessage(response.detail)
       } catch (error) {
         errorHandler('error', 'Error al cargar la información')
       }
     }
     fetchData()
   }, [reloadInfo])
-
-  useEffect(() => {
-    if (JSON.stringify(response) !== '{}') {
-      setOpenSnack(true)
-      GetSeverity(response.status, setSeverity)
-      setMessage(response.data.detail)
-    }
-  }, [response])
-
-  useEffect(() => {
-    if (JSON.stringify(responseMessage) !== '{}') {
-      setResponse({})
-      setOpenSnack(true)
-      GetSeverity(responseMessage.status, setSeverity)
-      setMessage(responseMessage.data.detail)
-      setReloadInfo(!reloadInfo)
-    }
-  }, [responseMessage])
 
   return (
     <Fade in={true}>
@@ -118,7 +90,7 @@ export default function PatientsManagement (props) {
               textAlign: 'center'
             }}
           >
-            Gestión de pacientes
+            Tabla de estimaciones anónimas
           </Typography>
           {JSON.stringify(response) === '{}' &&
             <Skeleton
@@ -132,27 +104,14 @@ export default function PatientsManagement (props) {
             />
           }
           {JSON.stringify(response) !== '{}' &&
-            <ManagementTable
+            <AnonymousEstimationTable
               response={response.responseAsArray}
-              title='Tabla de Pacientes'
-              includeList={[
-                'Documento', 'Nombre', 'Apellido', 'Ciudad',
-                'Dirección', 'Teléfono', 'Sangre', 'Nacimiento',
-                'Estimación', type === 'Admin' ? 'Médico' : undefined, 'Eliminar', 'Actualizar']}
-              setIsOpenRegister={setIsOpenRegisterPatient}
+              title='Estimaciones anónimas'
               setReloadInfo={setReloadInfo}
               reloadInfo={reloadInfo}
-              deleteFunction={deleteFunction}
-              updateFunction={updateFunction}
             />
           }
         </Box>
-        <Dialog
-          onClose={() => { setIsOpenRegisterPatient(false); setReloadInfo(!reloadInfo) }}
-          open={isOpenRegisterPatient}
-        >
-          <PatientForm/>
-        </Dialog>
         <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
             {message}

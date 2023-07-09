@@ -83,8 +83,76 @@ export const useExternalApi = () => {
     })
   }
 
+  const getAnonymousEstimations = async (token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/results/get/noregister`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeEncryptedRequest({ config })
+    const responseAsArray = response.data.results.map((item) => {
+      return [
+        item.result_id,
+        item.date,
+        item.age,
+        item.sex === '1' ? 'Femenino' : 'Masculino',
+        item.weight,
+        item.height,
+        item.diabetes === '1' ? 'Si' : 'No',
+        item.systolic,
+        item.diastolic,
+        item.cholesterol,
+        item.hdl,
+        item.ldl,
+        item.triglycerides,
+        item.smoking === '1' ? 'Si' : 'No',
+        item.background === '1' ? 'Si' : 'No',
+        item.estimation.toFixed(4),
+        item.severity
+      ]
+    })
+
+    setResponse({
+      status: response.status,
+      responseAsArray,
+      data: { detail: response.data.detail }
+    })
+  }
+
+  const getResultsByCategory = async (token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/results/get/byCategory`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeEncryptedRequest({ config })
+    setResponse(response)
+  }
+
+  const getResultsAvg = async (token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/results/get/AvgNumericResults`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeEncryptedRequest({ config })
+    setResponse(response)
+  }
+
   return {
     getEstimation,
-    getEstimationByPatient
+    getEstimationByPatient,
+    getAnonymousEstimations,
+    getResultsByCategory,
+    getResultsAvg
   }
 }
