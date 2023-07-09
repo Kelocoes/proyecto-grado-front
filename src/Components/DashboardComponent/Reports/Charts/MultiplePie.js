@@ -17,14 +17,14 @@ export default function MultiplePie (props) {
   let colors = [
     '',
     '',
-    '#005F73',
-    '#94D2BD',
-    '#0A9396',
-    '#E9D8A6',
-    '#94D2BD',
-    '#EE9B00',
-    '#BB3E03',
-    '#005F73'
+    '#749E88',
+    '#E8DA9E',
+    '#00786A',
+    '#EBBA3F',
+    '#006168',
+    '#FF6B47',
+    '#002C30',
+    '#977F43'
   ]
   const serializedData = {
     labels: [],
