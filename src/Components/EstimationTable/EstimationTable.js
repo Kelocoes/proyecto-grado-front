@@ -46,7 +46,7 @@ export default function EstimationManagement (props) {
     'Id', 'Documento', 'Paciente', 'Documento Doctor', 'Fecha',
     'Edad', 'Sexo', 'Peso', 'Altura', 'Diabetes', 'Sistólica',
     'Diastólica', 'Colesterol', 'HDL', 'LDL', 'Triglicéridos', 'Fumador',
-    'Antecedentes', 'Estimación']
+    'Antecedentes', 'Estimación', 'Severidad']
 
   const options = {
     selectableRows: 'none',
