@@ -71,7 +71,7 @@ export default function PatientsManagement (props) {
   useEffect(() => {
     async function fetchData () {
       try {
-        getAllPatients(setResponse, localStorage.getItem('token'), type)
+        await getAllPatients(setResponse, localStorage.getItem('token'), type)
       } catch (error) {
         errorHandler('error', 'Error al cargar la información')
       }

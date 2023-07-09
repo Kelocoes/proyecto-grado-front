@@ -213,10 +213,10 @@ export default function InformationProfile (props) {
     fetchData()
   }, [])
 
-  if (isUpdate && JSON.stringify(profileData) === '{}') {
-    return (
-      <Fade in={true}>
-        <Grid container justifyContent='center'>
+  return (
+    <Fade in={true}>
+      <Grid container justifyContent='center'>
+        {isUpdate && JSON.stringify(profileData) === '{}' &&
           <Skeleton
             animation="wave"
             variant="rounded"
@@ -224,224 +224,219 @@ export default function InformationProfile (props) {
             height="600px"
             sx={{ marginY: 5, boxShadow: 20 }}
           />
-        </Grid>
-      </Fade>
-    )
-  }
-
-  return (
-    <Fade in={true}>
-      <Grid container justifyContent='center'>
-        <Card sx={{ marginY: 5, width: '550px', paddingX: 10, boxShadow: 20, paddingY: 5 }}>
-          <Box
-            sx={{
-              marginBottom: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-          >
-            {!isUpdate &&
-              <IconButton component={LinkRouter} to={'/'}>
-                <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
-                  <LockOutlinedIcon />
-                </Avatar>
-              </IconButton>
-            }
-            <Typography component="h1" variant="h5">
-              {isUpdate ? 'Tu perfil' : 'Regístrate'}
-            </Typography>
-            {isUpdate &&
-              <Typography variant="body2" paddingTop={1}>
-                Último inicio de sesión:
-                {profileData.data.user_id.last_login
-                  ? profileData.data.user_id.last_login.split('T')[0]
-                  : ''}
+        }
+        {(!isUpdate || JSON.stringify(profileData) !== '{}') &&
+          <Card sx={{ marginY: 5, width: '550px', paddingX: 10, boxShadow: 20, paddingY: 5 }}>
+            <Box
+              sx={{
+                marginBottom: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}
+            >
+              {!isUpdate &&
+                <IconButton component={LinkRouter} to={'/'}>
+                  <Avatar sx={{ margin: 1, bgcolor: 'primary.main' }}>
+                    <LockOutlinedIcon />
+                  </Avatar>
+                </IconButton>
+              }
+              <Typography component="h1" variant="h5">
+                {isUpdate ? 'Tu perfil' : 'Regístrate'}
               </Typography>
-            }
-            <Box sx={{ marginTop: 3 }}>
-              <form onSubmit={getInfoRegister(onSubmit)}>
-                <Grid container spacing={2}>
-                  <Grid item xs={4} sm={3}>
-                    <TextField
-                      required
-                      variant="outlined"
-                      label="Tipo"
-                      select
-                      fullWidth
-                      autoFocus
-                      defaultValue={isUpdate ? profileData.data.id_type : ''}
-                      {...registro('id_type', { required: true })}
-                    >
-                      {tipeId.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={8} sm={9}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Identificación"
-                      type="number"
-                      defaultValue={isUpdate ? profileData.data.id : ''}
-                      {...registro('id', { required: true })}
-                      inputProps={{
-                        min: 0
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      autoComplete="given-name"
-                      required
-                      fullWidth
-                      label="Nombre"
-                      defaultValue={isUpdate ? profileData.data.first_name : ''}
-                      {...registro('first_name', { required: true })}
-                      inputProps={{
-                        maxLength: 50
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Apellido"
-                      autoComplete="family-name"
-                      defaultValue={isUpdate ? profileData.data.last_name : ''}
-                      {...registro('last_name', { required: true })}
-                      inputProps={{
-                        maxLength: 100
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Ciudad"
-                      defaultValue={isUpdate ? profileData.data.city : ''}
-                      {...registro('city', { required: true })}
-                      inputProps={{
-                        maxLength: 50
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Telefono"
-                      type="number"
-                      autoComplete="tel"
-                      defaultValue={isUpdate ? profileData.data.cellphone : ''}
-                      {...registro('cellphone', { required: true })}
-                      inputProps={{
-                        min: 0,
-                        maxLength: 20
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Correo electrónico"
-                      autoComplete="email"
-                      error={!isValidEmail}
-                      helperText={!isValidEmail &&
-                        'Por favor, ingresa un correo electrónico válido.'
-                      }
-                      defaultValue={
-                        isUpdate ? profileData.data.user_id.email : ''
-                      }
-                      {...registro('email', { required: true })}
-                      inputProps={{
-                        maxLength: 254
-                      }}
-                      InputProps={{
-                        readOnly: isUpdate
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Usuario"
-                      autoComplete="nickname"
-                      defaultValue={
-                        isUpdate ? profileData.data.user_id.username : ''
-                      }
-                      {...registro('username', { required: true })}
-                      inputProps={{
-                        maxLength: 150
-                      }}
-                      InputProps={{
-                        readOnly: isUpdate
-                      }}
-                    />
-                  </Grid>
-                  {!isUpdate &&
+              {isUpdate &&
+                <Typography variant="body2" paddingTop={1}>
+                  Último inicio de sesión:
+                  {profileData.data.user_id.last_login
+                    ? profileData.data.user_id.last_login.split('T')[0]
+                    : ''}
+                </Typography>
+              }
+              <Box sx={{ marginTop: 3 }}>
+                <form onSubmit={getInfoRegister(onSubmit)}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={4} sm={3}>
+                      <TextField
+                        required
+                        variant="outlined"
+                        label="Tipo"
+                        select
+                        fullWidth
+                        autoFocus
+                        defaultValue={isUpdate ? profileData.data.id_type : ''}
+                        {...registro('id_type', { required: true })}
+                      >
+                        {tipeId.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={8} sm={9}>
+                      <TextField
+                        required
+                        fullWidth
+                        label="Identificación"
+                        type="number"
+                        defaultValue={isUpdate ? profileData.data.id : ''}
+                        {...registro('id', { required: true })}
+                        inputProps={{
+                          min: 0
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        autoComplete="given-name"
+                        required
+                        fullWidth
+                        label="Nombre"
+                        defaultValue={isUpdate ? profileData.data.first_name : ''}
+                        {...registro('first_name', { required: true })}
+                        inputProps={{
+                          maxLength: 50
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        label="Apellido"
+                        autoComplete="family-name"
+                        defaultValue={isUpdate ? profileData.data.last_name : ''}
+                        {...registro('last_name', { required: true })}
+                        inputProps={{
+                          maxLength: 100
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        label="Ciudad"
+                        defaultValue={isUpdate ? profileData.data.city : ''}
+                        {...registro('city', { required: true })}
+                        inputProps={{
+                          maxLength: 50
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        label="Telefono"
+                        type="number"
+                        autoComplete="tel"
+                        defaultValue={isUpdate ? profileData.data.cellphone : ''}
+                        {...registro('cellphone', { required: true })}
+                        inputProps={{
+                          min: 0,
+                          maxLength: 20
+                        }}
+                      />
+                    </Grid>
                     <Grid item xs={12}>
                       <TextField
                         required
                         fullWidth
-                        label="Contraseña"
-                        type="password"
-                        autoComplete="new-password"
-                        {...registro('password', { required: true })}
+                        label="Correo electrónico"
+                        autoComplete="email"
+                        error={!isValidEmail}
+                        helperText={!isValidEmail &&
+                          'Por favor, ingresa un correo electrónico válido.'
+                        }
+                        defaultValue={
+                          isUpdate ? profileData.data.user_id.email : ''
+                        }
+                        {...registro('email', { required: true })}
                         inputProps={{
-                          maxLength: 128
+                          maxLength: 254
+                        }}
+                        InputProps={{
+                          readOnly: isUpdate
                         }}
                       />
                     </Grid>
-                  }
-                  {!isUpdate &&
-                    <Grid item xs={12} display='flex' justifyContent='center'>
-                      <Reaptcha
-                        sitekey={siteKey}
-                        ref={captchaRef}
-                        onVerify={verify}
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        label="Usuario"
+                        autoComplete="nickname"
+                        defaultValue={
+                          isUpdate ? profileData.data.user_id.username : ''
+                        }
+                        {...registro('username', { required: true })}
+                        inputProps={{
+                          maxLength: 150
+                        }}
+                        InputProps={{
+                          readOnly: isUpdate
+                        }}
                       />
                     </Grid>
-                  }
-                </Grid>
-                <Button
-                  disabled={isDisabled}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ marginTop: 3, marginBottom: 2 }}
-                  onClick={getInfoRegister(onSubmit)}
-                >
-                  {isLoading &&
-                    <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
-                  {isUpdate ? 'Actualizar' : 'Registrarse'}
-                </Button>
-                {!isUpdate &&
-                  <Grid container justifyContent="flex-end">
-                    <Grid item>
-                      <Link component={LinkRouter} to={'/signin'} variant="body2">
-                        Ya tienes una cuenta? Ingresa
-                      </Link>
-                    </Grid>
+                    {!isUpdate &&
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          label="Contraseña"
+                          type="password"
+                          autoComplete="new-password"
+                          {...registro('password', { required: true })}
+                          inputProps={{
+                            maxLength: 128
+                          }}
+                        />
+                      </Grid>
+                    }
+                    {!isUpdate &&
+                      <Grid item xs={12} display='flex' justifyContent='center'>
+                        <Reaptcha
+                          sitekey={siteKey}
+                          ref={captchaRef}
+                          onVerify={verify}
+                        />
+                      </Grid>
+                    }
                   </Grid>
-                }
-              </form>
+                  <Button
+                    disabled={isDisabled}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ marginTop: 3, marginBottom: 2 }}
+                    onClick={getInfoRegister(onSubmit)}
+                  >
+                    {isLoading &&
+                      <CircularProgress color="inherit" size={15} sx={{ marginRight: 1 }} />}
+                    {isUpdate ? 'Actualizar' : 'Registrarse'}
+                  </Button>
+                  {!isUpdate &&
+                    <Grid container justifyContent="flex-end">
+                      <Grid item>
+                        <Link component={LinkRouter} to={'/signin'} variant="body2">
+                          Ya tienes una cuenta? Ingresa
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  }
+                </form>
+              </Box>
             </Box>
-          </Box>
-          {!isUpdate && <Copyright />}
-          <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
-              {message}
-            </Alert>
-          </Snackbar>
-        </Card>
+            {!isUpdate && <Copyright />}
+          </Card>
+        }
+        <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Grid>
     </Fade>
   )

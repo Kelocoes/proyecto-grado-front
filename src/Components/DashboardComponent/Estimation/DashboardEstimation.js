@@ -58,7 +58,7 @@ export default function DashboardEstimation (props) {
         setMessage(response.detail)
       }
     } catch (error) {
-      errorHandler('error', 'Error al cargar la información')
+      errorHandler('error', 'Error al obtener la información')
     }
   }
 
@@ -76,6 +76,23 @@ export default function DashboardEstimation (props) {
       setOpenSnack(true)
     }
   }, [response])
+
+  useEffect(() => {
+    async function fetchData () {
+      try {
+        if (patientId !== null) {
+          setIsLoading(true)
+          await getEstimationByPatient(patientId, localStorage.getItem('token'), setResponse)
+          GetSeverity(response.status, setSeverity)
+          setMessage(response.detail)
+          setOpenSnack(true)
+        }
+      } catch (error) {
+        errorHandler('error', 'Error al cargar la información')
+      }
+    }
+    fetchData()
+  }, [reloadInfo])
 
   useEffect(() => {
     async function fetchData () {

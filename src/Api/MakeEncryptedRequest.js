@@ -19,7 +19,7 @@ export const useMakeRequest = () => {
         error.response.data = decryptedResponseBody
         return error.response
       }
-      return error.message
+      throw new Error(error.message)
     }
   }
 
@@ -31,8 +31,7 @@ export const useMakeRequest = () => {
       if (axios.isAxiosError(error) && error.response) {
         return error.response
       }
-
-      return error.message
+      throw new Error(error.message)
     }
   }
 
