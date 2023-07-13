@@ -62,7 +62,7 @@ export default function App () {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/changepassword/:token/:secret" element={<ChangePassword />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
           <Route
             path="/dashboard"
             element={
