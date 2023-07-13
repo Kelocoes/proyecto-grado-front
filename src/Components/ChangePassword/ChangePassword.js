@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import { useForm } from 'react-hook-form'
-import { Link as LinkRouter, useParams } from 'react-router-dom'
+import { Link as LinkRouter } from 'react-router-dom'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -25,9 +25,6 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 
 export default function ChangePassword () {
   // HOOKS
-
-  // Params hook
-  const { token, secret } = useParams()
 
   // Form hook
   const { handleSubmit: getInfoRegister, register: registro } = useForm()
@@ -57,6 +54,9 @@ export default function ChangePassword () {
   const onSubmit = async (data) => {
     setIsLoading(true)
     try {
+      const urlParams = new URLSearchParams(window.location.hash)
+      const token = urlParams.get('token')
+      const secret = urlParams.get('secret')
       await changePassword(data, token, secret, setResponse)
     } catch (error) {
       errorHandler('error', 'Ha ocurrido un error inesperado')
