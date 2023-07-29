@@ -26,19 +26,19 @@ export default function TrainingManagement (props) {
   const [openSnack, setOpenSnack] = useState(false)
   const { getTrainingReport } = useExternalApi()
 
-  // Error handler
-  const errorHandler = (type, message) => {
-    setSeverity(type)
-    setOpenSnack(true)
-    setMessage(message)
-  }
-
   // Action when closing snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
     }
     setOpenSnack(false)
+  }
+
+  // Error handler
+  const errorHandler = (type, message) => {
+    setSeverity(type)
+    setMessage(message)
+    setOpenSnack(true)
   }
 
   useEffect(() => {
@@ -76,11 +76,11 @@ export default function TrainingManagement (props) {
           sx={{
             maxWidth: 'lg',
             display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             marginTop: '5%',
             marginX: '10%',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
           }}
         >
           <Typography
