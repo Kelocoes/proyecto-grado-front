@@ -60,6 +60,7 @@ export const useExternalApi = () => {
           item.patient.blood_type,
           item.patient.birth_date,
           item.patient.actual_estimation,
+          item.patient.outcome,
           item.user.first_name.concat(' ', item.user.last_name)
         ]
       })
@@ -74,7 +75,8 @@ export const useExternalApi = () => {
           item.cellphone,
           item.blood_type,
           item.birth_date,
-          item.actual_estimation
+          item.actual_estimation,
+          item.patient.outcome
         ]
       })
     }
@@ -101,7 +103,8 @@ export const useExternalApi = () => {
         address: data[4],
         cellphone: data[5],
         blood_type: data[6],
-        birth_date: data[7]
+        birth_date: data[7],
+        outcome: data[9]
       }, aesIv, aesSecretKey)
     }
 

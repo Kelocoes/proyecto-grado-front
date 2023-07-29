@@ -3,7 +3,7 @@ import MUIDataTable from 'mui-datatables'
 
 export default function AvgTable (props) {
   const { data } = props
-  const columns = ['Severidad', 'Edad', 'Peso', 'Altura', 'Sistólica',
+  const columns = ['Quartil', 'Edad', 'Peso', 'Altura', 'Sistólica',
     'Diastólica', 'Colesterol', 'HDL', 'LDL', 'Trigliceridos']
 
   const options = {

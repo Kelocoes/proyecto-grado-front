@@ -48,7 +48,7 @@ function CircularProgressWithLabel (props) {
             {`${parseFloat(valueCenter.toFixed(3))}`}
           </Typography>
           <Typography variant="h6" component="div" color="text.secondary">
-            {`${props.severity}`}
+            {`${props.text}`}
           </Typography>
         </Stack>
       </Box>
@@ -74,7 +74,7 @@ export default function FormEstimation (props) {
 
   // States hook
   const [estimation, setEstimation] = useState(
-    { data: { prediction: 0, severity: 'Ninguno', framingham: 0 } })
+    { data: { prediction: 0, quartil: '0', framingham: 0 } })
   const [isActive, setIsActive] = useState(false)
   const [open, setOpen] = useState(false)
   const [buttonGraph, setActiveButtonGraph] = useState(false)
@@ -94,9 +94,10 @@ export default function FormEstimation (props) {
   const sex = [{ value: '1', label: 'Femenino' }, { value: '0', label: 'Masculino' }]
 
   const colorLevel = {
-    Bajo: 'green',
-    Leve: 'yellow',
-    Alto: 'red'
+    1: 'blue',
+    2: 'green',
+    3: 'yellow',
+    4: 'red'
   }
 
   // ARROW FUNCTIONS
@@ -121,6 +122,7 @@ export default function FormEstimation (props) {
   const onSubmit = async data => {
     setIsLoading(true)
     try {
+      data.ldl = isNaN(data.ldl) ? data.cholesterol - (data.hdl + data.triglycerides / 5) : data.ldl
       await getEstimation(data,
         setEstimation,
         setActiveButtonGraph,
@@ -152,7 +154,7 @@ export default function FormEstimation (props) {
   // Action to perform when estimation is updated
   useEffect(() => {
     if (JSON.stringify(estimation) !==
-      JSON.stringify({ data: { prediction: 0, severity: 'Ninguno', framingham: 0 } })) {
+      JSON.stringify({ data: { prediction: 0, quartil: '0', framingham: 0 } })) {
       setIsLoading(false)
       setOpenSnack(true)
       GetSeverity(estimation.status, setSnackSeverity)
@@ -270,16 +272,15 @@ export default function FormEstimation (props) {
                       inputProps={{
                         min: 0
                       }}
-
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <TextField required variant="outlined" label="LDL" type="number" fullWidth
-                      {...registro('ldl', { valueAsNumber: true, required: true })}
+                    <TextField variant="outlined" label="LDL" type="number" fullWidth
+                      helperText="Solo si se halló por medición directa."
+                      {...registro('ldl', { valueAsNumber: true, required: false })}
                       inputProps={{
                         min: 0
                       }}
-
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -361,8 +362,9 @@ export default function FormEstimation (props) {
               variant="determinate"
               size={175}
               value={estimation.data.prediction * 100}
-              style={{ color: colorLevel[estimation.data.severity] }}
-              severity={estimation.data.severity} />
+              style={{ color: colorLevel[estimation.data.quartil] }}
+              text={'ML'}
+            />
           </CardContent>
           <CardContent>
             <Button
@@ -379,7 +381,7 @@ export default function FormEstimation (props) {
               size={175}
               value={estimation.data.framingham * 100}
               style={{ color: 'green' }}
-              severity={'Framingham'} />
+              text={'Framingham'} />
           </CardContent>
         </Grid>
       </Grid>

@@ -33,7 +33,7 @@ export default function LandingReports (props) {
     >
       <Fade in={true}>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={type === 'admin' ? 2 : 4} />
+          <Grid item xs={12} sm={type === 'admin' ? 0 : 4} />
           <Grid item xs={12} sm={4} >
             <Card align="center" sx={{ boxShadow: 10 }}>
               <CardActionArea component={LinkRouter} to={'general'}>
@@ -64,6 +64,25 @@ export default function LandingReports (props) {
                   <CardContent>
                     <Typography align='center' variant='h6'>
                       Tabla de estimaciones anónimas
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          }
+          {type === 'admin' &&
+            <Grid item xs={12} sm={4} >
+              <Card align="center" sx={{ boxShadow: 10 }}>
+                <CardActionArea component={LinkRouter} to={'tabletraining'}>
+                  <CardMedia
+                    component="img"
+                    height="160"
+                    sx={{ width: '160px' }}
+                    image={anonymousTableUrl}
+                  />
+                  <CardContent>
+                    <Typography align='center' variant='h6'>
+                      Estimaciones para entrenamiento
                     </Typography>
                   </CardContent>
                 </CardActionArea>

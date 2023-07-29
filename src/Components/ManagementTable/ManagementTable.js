@@ -32,6 +32,7 @@ function CustomCell (value, tableMeta, updateValue, type, width, maxLength) {
 
 function CustomItemCell (value, tableMeta, updateValue, type) {
   const typeId = [{ value: 'CC', label: 'CC' }, { value: 'CE', label: 'CE' }]
+  const outcome = [{ value: '0', label: 'No' }, { value: '1', label: 'Si' }]
   const bloodTypes = [
     { value: 'A+', label: 'A+' },
     { value: 'A-', label: 'A-' },
@@ -41,7 +42,19 @@ function CustomItemCell (value, tableMeta, updateValue, type) {
     { value: 'AB-', label: 'AB-' },
     { value: 'O+', label: 'O+' },
     { value: 'O-', label: 'O-' }]
-  const mainList = type === 'typeId' ? typeId : bloodTypes
+
+  let mainList = []
+  switch (type) {
+    case 'typeId':
+      mainList = typeId
+      break
+    case 'outcome':
+      mainList = outcome
+      break
+    case 'blood':
+      mainList = bloodTypes
+      break
+  }
 
   return (
     <FormControlLabel
@@ -230,6 +243,14 @@ export default function ManagementTable (props) {
     },
     {
       name: 'Estimación'
+    },
+    {
+      name: 'Descenlace',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => (
+          CustomItemCell(value, tableMeta, updateValue, 'outcome')
+        )
+      }
     },
     {
       name: 'Médico'
