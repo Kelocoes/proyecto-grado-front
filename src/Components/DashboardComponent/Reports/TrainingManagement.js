@@ -80,7 +80,7 @@ export default function TrainingManagement (props) {
             justifyContent: 'center',
             marginTop: '5%',
             marginX: '10%',
-            flexDirection: 'column',
+            flexDirection: 'column'
           }}
         >
           <Typography
