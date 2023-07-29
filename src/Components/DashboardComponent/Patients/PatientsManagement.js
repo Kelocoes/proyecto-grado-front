@@ -138,7 +138,8 @@ export default function PatientsManagement (props) {
               includeList={[
                 'Documento', 'Nombre', 'Apellido', 'Ciudad',
                 'Dirección', 'Teléfono', 'Sangre', 'Nacimiento',
-                'Estimación', type === 'Admin' ? 'Médico' : undefined, 'Eliminar', 'Actualizar']}
+                'Estimación', 'Descenlace', type === 'Admin' ? 'Médico' : undefined,
+                'Eliminar', 'Actualizar']}
               setIsOpenRegister={setIsOpenRegisterPatient}
               setReloadInfo={setReloadInfo}
               reloadInfo={reloadInfo}

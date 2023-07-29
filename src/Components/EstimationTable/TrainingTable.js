@@ -24,7 +24,7 @@ function CustomToolBarRender (isLoading, setIsLoading,
   )
 }
 
-export default function AnonymousEstimationTable (props) {
+export default function TrainingTable (props) {
   const {
     response,
     title,
@@ -37,12 +37,12 @@ export default function AnonymousEstimationTable (props) {
   const columns = [
     'Id', 'Fecha', 'Edad', 'Sexo', 'Peso', 'Altura', 'Diabetes', 'Sistólica',
     'Diastólica', 'Colesterol', 'HDL', 'LDL', 'Triglicéridos', 'Fumador',
-    'Antecedentes', 'Estimación', 'Quartil', 'Framingham']
+    'Antecedentes', 'Estimación', 'Quartil', 'Framingham', 'Descenlace']
 
   const options = {
     selectableRows: 'none',
     rowsPerPage: 5,
-    rowsPerPageOptions: [5],
+    rowsPerPageOptions: [5, 10, 20],
     customToolbar: () => (
       CustomToolBarRender(isLoading, setIsLoading, reloadInfo, setReloadInfo)
     )

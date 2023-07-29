@@ -72,7 +72,8 @@ export const useExternalApi = () => {
         item.result.smoking === '1' ? 'Si' : 'No',
         item.result.background === '1' ? 'Si' : 'No',
         item.result.estimation.toFixed(4),
-        item.result.severity
+        item.result.quartil,
+        item.result.framingham
       ]
     })
 
@@ -111,7 +112,8 @@ export const useExternalApi = () => {
         item.smoking === '1' ? 'Si' : 'No',
         item.background === '1' ? 'Si' : 'No',
         item.estimation.toFixed(4),
-        item.severity
+        item.quartil,
+        item.framingham
       ]
     })
 
@@ -175,6 +177,47 @@ export const useExternalApi = () => {
     setResponse(response)
   }
 
+  const getTrainingReport = async (token, setResponse) => {
+    const config = {
+      url: `${apiServerUrl}/api/results/get/dataForTraining`,
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }
+
+    const response = await makeEncryptedRequest({ config })
+    const responseAsArray = response.data.results.map((item) => {
+      return [
+        item.result.result_id,
+        item.result.date,
+        item.result.age,
+        item.result.sex,
+        item.result.weight,
+        item.result.height,
+        item.result.diabetes,
+        item.result.systolic,
+        item.result.diastolic,
+        item.result.cholesterol,
+        item.result.hdl,
+        item.result.ldl,
+        item.result.triglycerides,
+        item.result.smoking,
+        item.result.background,
+        item.result.estimation,
+        item.result.quartil,
+        item.result.framingham,
+        item.patient.outcome
+      ]
+    })
+
+    setResponse({
+      status: response.status,
+      responseAsArray,
+      data: { detail: response.data.detail }
+    })
+  }
+
   return {
     getEstimation,
     getEstimationByPatient,
@@ -182,6 +225,7 @@ export const useExternalApi = () => {
     getResultsByCategory,
     getResultsAvg,
     getResultsByMonth,
-    getScatterPatients
+    getScatterPatients,
+    getTrainingReport
   }
 }

@@ -20,6 +20,7 @@ import PatientsManagement from './Components/DashboardComponent/Patients/Patient
 import NotFound from './Components/NotFound/NotFound'
 import GeneralReports from './Components/DashboardComponent/Reports/GeneralReports'
 import AnonymousManagement from './Components/DashboardComponent/Reports/AnonymousManagement'
+import TrainingManagement from './Components/DashboardComponent/Reports/TrainingManagement'
 
 import './App.css'
 
@@ -106,6 +107,9 @@ export default function App () {
             <Route path="admin/reports/general" element={<GeneralReports type="Admin" />} />
             <Route path="admin/reports/tableanonymous"
               element={<AnonymousManagement />}
+            />
+            <Route path="admin/reports/tabletraining"
+              element={<TrainingManagement />}
             />
           </Route>
           <Route path="/404" element={<NotFound />} />
