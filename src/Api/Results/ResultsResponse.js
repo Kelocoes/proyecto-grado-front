@@ -173,7 +173,6 @@ export const useExternalApi = () => {
     }
 
     const response = await makeEncryptedRequest({ config })
-    console.log(response.data)
     setResponse(response)
   }
 
