@@ -46,7 +46,6 @@ export const useExternalApi = () => {
     }
 
     const response = await makeRequest({ config })
-
     let responseAsArray = []
     if (type === 'Admin') {
       responseAsArray = response.data.results.map((item) => {
@@ -76,7 +75,7 @@ export const useExternalApi = () => {
           item.blood_type,
           item.birth_date,
           item.actual_estimation,
-          item.patient.outcome
+          item.outcome
         ]
       })
     }
