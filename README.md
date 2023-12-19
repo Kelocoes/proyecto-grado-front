@@ -25,7 +25,7 @@ Se aclara que es requerido usar un archivo `.env` con una estructura similar a l
 
 Esto es necesario para las siguientes acciones:
 - URL del Back-End (puede ser localhost en el puerto 8000 o la url donde está alojado el backend)
-- Llaves para la encriptación usando AES 256, modo CBC (con longitud de 16 y 32 respectivamente
+- Llaves para la encriptación usando AES 256, modo CBC (con longitud de 16 y 32 respectivamente)
 - Llave para usar el reCaptcha en el Front-End (revisar documentación de [google](https://www.google.com/recaptcha/about/))
 
 # Nota del creador
