@@ -17,16 +17,16 @@ Puede ejecutarse de forma local por medio del comando
 ```bash
     npm start
 ```
-Se aclara que es requerido usar un archivo `.env` con la siguiente estructura:\
-&nbsp;&nbsp; REACT_APP_API_SERVER_URL=...\
-&nbsp;&nbsp; REACT_APP_AES_IV=...\
-&nbsp;&nbsp; REACT_APP_AES_SECRET_KEY=...\
-&nbsp;&nbsp; REACT_APP_SITE_KEY=...
+Se aclara que es requerido usar un archivo `.env` con una estructura similar a la siguiente:\
+&nbsp;&nbsp; REACT_APP_API_SERVER_URL=http://localhost:8000 \
+&nbsp;&nbsp; REACT_APP_AES_IV=YfQEdyEYuUBmunEU\
+&nbsp;&nbsp; REACT_APP_AES_SECRET_KEY=nEnWbpugBYUuIajgRStZbAWhrgyekggr\
+&nbsp;&nbsp; REACT_APP_SITE_KEY=6LeFACwnAAAAAEV4oVYm9MYAO9VSsDG1tKwEZaBt
 
 Esto es necesario para las siguientes acciones:
-- URL del Back-End
-- Llaves para la encriptación usando AES 256, modo CBC
-- Llave para usar el reCaptcha en el Front-End
+- URL del Back-End (puede ser localhost en el puerto 8000 o la url donde está alojado el backend)
+- Llaves para la encriptación usando AES 256, modo CBC (con longitud de 16 y 32 respectivamente
+- Llave para usar el reCaptcha en el Front-End (revisar documentación de [google](https://www.google.com/recaptcha/about/))
 
 # Nota del creador
 Este proyecto incluído el componente front se hizo con mucho empeño durante el año 2023.
